@@ -1,0 +1,3 @@
+Cloner le repo en local
+
+docker compose up -d pour démarrer dans docker 

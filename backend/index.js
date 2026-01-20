@@ -15,7 +15,7 @@ app
 // Routes
 let pokemons = require("./data-mock");
 app.get("/", (req, res) => {
-  res.send("API OK 3gggg");
+  res.send("Reprendre le cours à 2:10");
 });
 
 app.get("/api/chapters", (req, res) => {
