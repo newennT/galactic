@@ -5,7 +5,9 @@ console.log("DB_NAME:", process.env.DB_NAME);
 
 const { Sequelize, DataTypes } = require("sequelize");
 const ChapterModel = require("../models/chapter");
-const chapters = require("./data-mock")
+const LevelModel = require("../models/level");
+const chapters = require("./mock-chapters")
+const levels = require("./mock-levels")
 
 
 // Connexion entre bdd et sequelize
@@ -23,7 +25,6 @@ const sequelize = new Sequelize(
   }
 )
 
-
 function connectWithRetry() {
   sequelize.authenticate()
     .then(() => {
@@ -39,25 +40,35 @@ connectWithRetry();
 
 
 
-// Synchronisation de la base de données
+// Synchronisation de la base de données avec les données mock
 const Chapter = ChapterModel(sequelize, DataTypes);
+const Level = LevelModel(sequelize, DataTypes);
 
-const initDb = () => {
-    sequelize.sync({ force: true }).then(() => {
-    console.log("La base de données a été synchronisée avec succès");
-    
-    chapters.map(chapter => {
-        Chapter.create({
+const initDb = async () => {
+  await sequelize.sync({ force: true });
+  console.log("La base de données a été synchronisée avec succès");
+
+  await Promise.all(
+    chapters.map(chapter =>
+      Chapter.create({
         title: chapter.title,
         abstract: chapter.abstract,
         order: chapter.order,
         isPublished: true
-        }).then(chapter => console.log(chapter.toJSON()));
-    })
-    })
-}
+      }).then(chapter => console.log(chapter.toJSON()))
+    )
+  );
+
+  await Promise.all(
+    levels.map(level =>
+      Level.create({
+        title: level.title
+      }).then(level => console.log(level.toJSON()))
+    )
+  );
+};
 
 module.exports = {
-    initDb, Chapter
+    initDb, Chapter, Level
 
 }

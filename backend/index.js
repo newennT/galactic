@@ -24,10 +24,11 @@ sequelize.initDb();
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("Reprendre le cours à 5h40 sur https://www.youtube.com/watch?v=NRxzvpdduvQ")
+  res.send("Reprendre le cours à 6h18 sur https://www.youtube.com/watch?v=NRxzvpdduvQ")
 })
 
 require("./src/routes/chapter")(app)
+require("./src/routes/level")(app)
 
 // Gestion des erreurs
 app.use(({res}) => {

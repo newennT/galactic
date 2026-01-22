@@ -1,7 +1,7 @@
 
 // models/chapter.js
 module.exports = (sequelize, DataTypes) => {
-    return sequelize.define("Chapter", {
+    const Chapter = sequelize.define("Chapter", {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
@@ -46,5 +46,13 @@ module.exports = (sequelize, DataTypes) => {
         }
     }, {
         timestamps: true
-    })
+    });
+
+    Chapter.associate = models => {
+        Chapter.hasMany(models.Page, { foreignKey: 'id_chapter', as: 'pages' });
+        Chapter.belongsToMany(models.Level, { through: models.ChapterLevel, foreignKey: 'id_chapter' });
+        Chapter.belongsToMany(models.User, { through: models.UserChapter, foreignKey: 'id_chapter' });
+  };
+
+    return Chapter;
 }

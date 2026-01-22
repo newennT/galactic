@@ -7,7 +7,7 @@ const { UniqueConstraintError } = require('sequelize')
 module.exports = (app) => {
     // Récupérer la liste des chapitres
     app.get("/api/chapters", (req, res) => {
-        Chapter.findAll()
+        Chapter.findAll({order: ["order"]})
             .then(chapters => {
                 const message = "La liste des chapitres a été récupérée"
                 res.json({ message, data: chapters })
