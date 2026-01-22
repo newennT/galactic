@@ -29,6 +29,11 @@ app.get("/", (req, res) => {
 
 require("./src/routes/chapter")(app)
 
+// Gestion des erreurs
+app.use(({res}) => {
+  const message = "URL not found";
+  res.status(404).json({ message });
+})
 
 // Server
 app.listen(3000, () => {
