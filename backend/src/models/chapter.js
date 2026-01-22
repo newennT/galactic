@@ -9,11 +9,31 @@ module.exports = (sequelize, DataTypes) => {
         },
         title: {
             type: DataTypes.STRING,
-            allowNull: false
+            allowNull: false,
+            unique: {
+                args: true,
+                msg: "Le titre du chapitre doit être unique"
+            },
+            validate: {
+                notNull: {
+                    msg: "Le titre du chapitre est obligatoire"
+                },
+                notEmpty: {
+                    msg: "Le titre du chapitre est obligatoire"
+                }
+            }
         },
         abstract: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                notNull: {
+                    msg: "L'abstract du chapitre est obligatoire"
+                },
+                notEmpty: {
+                    msg: "L'abstract du chapitre est obligatoire"
+                }
+            }
         },
         order: {
             type: DataTypes.INTEGER,
