@@ -1,29 +1,27 @@
-// models/UniqueResponse.js
+// models/uniqueResponse.js
 
 module.exports = (sequelize, DataTypes) => {
     const UniqueResponse = sequelize.define('UniqueResponse', {
-        id: {
+        id_response: {
             type: DataTypes.INTEGER,
-            primaryKey: true
-        },
-        id_type: {
-            type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         content: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.TEXT,
             allowNull: false
         },
         is_correct: {
             type: DataTypes.BOOLEAN,
-            allowNull: false
+            allowNull: false,
+            defaultValue: false
         }
     }, {
-        timestamps: false
+        timestamps: true
     });
 
     UniqueResponse.associate = models => {
-        UniqueResponse.belongsTo(models.CategoryExercise, { foreignKey: 'id_type', as: 'type' });
+        UniqueResponse.belongsTo(models.Exercise, { foreignKey: 'id_page' });
     };
 
     return UniqueResponse;

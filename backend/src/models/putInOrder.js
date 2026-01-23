@@ -1,34 +1,33 @@
-// models/PutInOrder.js
+// modelspPutInOrder.js
 module.exports = (sequelize, DataTypes) => {
     const PutInOrder = sequelize.define('PutInOrder', {
-        id: {
+        id_response: {
             type: DataTypes.INTEGER,
-            primaryKey: true
-        },
-        id_type: {
-            type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            autoIncrement: true
         },
         content: {
-            type: DataTypes.STRING(50),
+            type: DataTypes.TEXT,
             allowNull: false
         },
         mixed_order: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            unique: true
         },
         correct_order: {
             type: DataTypes.INTEGER,
             allowNull: false,
-            unique: true
+        },
+        id_page: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, {
-        timestamps: false
+        timestamps: true
     });     
 
     PutInOrder.associate = models => {
-        PutInOrder.belongsTo(models.CategoryExercise, { foreignKey: 'id_type', as: 'type' });
+        PutInOrder.belongsTo(models.Exercise, { foreignKey: 'id_page' });
     };
 
     return PutInOrder;

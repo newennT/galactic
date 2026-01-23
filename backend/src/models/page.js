@@ -9,10 +9,9 @@ module.exports = (sequelize, DataTypes) => {
     order_index: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      unique: true
     },
     title: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     id_chapter: {
@@ -20,17 +19,17 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     type: {
-        type: DataTypes.ENUM('lesson', 'exercise'),
+        type: DataTypes.ENUM('LESSON', 'EXERCISE'),
         allowNull: false
-        }
+    }
   }, {
-    timestamps: false
+    timestamps: true
   });
 
   Page.associate = models => {
-    Page.hasOne(models.Lesson, { foreignKey: 'id_page', as: 'lesson' });
-    Page.hasOne(models.Exercise, { foreignKey: 'id_page', as: 'exercise' });
-    Page.belongsTo(models.Chapter, { foreignKey: 'id_chapter', as: 'chapter' });
+    Page.hasOne(models.Lesson, { foreignKey: 'id_page', onDelete: 'CASCADE' });
+    Page.hasOne(models.Exercise, { foreignKey: 'id_page', onDelete: 'CASCADE' });
+    Page.belongsTo(models.Chapter, { foreignKey: 'id_chapter' });
   };
 
   return Page;

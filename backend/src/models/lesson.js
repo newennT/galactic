@@ -5,7 +5,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       primaryKey: true
     },
-    lesson: {
+    title: {
       type: DataTypes.TEXT,
       allowNull: false
     },
@@ -14,8 +14,7 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     }
   }, {
-    tableName: 'lesson',
-    timestamps: false
+    timestamps: true
   });
 
   Lesson.associate = models => {

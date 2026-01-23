@@ -4,11 +4,13 @@ module.exports = (sequelize, DataTypes) => {
     const UserExercise = sequelize.define('UserExercise', {
         id_page: {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            allowNull: false
         },
         id_user: {
             type: DataTypes.INTEGER,
-            primaryKey: true
+            primaryKey: true,
+            allowNull: false
         },
         is_correct:{
             type: DataTypes.BOOLEAN,
@@ -20,8 +22,13 @@ module.exports = (sequelize, DataTypes) => {
             defaultValue: false
         }
     }, {
-        timestamps: false
+        timestamps: true
     });
+
+    UserExercise.associate = models => {
+        UserExercise.belongsTo(models.User, { foreignKey: 'id_user' });
+        UserExercise.belongsTo(models.Exercise, { foreignKey: 'id_page' });
+    };
 
     return UserExercise;
 };

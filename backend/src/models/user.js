@@ -12,28 +12,25 @@ module.exports = (sequelize, DataTypes) => {
         unique: true 
     },
     email: { 
-        type: DataTypes.STRING(50), 
+        type: DataTypes.STRING(255), 
         allowNull: false, 
         unique: true 
     },
     password_hash: { 
-        type: DataTypes.STRING(50), 
+        type: DataTypes.STRING(255), 
         allowNull: false 
     },
-    role: { 
-        type: DataTypes.STRING(50), 
-        allowNull: false 
-    },
-    created_at: { 
-        type: DataTypes.DATE, 
-        allowNull: false 
+    is_admin: { 
+        type: DataTypes.BOOLEAN, 
+        allowNull: false,
+        defaultValue: false
     },
     last_login: { 
         type: DataTypes.DATE, 
         allowNull: false 
     }
   }, { 
-    timestamps: false 
+    timestamps: true 
 });
 
   User.associate = models => {

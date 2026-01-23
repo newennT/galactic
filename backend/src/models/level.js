@@ -2,7 +2,7 @@
 // models/level.js
 module.exports = (sequelize, DataTypes) => {
     const Level = sequelize.define("Level", {
-        id: {
+        id_level: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true

@@ -6,7 +6,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true
     },
     question: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.TEXT,
       allowNull: false
     },
     feedback: {
@@ -14,18 +14,19 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false
     },
     type: {
-      type: DataTypes.STRING(50),
+      type: DataTypes.ENUM('UNIQUE', 'PAIRS', 'ORDER'),
       allowNull: false
     }
   }, {
-    tableName: 'exercise',
-    timestamps: false
+    timestamps: true
   });
 
   Exercise.associate = models => {
-    Exercise.belongsTo(models.Page, { foreignKey: 'id_page', as: 'page' });
+    Exercise.belongsTo(models.Page, { foreignKey: 'id_page' });
     Exercise.belongsToMany(models.User, { through: models.UserExercise, foreignKey: 'id_page' });
-    Exercise.belongsTo(models.CategoryExercise, { foreignKey: 'id_categorie', as: 'categorie' });
+    Exercise.hasMany(models.UniqueResponse, { foreignKey: 'id_page', onDelete: 'CASCADE' });
+    Exercise.hasMany(models.Pairs, { foreignKey: 'id_page', onDelete: 'CASCADE' });
+    Exercise.hasMany(models.PutInOrder, { foreignKey: 'id_page', onDelete: 'CASCADE' });
   };
 
   return Exercise;
