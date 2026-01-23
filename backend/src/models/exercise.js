@@ -7,11 +7,27 @@ module.exports = (sequelize, DataTypes) => {
     },
     question: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "La question est obligatoire"
+        },
+        notNull: {
+          msg: "La question est obligatoire"
+        }
+      }
     },
     feedback: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Le feedback est obligatoire"
+        },
+        notNull: {
+          msg: "Le feedback est obligatoire"
+        }
+      }
     },
     type: {
       type: DataTypes.ENUM('UNIQUE', 'PAIRS', 'ORDER'),

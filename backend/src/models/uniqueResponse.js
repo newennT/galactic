@@ -9,7 +9,15 @@ module.exports = (sequelize, DataTypes) => {
         },
         content: {
             type: DataTypes.TEXT,
-            allowNull: false
+            allowNull: false,
+            validate: {
+                notEmpty: {
+                    msg: "Le contenu est obligatoire"
+                },
+                notNull: {
+                    msg: "Le contenu est obligatoire"
+                }
+            }
         },
         is_correct: {
             type: DataTypes.BOOLEAN,

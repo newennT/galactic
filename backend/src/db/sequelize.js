@@ -4,10 +4,14 @@ require("dotenv").config();
 console.log("DB_NAME:", process.env.DB_NAME);
 
 const { Sequelize, DataTypes } = require("sequelize");
+
+// Import des models
 const ChapterModel = require("../models/chapter");
 const LevelModel = require("../models/level");
-const chapters = require("./mock-chapters")
-const levels = require("./mock-levels")
+
+// import des data-mock
+const chapters = require("./data-mock/mock-chapters")
+const levels = require("./data-mock/mock-levels")
 
 
 // Connexion entre bdd et sequelize

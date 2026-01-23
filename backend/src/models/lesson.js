@@ -7,11 +7,27 @@ module.exports = (sequelize, DataTypes) => {
     },
     title: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Le titre est obligatoire"
+        },
+        notNull: {
+          msg: "Le titre est obligatoire"
+        }
+      }
     },
     content: {
       type: DataTypes.TEXT,
-      allowNull: false
+      allowNull: false,
+      validate: {
+        notEmpty: {
+          msg: "Le contenu est obligatoire"
+        },
+        notNull: {
+          msg: "Le contenu est obligatoire"
+        }
+      }
     }
   }, {
     timestamps: true
