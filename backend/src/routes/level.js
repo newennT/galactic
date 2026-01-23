@@ -45,9 +45,20 @@ module.exports = (app) => {
             })
     });
 
-    // Récupérer un chapitre
+    // Récupérer un niveau
     app.get("/api/levels/:id", (req, res) => {
-        Level.findByPk(req.params.id)
+        Level.findByPk(req.params.id,
+            {
+                include: [
+                    {
+                        model: Chapter,
+                        through: {
+                            attributes: []
+                        }
+                    }
+                ]
+            }
+        )
             .then(chapter => {
                 if(chapter === null) {
                     const message = "Le chapitre demandé n'a pas été trouvé"
@@ -62,7 +73,7 @@ module.exports = (app) => {
             })
     });
 
-    // Créer un chapitre
+    // Créer un niveau
     app.post("/api/levels", (req, res) => {
         Level.create(req.body)
             .then(level => {
