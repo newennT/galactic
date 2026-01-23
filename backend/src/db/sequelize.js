@@ -10,8 +10,8 @@ const ChapterModel = require("../models/chapter");
 const LevelModel = require("../models/level");
 
 // import des data-mock
-const chapters = require("./data-mock/mock-chapters")
-const levels = require("./data-mock/mock-levels")
+const chapters = require("./data-mock/chapters")
+const levels = require("./data-mock/levels")
 
 
 // Connexion entre bdd et sequelize
