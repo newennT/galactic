@@ -1,6 +1,7 @@
 // routes/level.js
 
-const { Level } = require('../db/sequelize')
+const { models: { Level } } = require('../db/sequelize')
+const { models: { Chapter } } = require('../db/sequelize')
 const { ValidationError } = require('sequelize')
 const { UniqueConstraintError } = require('sequelize')
 const { Op } = require("sequelize");
@@ -23,7 +24,17 @@ module.exports = (app) => {
                 res.json({ message, data: levels })
             })
         }
-        Level.findAll({order: ["title"]})
+        Level.findAll({
+            order: ["title"],
+            include: [
+                {
+                    model: Chapter,
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
+        })
             .then(levels => {
                 const message = "La liste des niveaux a été récupérée"
                 res.json({ message, data: levels })

@@ -1,13 +1,40 @@
 // routes/chapter.js
 
-const { Chapter } = require('../db/sequelize')
-const { ValidationError } = require('sequelize')
-const { UniqueConstraintError } = require('sequelize')
+const { models: { Chapter } } = require('../db/sequelize');
+const { models: { ChapterLevel } } = require('../db/sequelize');
+const { models: { Level } } = require('../db/sequelize');
+const { models: { Page } } = require('../db/sequelize');
+const { models: { Lesson } } = require('../db/sequelize');
+const { models: { Exercise } } = require('../db/sequelize');
+const { ValidationError } = require('sequelize');
+const { UniqueConstraintError } = require('sequelize');
 
 module.exports = (app) => {
     // Récupérer la liste des chapitres
     app.get("/api/chapters", (req, res) => {
-        Chapter.findAll({order: ["order"]})
+        Chapter.findAll({
+            order: ["order"],
+            include: [
+                {
+                    model: Level,
+                    through: {
+                        attributes: []
+                    }
+                    
+                },
+                {
+                    model: Page,
+                    include: [
+                        {
+                            model: Lesson
+                        },
+                        {
+                            model: Exercise
+                        }
+                    ]
+                }
+            ]
+        })
             .then(chapters => {
                 const message = "La liste des chapitres a été récupérée"
                 res.json({ message, data: chapters })
