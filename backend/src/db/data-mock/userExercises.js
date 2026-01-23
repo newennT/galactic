@@ -12,3 +12,5 @@ const userExercices = [
         is_done: true
     }
 ]
+
+module.exports = userExercices;

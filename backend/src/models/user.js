@@ -9,7 +9,10 @@ module.exports = (sequelize, DataTypes) => {
     pseudo: { 
         type: DataTypes.STRING(50), 
         allowNull: false, 
-        unique: true,
+        unique: {
+            args: true,
+            msg: "Le pseudo doit être unique"
+        },
         validate: {
             notEmpty: {
                 msg: "Le pseudo est obligatoire"
@@ -20,17 +23,16 @@ module.exports = (sequelize, DataTypes) => {
             len: {
                 args: [3, 50],
                 msg: "Le pseudo doit avoir entre 3 et 50 caractères"
-            },
-            unique: {
-                args: true,
-                msg: "Le pseudo doit être unique"
             }
         }
     },
     email: { 
         type: DataTypes.STRING(255), 
         allowNull: false, 
-        unique: true,
+        unique: {
+            args: true,
+            msg: "Le pseudo doit être unique"
+        },
         validate: {
             notEmpty: {
                 msg: "L'email est obligatoire"
@@ -40,10 +42,6 @@ module.exports = (sequelize, DataTypes) => {
             },
             isEmail: {
                 msg: "L'email doit être valide"
-            },
-            unique: {
-                args: true,
-                msg: "L'email doit être unique"
             }
         }
     },

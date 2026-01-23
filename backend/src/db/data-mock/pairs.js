@@ -24,3 +24,5 @@ const pairs = [
         pair_key: "B",
     }
 ]
+
+module.exports = pairs;
