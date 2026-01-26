@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.BOOLEAN,
             allowNull: false,
             defaultValue: false
+        },
+        id_page: {
+            type: DataTypes.INTEGER,
+            allowNull: false
         }
     }, {
         timestamps: true
@@ -31,6 +35,24 @@ module.exports = (sequelize, DataTypes) => {
     UniqueResponse.associate = models => {
         UniqueResponse.belongsTo(models.Exercise, { foreignKey: 'id_page' });
     };
+
+    UniqueResponse.beforeCreate(async (ur) => {
+        const Exercise = sequelize.models.Exercise;
+        const exercise = await Exercise.findByPk(ur.id_page);
+        if (!exercise) throw new Error("Exercice non trouvé");
+        if (exercise.type !== "UNIQUE") {
+        throw new Error("Impossible de créer un UniqueResponse sur un exercice qui n'est pas de type UNIQUE");
+        }
+    });
+
+    UniqueResponse.beforeUpdate(async (ur) => {
+        const Exercise = sequelize.models.Exercise;
+        const exercise = await Exercise.findByPk(ur.id_page);
+        if (!exercise) throw new Error("Exercice non trouvé");
+        if (exercise.type !== "UNIQUE") {
+        throw new Error("Impossible de modifier un UniqueResponse sur un exercice qui n'est pas de type UNIQUE");
+        }
+    });
 
     return UniqueResponse;
 };

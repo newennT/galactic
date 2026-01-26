@@ -59,16 +59,16 @@ module.exports = (app) => {
                 ]
             }
         )
-            .then(chapter => {
-                if(chapter === null) {
-                    const message = "Le chapitre demandé n'a pas été trouvé"
+            .then(level => {
+                if(level === null) {
+                    const message = "Le niveau demandé n'a pas été trouvé"
                     return res.status(404).json({ message })
                 }
-                const message = "Un chapitre a bien été trouvé"
-                res.json({ message, data: chapter })
+                const message = "Un niveau a bien été trouvé"
+                res.json({ message, data: level })
             })
             .catch(error => {
-                const message = "Le chapitre n'a pas pu'être trouvé. Réessayez dans quelques instants."
+                const message = "Le niveau n'a pas pu'être trouvé. Réessayez dans quelques instants."
                 res.status(500).json({ message, data: error })
             })
     });
@@ -96,7 +96,7 @@ module.exports = (app) => {
     app.put("/api/levels/:id", (req, res) => {
         const id = req.params.id;
         Level.update(req.body, {
-            where: { id: id}
+            where: { id_level: id}
         })
         .then(_ => {
             return Level.findByPk(id).then(level => {
@@ -129,7 +129,7 @@ module.exports = (app) => {
             }
             const levelDeleted = level;
             Level.destroy({
-                where: { id: level.id}
+                where: { id_level: level.id_level}
             })
             .then(_ => {
                 const message = `Le niveau ${levelDeleted.title} a bien été supprimé`

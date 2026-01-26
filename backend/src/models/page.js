@@ -31,8 +31,17 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false
     }
   }, {
-    timestamps: true
+    timestamps: true,
+
+    validate: {
+      validType() {
+        if (!['LESSON', 'EXERCISE'].includes(this.type)) {
+          throw new Error("Le type de page doit être 'LESSON' ou 'EXERCISE'");
+        }
+      }
+    }
   });
+
 
   Page.associate = models => {
     Page.hasOne(models.Lesson, { foreignKey: 'id_page', onDelete: 'CASCADE' });

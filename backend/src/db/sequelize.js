@@ -124,6 +124,7 @@ const initDb = async () => {
   const pageInstances = await Promise.all(
     pages.map(page =>
       models.Page.create({
+        id_page: page.id_page,
         title: page.title,
         type: page.type,
         order_index: page.order_index,

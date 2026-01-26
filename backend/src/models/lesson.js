@@ -34,8 +34,15 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Lesson.associate = models => {
-    Lesson.belongsTo(models.Page, { foreignKey: 'id_page', as: 'page' });
+    Lesson.belongsTo(models.Page, { foreignKey: 'id_page' });
   };
+
+  Lesson.beforeCreate(async (lesson, options) => {
+    const Page = sequelize.models.Page;
+    const page = await Page.findByPk(lesson.id_page);
+    if (!page) throw new Error("Page non trouvée");
+    if (page.type !== 'LESSON') throw new Error("Cette page n'est pas de type LESSON");
+  });
 
   return Lesson;
 };

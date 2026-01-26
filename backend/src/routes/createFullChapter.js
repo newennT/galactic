@@ -2,9 +2,13 @@ module.exports = (app) => {
     app.post("/api/chapters/full", async (req, res) => {
         const t = await sequelize.transaction();
         try {
-            const { pages, ...chapterData } = req.body;
+            const { pages, levels, ...chapterData } = req.body;
             const chapter = await models.Chapter.create(chapterData, { transaction: t });
 
+            if (levels?.length){
+                await chapter.setLevels(levels, { transaction: t });
+            }
+            
             for (const pageData of pages) {
                 const page = await models.Page.create({
                     title: pageData.title,

@@ -45,5 +45,12 @@ module.exports = (sequelize, DataTypes) => {
     Exercise.hasMany(models.PutInOrder, { foreignKey: 'id_page', onDelete: 'CASCADE' });
   };
 
+  Exercise.beforeCreate(async (exercise, options) => {
+    const Page = sequelize.models.Page;
+    const page = await Page.findByPk(exercise.id_page);
+    if (!page) throw new Error("Page non trouvée");
+    if (page.type !== 'EXERCISE') throw new Error("Cette page n'est pas de type EXERCISE");
+  });
+
   return Exercise;
 };

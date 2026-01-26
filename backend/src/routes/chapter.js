@@ -85,7 +85,7 @@ module.exports = (app) => {
     app.put("/api/chapters/:id", (req, res) => {
         const id = req.params.id;
         Chapter.update(req.body, {
-            where: { id: id}
+            where: { id_chapter: id}
         })
         .then(_ => {
             return Chapter.findByPk(id).then(chapter => {
@@ -118,7 +118,7 @@ module.exports = (app) => {
             }
             const chapterDeleted = chapter;
             Chapter.destroy({
-                where: { id: chapter.id}
+                where: { id_chapter: chapter.id_chapter }
             })
             .then(_ => {
                 const message = `Le chapitre n°${chapterDeleted.id} a bien été supprimé`

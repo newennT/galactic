@@ -29,6 +29,14 @@ app.get("/", (req, res) => {
 
 require("./src/routes/chapter")(app)
 require("./src/routes/level")(app)
+require("./src/routes/exercise")(app)
+require("./src/routes/lesson")(app)
+require("./src/routes/page")(app)
+require("./src/routes/pairs")(app)
+require("./src/routes/uniqueResponse")(app)
+require("./src/routes/putInOrder")(app)
+require("./src/routes/user")(app)
+
 
 // Gestion des erreurs
 app.use(({res}) => {

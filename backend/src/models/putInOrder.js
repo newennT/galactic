@@ -38,5 +38,23 @@ module.exports = (sequelize, DataTypes) => {
         PutInOrder.belongsTo(models.Exercise, { foreignKey: 'id_page' });
     };
 
+    PutInOrder.beforeCreate(async (p) => {
+        const Exercise = sequelize.models.Exercise;
+        const exercise = await Exercise.findByPk(p.id_page);
+        if (!exercise) throw new Error("Exercice non trouvé");
+        if (exercise.type !== "ORDER") {
+        throw new Error("Impossible de créer un PutInOrder sur un exercice qui n'est pas de type ORDER");
+        }
+    });
+
+    PutInOrder.beforeUpdate(async (p) => {
+        const Exercise = sequelize.models.Exercise;
+        const exercise = await Exercise.findByPk(p.id_page);
+        if (!exercise) throw new Error("Exercice non trouvé");
+        if (exercise.type !== "ORDER") {
+        throw new Error("Impossible de modifier un PutInOrder sur un exercice qui n'est pas de type ORDER");
+        }
+    });
+
     return PutInOrder;
 }
