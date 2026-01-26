@@ -1,6 +1,7 @@
 // routes/chapter.js
 
 const { models: { User } } = require('../db/sequelize');
+const { models: { Chapter } } = require('../db/sequelize');
 const { ValidationError } = require('sequelize');
 const { UniqueConstraintError } = require('sequelize');
 
@@ -8,7 +9,15 @@ module.exports = (app) => {
     // Récupérer la liste des utilisateurs
     app.get("/api/users", (req, res) => {
         User.findAll({
-            order: ["last_login"]
+            order: ["last_login"],
+            include: [
+                {
+                    model: Chapter,
+                    through: {
+                        attributes: []
+                    }
+                }
+            ]
         })
             .then(users => {
                 const message = "La liste des utilisateurs a été récupérée"

@@ -36,6 +36,8 @@ require("./src/routes/pairs")(app)
 require("./src/routes/uniqueResponse")(app)
 require("./src/routes/putInOrder")(app)
 require("./src/routes/user")(app)
+require("./src/routes/createFullChapter")(app)
+require("./src/routes/login")(app)
 
 
 // Gestion des erreurs

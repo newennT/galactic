@@ -1,4 +1,7 @@
 // models/user.js
+
+const bcrypt = require('bcrypt');
+
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     id_user: {
@@ -6,7 +9,7 @@ module.exports = (sequelize, DataTypes) => {
       primaryKey: true,
       autoIncrement: true
     },
-    pseudo: { 
+    username: { 
         type: DataTypes.STRING(50), 
         allowNull: false, 
         unique: {
@@ -31,7 +34,7 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false, 
         unique: {
             args: true,
-            msg: "Le pseudo doit être unique"
+            msg: "L'email doit être unique"
         },
         validate: {
             notEmpty: {
@@ -45,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
             }
         }
     },
-    password_hash: { 
+    password: { 
         type: DataTypes.STRING(255), 
         allowNull: false 
     },
@@ -59,12 +62,31 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false 
     }
   }, { 
-    timestamps: true 
-});
+    timestamps: true,
+    defaultScope: {
+        attributes: { exclude: ['password'] }
+    }, 
+    hooks: {
+      beforeCreate: async (user) => {
+        user.password = await bcrypt.hash(user.password, 10);
+      },
+
+      beforeUpdate: async (user) => {
+        if (user.changed('password')) {
+          user.password = await bcrypt.hash(user.password, 10);
+        }
+      }
+    }
+  }
+);
 
   User.associate = models => {
     User.belongsToMany(models.Chapter, { through: models.UserChapter, foreignKey: 'id_user' });
     User.belongsToMany(models.Exercise, { through: models.UserExercise, foreignKey: 'id_user' });
+  };
+
+  User.prototype.comparePassword = function(password) {
+    return bcrypt.compare(password, this.password);
   };
 
   return User;

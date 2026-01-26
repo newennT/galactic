@@ -8,6 +8,7 @@ const { models: { Lesson } } = require('../db/sequelize');
 const { models: { Exercise } } = require('../db/sequelize');
 const { ValidationError } = require('sequelize');
 const { UniqueConstraintError } = require('sequelize');
+const auth = require('../auth/auth');
 
 module.exports = (app) => {
     // Récupérer la liste des chapitres
@@ -46,7 +47,7 @@ module.exports = (app) => {
     });
 
     // Récupérer un chapitre
-    app.get("/api/chapters/:id", (req, res) => {
+    app.get("/api/chapters/:id", auth, (req, res) => {
         Chapter.findByPk(req.params.id)
             .then(chapter => {
                 if(chapter === null) {

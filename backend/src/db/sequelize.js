@@ -4,6 +4,7 @@ require("dotenv").config();
 console.log("DB_NAME:", process.env.DB_NAME);
 
 const { Sequelize, DataTypes } = require("sequelize");
+const bcrypt = require("bcrypt");
 
 // Import des models
 const ChapterModel = require("../models/chapter");
@@ -195,9 +196,9 @@ const initDb = async () => {
   const userInstances = await Promise.all(
     users.map(user =>
       models.User.create({
-        pseudo: user.pseudo,
+        username: user.username,
         email: user.email,
-        password_hash: user.password_hash,
+        password: user.password,
         is_admin: user.is_admin,
         last_login: user.last_login
       }).then(user => console.log(user.toJSON()))
@@ -226,11 +227,8 @@ const initDb = async () => {
       }).then(userExercise => console.log(userExercise.toJSON()))
     )
   );
-
-
 };
 
 module.exports = {
     initDb, models
-
 }

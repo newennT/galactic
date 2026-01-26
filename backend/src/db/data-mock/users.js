@@ -1,15 +1,15 @@
 const users = [
     {
-        pseudo: "superadmin",
+        username: "superadmin",
         email: "admin@example.com",
-        password_hash: "HASH_BCRYPT",
+        password: "bcrypt",
         is_admin: true,
         last_login: new Date(),
     },
     {
-        pseudo: "user2",
+        username: "user2",
         email: "user@example.com",
-        password_hash: "HASH_BCRYPT",
+        password: "bcrypt",
         is_admin: false,
         last_login: new Date(),
     }
