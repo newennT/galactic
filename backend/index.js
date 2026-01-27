@@ -27,7 +27,7 @@ sequelize.initDb();
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("API OK")
+  res.send("API OK, https://github.com/gowthamrajk/ElearningManagementSystem/tree/main/src/app/services")
 })
 
 require("./src/routes/chapter")(app)
