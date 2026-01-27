@@ -1,3 +1,5 @@
+// login.js
+
 const { models: { User } } = require("../db/sequelize");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -29,6 +31,7 @@ module.exports = (app) => {
                     { expiresIn: "24h" }
                 )
                 const message = "Connexion réussie";
+                console.log("LOGIN KEY:", privatekey);
                 return res.json({ message, data: user, token });
             })
         })

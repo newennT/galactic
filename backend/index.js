@@ -4,6 +4,7 @@ console.log("Node backend starting...");
 
 const express = require("express");
 const morgan = require("morgan");
+const cors = require('cors')
 const sequelize = require("./src/db/sequelize");
 const favicon = require("serve-favicon");
 const bodyParser = require("body-parser");
@@ -15,7 +16,9 @@ const app = express();
 app
 .use(favicon(__dirname + "/favicon.ico"))
 .use(morgan("dev"))
-.use(bodyParser.json());
+.use(bodyParser.json())
+.use(cors());
+
 
 
 // Appel bdd
@@ -24,7 +27,7 @@ sequelize.initDb();
 
 // Routes
 app.get("/", (req, res) => {
-  res.send("Reprendre le cours à 6h18 sur https://www.youtube.com/watch?v=NRxzvpdduvQ")
+  res.send("API OK")
 })
 
 require("./src/routes/chapter")(app)
@@ -41,10 +44,9 @@ require("./src/routes/login")(app)
 
 
 // Gestion des erreurs
-app.use(({res}) => {
-  const message = "URL not found";
-  res.status(404).json({ message });
-})
+app.use((req, res) => {
+  res.status(404).json({ message: "URL not found" });
+});
 
 // Server
 app.listen(3000, () => {
