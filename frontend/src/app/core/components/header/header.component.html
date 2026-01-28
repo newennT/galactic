@@ -1,5 +1,29 @@
-<a routerLink="/">
+<mat-toolbar class="header-toolbar">
+  <a routerLink="/">
     <fa-icon [icon]="faHouse"></fa-icon>
-</a>
+  </a>
 
-<fa-icon [icon]="faBars"></fa-icon>
+  <span class="spacer"></span>
+
+  <!-- bouton menu -->
+  <button mat-icon-button (click)="drawer.toggle()">
+    <fa-icon [icon]="faBars"></fa-icon>
+  </button>
+</mat-toolbar>
+
+<!-- Sidenav -->
+<mat-sidenav-container class="sidenav-container">
+  <mat-sidenav #drawer mode="over" position="end" class="menu-sidenav">
+    <mat-nav-list>
+      <a mat-list-item routerLink="/">Accueil</a>
+      <a mat-list-item routerLink="/contact">Contact</a>
+      <a mat-list-item routerLink="/chapters">Chapitres</a>
+      <a mat-list-item routerLink="/admin">Admin</a>
+    </mat-nav-list>
+  </mat-sidenav>
+
+  <mat-sidenav-content>
+    <router-outlet></router-outlet>
+  </mat-sidenav-content>
+</mat-sidenav-container>
+
