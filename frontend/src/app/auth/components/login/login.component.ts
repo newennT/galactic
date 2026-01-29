@@ -18,7 +18,7 @@ export class LoginComponent implements OnInit{
   });
 
   constructor(
-    private auth: AuthService,
+    public auth: AuthService,
     private router: Router,
     private formBuilder: FormBuilder
   ) { }
@@ -41,5 +41,9 @@ export class LoginComponent implements OnInit{
       }
     });
   }
+
+  logout() {
+  this.auth.logout();
+}
 
 }
