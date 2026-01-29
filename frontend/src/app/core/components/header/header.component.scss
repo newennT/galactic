@@ -1,10 +1,14 @@
+@use '../../../../styles.scss' as *;
+
 .sidenav-container {
-  height: 100vh; // full height
+  min-height: 75vh;
+  height: 100%;
 }
 
 .menu-sidenav {
-  width: 250px;           // largeur du menu
-  height: 100vh;          // full height
+  width: 250px; 
+  height: 100%;
+  padding-top: 60px;
 }
 .header-toolbar {
   position: fixed;
@@ -12,15 +16,23 @@
   left: 0;
   right: 0;
   z-index: 1000;
+
 }
 .spacer {
   flex: 1 1 auto;
 }
 mat-sidenav-content {
-  margin-top: 64px; // hauteur toolbar
+  margin-top: 64px;
 }
 
 .mat-toolbar{
     background-color: #ffffff;
     box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.10);
+    button{
+      a{
+        color: $green-idg;
+      }
+      
+    }
+    
 }

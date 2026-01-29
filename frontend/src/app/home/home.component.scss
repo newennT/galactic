@@ -1,0 +1,30 @@
+@use '../../styles.scss' as *;
+
+h1{
+    font-size: 55px;
+    line-height: normal;
+    margin-top: 20px;
+}
+
+.btn-home{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+    a{
+        margin: 5px;
+        border-radius: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        width: 50%;
+        height: 80px;
+        border: none;
+        font-weight: 500;
+        font-family: 'Stolzl', sans-serif;
+        color: $color-text;
+    }
+    #btn-login{
+        color: white;
+        --mdc-theme-on-primary: white;        
+    }
+}

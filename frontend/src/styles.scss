@@ -1,8 +1,50 @@
-
 // Custom Theming for Angular Material
 // For more information: https://material.angular.io/guide/theming
 @use '@angular/material' as mat;
 // Plus imports for other components in your app.
+
+@font-face {
+  font-family: 'Stolzl';
+  src: url('/assets/Stolzl-Book.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Stolzl';
+  src: url('/assets/Stolzl-Medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face{
+  font-family: 'Stolzl';
+  src: url('/assets/Stolzl-Thin.woff2') format('woff2');
+  font-weight: 100;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Stolzl-display';
+  src: url('/assets/stolzl-display-normal.woff2') format('woff2');
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
+@font-face {
+  font-family: 'Stolzl-display';
+  src: url('/assets/stolzl-display-medium.woff2') format('woff2');
+  font-weight: 500;
+  font-style: normal;
+  font-display: swap;
+}
+
+
+
 
 // Include the common styles for Angular Material. We include this here so that you only
 // have to load a single css file for Angular Material in your app.
@@ -16,7 +58,7 @@
 $my-primary: mat.define-palette((
   50: #f2f7ff,
   100: #d0d0d0,
-  200: #16BAAD,
+  200: #9eede7,
   300: #16BAAD,
   400: #16BAAD,
   500: #16BAAD, // couleur principale
@@ -25,9 +67,36 @@ $my-primary: mat.define-palette((
   800: #58595B,
   900: #002d23,
   contrast: (
-    500: white
+    50: #58595B,
+    100: #58595B,
+    200: #58595B,
+    300: white,
+    400: white,
+    500: white, 
+    600: white,
+    700: white,
+    800: white,
+    900: white
   )
 ));
+
+$frontend-typography: mat.define-typography-config(
+  $font-family: 'Stolzl, sans-serif',
+  $headline-1: mat.define-typography-level(96px, 96px, 300, 'Stolzl, sans-serif'),
+  $headline-2: mat.define-typography-level(60px, 60px, 300, 'Stolzl, sans-serif'),
+  $headline-3: mat.define-typography-level(48px, 50px, 400, 'Stolzl, sans-serif'),
+  $headline-4: mat.define-typography-level(34px, 40px, 400, 'Stolzl, sans-serif'),
+  $headline-5: mat.define-typography-level(24px, 32px, 400, 'Stolzl, sans-serif'),
+  $headline-6: mat.define-typography-level(20px, 32px, 500, 'Stolzl, sans-serif'),
+
+  $body-1: mat.define-typography-level(16px, 24px, 400, 'Stolzl, sans-serif'),
+  $body-2: mat.define-typography-level(14px, 20px, 400, 'Stolzl, sans-serif'),
+
+  $button: mat.define-typography-level(14px, 14px, 600, 'Stolzl, sans-serif'),
+
+  $caption: mat.define-typography-level(12px, 20px, 400, 'Stolzl, sans-serif'),
+);
+@include mat.typography-hierarchy($frontend-typography);
 $frontend-primary: $my-primary;
 $frontend-accent: mat.define-palette(mat.$pink-palette, A200, A100, A400);
 
@@ -41,7 +110,8 @@ $frontend-theme: mat.define-light-theme((
     primary: $frontend-primary,
     accent: $frontend-accent,
     warn: $frontend-warn,
-  )
+  ),
+  typography: $frontend-typography
 ));
 
 // Include theme styles for core and each component used in your app.
@@ -51,17 +121,43 @@ $frontend-theme: mat.define-light-theme((
 
 /* You can add global styles to this file, and also import other style files */
 
+$color-text: #58595B;
+$green-idg: #16BAAD;
+
 html, body 
 { 
   height: 100%; 
 }
 body { 
   margin: 0; 
-  font-family: Roboto, "Helvetica Neue", sans-serif; 
+  font-family: 'Stolzl', sans-serif; 
   background-color: #d0d0d0;
 }
 
 a{
   text-decoration: none;
-  color: #16BAAD;
+}
+
+h1, h2, h3, h4, h5, h6{
+  font-family: 'Stolzl-display', sans-serif;
+  font-weight: 500;
+}
+
+p, ul, li{
+  font-family: 'Stolzl', sans-serif;
+  color: $color-text;
+}
+
+h1{
+  color: $color-text;
+  text-align: center;
+}
+
+.container{
+  width: 95%;
+  margin: auto;
+}
+
+a, button{
+  --mdc-theme-on-primary: white;
 }

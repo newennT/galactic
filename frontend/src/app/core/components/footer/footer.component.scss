@@ -2,12 +2,15 @@ footer{
     background-color: #16BAAD;
     color: white;
     text-align: center;
-    padding: 10px;
+    padding: 20px 0;
     a{
         color: #ffffff;
-        font-weight: bold;;
         &:hover{
             text-decoration: underline;
         }
+    }
+    p, a{
+        color: #ffffff;
+        line-height: normal;
     }
 }

@@ -8,13 +8,15 @@ import { HomeComponent } from './home/home.component';
 import { NotFoundComponent } from './not-found/not-found.component';
 import { AppRoutingModule } from './app-routing.module';
 import { CoreModule } from './core/core.module';
+import { AboutComponent } from './about/about.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     ContactComponent,
     HomeComponent,
-    NotFoundComponent
+    NotFoundComponent,
+    AboutComponent
   ],
   imports: [
     BrowserModule,
