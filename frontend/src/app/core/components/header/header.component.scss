@@ -1,14 +1,11 @@
 @use '../../../../styles.scss' as *;
 
-.sidenav-container {
-  min-height: 75vh;
-  height: 100%;
-}
 
 .menu-sidenav {
   width: 250px; 
   height: 100%;
   padding-top: 60px;
+  position: fixed;
 }
 .header-toolbar {
   position: fixed;
