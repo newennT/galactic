@@ -9,7 +9,7 @@ module.exports = (app) => {
     app.post('/api/login', (req, res) => {
         User.findOne({
             where: {
-                username: req.body.username
+                email: req.body.email
             },
             attributes: { include: ["password"] }
         }).then(user => {

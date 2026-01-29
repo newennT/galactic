@@ -3,13 +3,15 @@ import { Routes, RouterModule } from "@angular/router";
 import { HomeComponent } from "./home/home.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { AboutComponent } from "./about/about.component";
+import { AuthGuard } from "./core/guards/auth.guard";
 
 const routes: Routes = [
     { path: 'chapters', loadChildren: () => import('./chapters/chapters.module').then(m => m.ChaptersModule) },
     { path: 'panel', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
     { path: '', component: HomeComponent },
     { path: 'about', component: AboutComponent},
-    { path: 'dashboard', loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
+    { path: 'dashboard', canActivate: [AuthGuard], loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
+    { path: 'login', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
     { path: '**', component: NotFoundComponent }
 ];
 
