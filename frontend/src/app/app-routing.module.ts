@@ -4,10 +4,11 @@ import { HomeComponent } from "./home/home.component";
 import { NotFoundComponent } from "./not-found/not-found.component";
 import { AboutComponent } from "./about/about.component";
 import { AuthGuard } from "./core/guards/auth.guard";
+import { AdminGuard } from "./core/guards/admin.guard";
 
 const routes: Routes = [
     { path: 'chapters', loadChildren: () => import('./chapters/chapters.module').then(m => m.ChaptersModule) },
-    { path: 'panel', loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
+    { path: 'admin', canActivate: [AuthGuard, AdminGuard], loadChildren: () => import('./admin/admin.module').then(m => m.AdminModule) },
     { path: '', component: HomeComponent },
     { path: 'about', component: AboutComponent},
     { path: 'dashboard', canActivate: [AuthGuard], loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },

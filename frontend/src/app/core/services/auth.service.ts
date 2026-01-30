@@ -2,8 +2,12 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
-import { BehaviorSubject } from 'rxjs';
+import jwt_decode from 'jwt-decode';
 
+export interface TokenPayload {
+    userId: number;
+    is_admin: boolean;
+}
 @Injectable({
     providedIn: 'root'
 })
@@ -31,7 +35,6 @@ export class AuthService {
     logout() {
         localStorage.removeItem('token');
         this.router.navigate(['/auth/logout']);
-
     }
 
     isLogged(): boolean {
@@ -44,5 +47,16 @@ export class AuthService {
                 localStorage.setItem('token', response.token);
             })
         );
+    }
+
+    getPayload(): TokenPayload | null {
+        const token = this.getToken();
+        if(!token) return null;
+
+        return jwt_decode<TokenPayload>(token);
+    }
+
+    isAdmin(): boolean {
+        return this.getPayload()?.is_admin ?? false;
     }
 }

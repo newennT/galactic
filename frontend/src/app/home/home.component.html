@@ -4,13 +4,24 @@
     </div>
 
     <img src="../../assets/accueil-appli-02.svg" alt="">
-    <div class="container btn-home">
+    <div *ngIf="!auth.isLogged()" class="container btn-home">
         <a mat-raised-button color="primary" id="btn-login" routerLink="/auth/login">
             Se connecter
         </a>
 
-        <a mat-raised-button routerLink="/dashboard">
+        <a mat-raised-button routerLink="/chapters">
+            Liste des chapitres
+        </a>
+
+    </div>
+
+    <div *ngIf="auth.isLogged()" class="container btn-home">
+        <a mat-raised-button color="primary" id="btn-login" routerLink="/dashboard">
             Tableau de bord
+        </a>
+
+        <a mat-raised-button routerLink="/chapters">
+            Liste des chapitres
         </a>
 
     </div>

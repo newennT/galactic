@@ -26,7 +26,9 @@ module.exports = (app) => {
 
                 // jwt
                 const token = jwt.sign(
-                    { userId: user.id_user },
+                    { userId: user.id_user,
+                        is_admin: user.is_admin
+                     },
                     privatekey,
                     { expiresIn: "24h" }
                 )

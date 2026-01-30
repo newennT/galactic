@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { confirmEqualValidator } from './validators/confirmEqual.validator';
 
 @Component({
   selector: 'app-register',
@@ -13,10 +14,20 @@ export class RegisterComponent {
   loading = false;
 
   registerForm = this.FormBuilder.group({
-    username: ['', Validators.required],
-    email: ['', Validators.required],
-    password: ['', Validators.required]
-  });
+    username: ['', [Validators.required, Validators.minLength(3)]],
+
+    email: ['', [Validators.required, Validators.email]],
+    confirmEmail: ['', Validators.required],
+
+    password: ['', [Validators.required, Validators.minLength(3)]],
+    confirmPassword: ['', Validators.required]
+  },
+{
+      validators: [
+        confirmEqualValidator('email', 'confirmEmail'),
+        confirmEqualValidator('password', 'confirmPassword')
+      ]
+    });
 
   constructor(
     private FormBuilder: FormBuilder,

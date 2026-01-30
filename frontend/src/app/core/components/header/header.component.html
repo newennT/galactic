@@ -22,6 +22,7 @@
       <a *ngIf="auth.isLogged()" mat-list-item (click)="logout()">Se déconnecter</a>
       <a mat-list-item routerLink="/about">À propos</a>
     </mat-nav-list>
+    <a mat-raised-button id="btn-header-admin" *ngIf="auth.isAdmin()" color="primary" routerLink="/admin">Espace admin</a>
   </mat-sidenav>
 
   <mat-sidenav-content>
