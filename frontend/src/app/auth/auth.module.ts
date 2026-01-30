@@ -10,12 +10,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { RegisterComponent } from './components/register/register.component';
+import { LogoutComponent } from './components/logout/logout.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
-    RegisterComponent
+    RegisterComponent,
+    LogoutComponent
   ],
   imports: [
     CommonModule,
