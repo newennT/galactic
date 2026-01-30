@@ -1,5 +1,11 @@
 @use '../../../../styles.scss' as *;
 
+#btn-register {
+    color: white;
+    --mdc-theme-on-primary: white;
+    width: 100%;  
+}
+
 form{
     display: flex;
     flex-direction: column;
@@ -13,7 +19,7 @@ form{
     
 }
 
-.login-infos{
+.register-infos{
     margin-top: 50px;
     text-align: center;
     a{
@@ -23,22 +29,4 @@ form{
             text-decoration: underline;
         }
     }
-}
-
-#btn-login{
-    color: white;
-    --mdc-theme-on-primary: white;
-    width: 100%;  
-}
-
-#btn-logout{
-    color: white;
-    --mdc-theme-on-primary: white;
-    background-color: #ff0000;
-}
-
-.is-logged{
-    text-align: center;
-    margin: 50px 0;
-    
 }

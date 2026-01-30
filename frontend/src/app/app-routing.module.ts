@@ -11,7 +11,7 @@ const routes: Routes = [
     { path: '', component: HomeComponent },
     { path: 'about', component: AboutComponent},
     { path: 'dashboard', canActivate: [AuthGuard], loadChildren: () => import('./dashboard/dashboard.module').then(m => m.DashboardModule) },
-    { path: 'login', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
+    { path: 'auth', loadChildren: () => import('./auth/auth.module').then(m => m.AuthModule) },
     { path: '**', component: NotFoundComponent }
 ];
 

@@ -1,0 +1,44 @@
+<main class="container">
+
+  <h1>Créer un compte</h1>
+
+    <div *ngIf="auth.isLogged()" class="is-logged">
+        <p>Vous êtes déjà inscrit·e</p>
+        <button (click)="logout()" mat-raised-button id="btn-logout">Se déconnecter</button>
+    </div>
+
+    <div *ngIf="!auth.isLogged()">
+        <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+
+            <mat-form-field appearance="outline">
+                <mat-label>Email</mat-label>
+                <input matInput placeholder="Email" formControlName="email">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Mot de passe</mat-label>
+                <input matInput type="password" placeholder="Mot de passe" formControlName="password">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline">
+                <mat-label>Nom d'utilisateur</mat-label>
+                <input matInput placeholder="Nom d'utilisateur" formControlName="username">
+            </mat-form-field>
+
+            <button mat-raised-button color="primary" id="btn-register" type="submit">
+                S'inscrire
+            </button>
+
+        </form>
+
+        <p class="register-infos">
+            Vous possédez déjà un compte ?<br />
+            <a routerLink="/auth/login">Se connecter</a>
+        </p>
+
+
+    </div>
+
+  
+
+</main>

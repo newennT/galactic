@@ -35,4 +35,12 @@ export class AuthService {
     isLogged(): boolean {
         return !!this.getToken();
     }
+
+    register(credentials: any) {
+        return this.http.post<any>(`${this.apiUrl}/register`, credentials).pipe(
+            tap(response => {
+                localStorage.setItem('token', response.token);
+            })
+        );
+    }
 }

@@ -3,7 +3,7 @@
 
     <div *ngIf="auth.isLogged()" class="is-logged">
         <p>Vous êtes déjà connecté·e</p>
-        <button (click)="logout()" id="btn-logout">Se déconnecter</button>
+        <button (click)="logout()" mat-raised-button id="btn-logout">Se déconnecter</button>
     </div>
 
     <div *ngIf="!auth.isLogged()">
@@ -30,7 +30,7 @@
 
         <p class="login-infos">
             Vous ne possédez pas de compte ?<br />
-            <a routerLink="/register">Créer un compte</a>
+            <a routerLink="/auth/register">Créer un compte</a>
         </p>
 
     </div>

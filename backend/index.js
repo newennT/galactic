@@ -41,6 +41,7 @@ require("./src/routes/putInOrder")(app)
 require("./src/routes/user")(app)
 require("./src/routes/createFullChapter")(app)
 require("./src/routes/login")(app)
+require("./src/routes/register")(app)
 
 
 // Gestion des erreurs

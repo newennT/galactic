@@ -54,12 +54,13 @@ module.exports = (sequelize, DataTypes) => {
     },
     is_admin: { 
         type: DataTypes.BOOLEAN, 
-        allowNull: false,
+        allowNull: true,
         defaultValue: false
     },
     last_login: { 
         type: DataTypes.DATE, 
-        allowNull: false 
+        allowNull: false,
+        defaultValue: DataTypes.NOW
     }
   }, { 
     timestamps: true,
