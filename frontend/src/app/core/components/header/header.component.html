@@ -19,7 +19,7 @@
       <a mat-list-item routerLink="/auth/login">Se connecter</a>
       <a mat-list-item routerLink="/chapters">Chapitres</a>
       <a mat-list-item routerLink="/dashboard">Tableau de bord</a>
-      <a mat-list-item routerLink="/logout">Se déconnecter</a>
+      <a mat-list-item (click)="logout()">Se déconnecter</a>
       <a mat-list-item routerLink="/about">À propos</a>
     </mat-nav-list>
   </mat-sidenav>
