@@ -10,18 +10,7 @@ module.exports = (sequelize, DataTypes) => {
       type: DataTypes.INTEGER,
       allowNull: false,
     },
-    title: {
-      type: DataTypes.TEXT,
-      allowNull: false,
-      validate: {
-        notEmpty: {
-          msg: "Le titre est obligatoire"
-        },
-        notNull: {
-          msg: "Le titre est obligatoire"
-        }
-      }
-    },
+
     id_chapter: {
       type: DataTypes.INTEGER,
       allowNull: false

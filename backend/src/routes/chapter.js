@@ -1,11 +1,13 @@
 // routes/chapter.js
 
 const { models: { Chapter } } = require('../db/sequelize');
-const { models: { ChapterLevel } } = require('../db/sequelize');
 const { models: { Level } } = require('../db/sequelize');
 const { models: { Page } } = require('../db/sequelize');
 const { models: { Lesson } } = require('../db/sequelize');
 const { models: { Exercise } } = require('../db/sequelize');
+const { models: { UniqueResponse } } = require('../db/sequelize');
+const { models: { Pairs } } = require('../db/sequelize');
+const { models: { PutInOrder } } = require('../db/sequelize');
 const { ValidationError } = require('sequelize');
 const { UniqueConstraintError } = require('sequelize');
 const auth = require('../auth/auth');
@@ -55,7 +57,18 @@ module.exports = (app) => {
                             model: Lesson
                         },
                         {
-                            model: Exercise
+                            model: Exercise,
+                            include: [
+                                {
+                                    model: UniqueResponse
+                                },
+                                {
+                                    model: Pairs
+                                },
+                                {
+                                    model: PutInOrder
+                                }
+                            ]
                         }
                     ]
                 }

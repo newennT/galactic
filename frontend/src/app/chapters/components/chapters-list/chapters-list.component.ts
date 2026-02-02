@@ -22,7 +22,6 @@ export class ChaptersListComponent implements OnInit{
       
     );
 
-    this.route.data.subscribe(d => console.log(d));
   }
 
 }

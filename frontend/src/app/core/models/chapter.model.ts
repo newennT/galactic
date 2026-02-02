@@ -1,5 +1,6 @@
 
 import { Level } from "./level.model";
+import { Page } from "./page.model";
 
 export class Chapter {
     id_chapter!: number;
@@ -13,4 +14,5 @@ export class Chapter {
     updatedAt?: string;
 
     Levels?: Level[];
+    Pages?: Page[];
 }

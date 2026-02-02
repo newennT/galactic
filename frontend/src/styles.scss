@@ -139,7 +139,10 @@ html, body
 body { 
   margin: 0; 
   font-family: 'Stolzl', sans-serif; 
-  background-color: #d0d0d0!important;
+}
+
+mat-sidenav-container, mat-drawer-container {
+  background-color: #F5F5F5 !important;
 }
 
 a{

@@ -103,6 +103,7 @@ const initDb = async () => {
   const chapterInstances = await Promise.all(
     chapters.map(chapter =>
       models.Chapter.create({
+        id_chapter: chapter.id_chapter,
         title: chapter.title,
         title_fr: chapter.title_fr,
         abstract: chapter.abstract,

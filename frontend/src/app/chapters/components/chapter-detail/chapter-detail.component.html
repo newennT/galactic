@@ -1,1 +1,85 @@
-<p>chapter-detail works!</p>
+<main class="container">
+    <div *ngIf="chapter$ | async as chapter">
+
+        <div *ngIf="pageIndex === 0" class="page-intro">
+            <h1>{{chapter.title}}</h1>
+            <h2>{{chapter.title_fr}}</h2>
+            <p>{{chapter.abstract}}</p>
+            <button (click)="nextPage(chapter)">Commencer</button>
+        </div>
+
+        <div class="contenu-chapitre">
+            
+            <ng-container *ngIf="isContentPage(chapter)">
+            <h2>{{ chapter.title }}</h2>
+            <p>{{ chapter.title_fr}}</p>
+
+                <ng-container *ngIf="getCurrentPage(chapter) as page">
+
+                    <!-- LESSON -->
+                    <div *ngIf="page.type === 'LESSON' && page.Lesson" class="page">
+                        <h4>{{ page.Lesson.title }}</h4>
+                        <p>{{ page.Lesson.content }}</p>
+                        <button (click)="nextPage(chapter)">Suivant</button>
+                        <button (click)="prevPage()">Retour</button>
+                    </div>
+
+                        <!-- EXERCISE -->
+                    <div *ngIf="page.type === 'EXERCISE' && page.Exercise" class="page">
+
+                        <h4>{{ page.Exercise.question }}</h4>
+
+                            <!-- PAIRS -->
+                        <ul *ngIf="page.Exercise.type === 'PAIRS'">
+                            <li *ngFor="let pair of page.Exercise.Pairs">
+                            {{ pair.content }}
+                            </li>
+                        </ul>
+
+                            <!-- ORDER -->
+                        <ul *ngIf="page.Exercise.type === 'ORDER'">
+                            <li *ngFor="let order of page.Exercise.PutInOrders">
+                            {{ order.content }}
+                            </li>
+                        </ul>
+
+                            <!-- UNIQUE -->
+                        <form *ngIf="page.Exercise.type === 'UNIQUE'" (ngSubmit)="validateUnique(page)">
+                            <div *ngFor="let unique of page.Exercise.UniqueResponses">
+                                <input 
+                                    type="radio" 
+                                    [name]="'answer_' + page.id_page"
+                                    [value]="unique.id_response"
+                                    [(ngModel)]="selectedAnswers[page.id_page]" 
+                                />
+                                {{ unique.content }}
+                            </div>
+                        </form>
+
+                        <button type="submit" [disabled]="!selectedAnswers[page.id_page]">Valider</button>
+
+                        <div *ngIf="showFeedback[page.id_page]" class="feedback">
+                            {{ page.Exercise.feedback }}
+                        
+                            <button (click)="nextPage(chapter)">Suivant</button>
+                            <button (click)="prevPage()">Retour</button>
+                        </div>
+                    </div>
+
+                </ng-container>
+
+            </ng-container>
+
+               
+        </div>
+
+        <div *ngIf="isConclusion(chapter)" class="page-conclusion">
+            <h2>Bravo, chapitre terminé</h2>
+            <button routerLink="/chapters">Liste des chapitres</button>
+            <button>Chapitre suivant</button>
+        </div>
+        
+    
+    
+    </div>
+</main>
