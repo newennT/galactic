@@ -1,0 +1,23 @@
+
+<a [routerLink]="[chapter.id_chapter]">
+    <div class="chapter-card">
+        <div class="chapter-level" *ngFor="let level of chapter.Levels">
+            {{ level.title }}
+        </div>
+
+        <div class="content">
+            <div class="order">
+                Chapitre {{ chapter.order }}
+            </div>
+
+            <div class="chapter-title">
+                <h3>{{ chapter.title }}</h3>
+                <h4>{{ chapter.title_fr }}</h4>
+            </div>
+
+        </div>
+        
+
+        
+    </div>
+</a>

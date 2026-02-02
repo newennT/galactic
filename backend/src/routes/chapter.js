@@ -22,17 +22,6 @@ module.exports = (app) => {
                         attributes: []
                     }
                     
-                },
-                {
-                    model: Page,
-                    include: [
-                        {
-                            model: Lesson
-                        },
-                        {
-                            model: Exercise
-                        }
-                    ]
                 }
             ]
         })
@@ -47,8 +36,31 @@ module.exports = (app) => {
     });
 
     // Récupérer un chapitre
-    app.get("/api/chapters/:id", auth, (req, res) => {
-        Chapter.findByPk(req.params.id)
+    app.get("/api/chapters/:id", (req, res) => {
+        Chapter.findByPk(req.params.id, 
+            {
+            order: ["order"],
+            include: [
+                {
+                    model: Level,
+                    through: {
+                        attributes: []
+                    }
+                    
+                },
+                {
+                    model: Page,
+                    include: [
+                        {
+                            model: Lesson
+                        },
+                        {
+                            model: Exercise
+                        }
+                    ]
+                }
+            ]
+        })
             .then(chapter => {
                 if(chapter === null) {
                     const message = "Le chapitre demandé n'a pas été trouvé"

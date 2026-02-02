@@ -1,0 +1,7 @@
+<main class="container">
+    <h1>Chapitres</h1>
+
+    <div class="chapters-list">
+        <app-chapters-list-item *ngFor="let chapter of chapters$ | async" [chapter]="chapter"></app-chapters-list-item>
+    </div>
+</main>

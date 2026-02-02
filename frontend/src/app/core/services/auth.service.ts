@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { tap } from 'rxjs';
 import jwt_decode from 'jwt-decode';
+import { environment } from 'src/environments/environment';
 
 export interface TokenPayload {
     userId: number;
@@ -15,12 +16,12 @@ export class AuthService {
 
 
 
-    private apiUrl = 'http://localhost:3000/api';
+    // private apiUrl = 'http://localhost:3000/api';
 
     constructor(private http: HttpClient, private router: Router) { }
 
     login(credentials: any){
-        return this.http.post<any>(`${this.apiUrl}/login`, credentials).pipe(
+        return this.http.post<any>(`${environment.apiUrl}/login`, credentials).pipe(
             tap(response => {
                 localStorage.setItem('token', response.token);
 
@@ -42,7 +43,7 @@ export class AuthService {
     }
 
     register(credentials: any) {
-        return this.http.post<any>(`${this.apiUrl}/register`, credentials).pipe(
+        return this.http.post<any>(`${environment.apiUrl}/register`, credentials).pipe(
             tap(response => {
                 localStorage.setItem('token', response.token);
             })

@@ -104,6 +104,7 @@ const initDb = async () => {
     chapters.map(chapter =>
       models.Chapter.create({
         title: chapter.title,
+        title_fr: chapter.title_fr,
         abstract: chapter.abstract,
         order: chapter.order,
         isPublished: true

@@ -23,6 +23,10 @@ module.exports = (sequelize, DataTypes) => {
                 }
             }
         },
+        title_fr: {
+            type: DataTypes.STRING,
+            allowNull: true
+        },
         abstract: {
             type: DataTypes.TEXT,
             allowNull: false,
