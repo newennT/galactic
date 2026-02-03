@@ -5,6 +5,8 @@ import { Chapter } from 'src/app/core/models/chapter.model';
 import { Page } from 'src/app/core/models/page.model';
 import { UniqueResponses } from 'src/app/core/models/uniqueResponses.model';
 import { Pairs } from 'src/app/core/models/pairs.model';
+import { PutInOrders } from 'src/app/core/models/putInOrders.model';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-chapter-detail',
@@ -116,7 +118,37 @@ export class ChapterDetailComponent implements OnInit{
       this.showFeedback[page.id_page] = true;
     }
   }
-  
+
+  // ---------- Question put in order
+  orderCache: { [pageId: number]: PutInOrders[] } = {};
+
+  getOrderItems(page: Page): PutInOrders[] {
+    const pageId = page.id_page;
+    if (!this.orderCache[pageId]) {
+      this.orderCache[pageId] = [...(page.Exercise?.PutInOrders ?? [])]
+      .sort((a, b) => a.mixed_order - b.mixed_order);
+    }
+    return this.orderCache[pageId];
+  }
+
+  drop(event: CdkDragDrop<PutInOrders[]>, page: Page) {
+    const list = this.getOrderItems(page);
+    moveItemInArray(list, event.previousIndex, event.currentIndex);
+
+    this.getOrderItems(page);
+  }
+
+  validateOrder(page: Page){
+    const pageId = page.id_page;
+    this.showFeedback[pageId] = true;
+    const current = this.getOrderItems(page).map(i => i.id_response);
+    const correct = [...(page.Exercise?.PutInOrders?? [])]
+    .sort((a,b) => a.correct_order - b.correct_order)
+    .map(i => i.id_response);
+
+    this.isCorrect[pageId] = 
+    JSON.stringify(current) === JSON.stringify(correct);
+  }
 
   // Envoi des données
   chapter$:Observable<Chapter> = this.route.data.pipe(

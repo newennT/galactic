@@ -7,6 +7,7 @@ import { ChaptersListItemComponent } from './components/chapters-list-item/chapt
 import { ChapterDetailComponent } from './components/chapter-detail/chapter-detail.component';
 import { FormsModule } from '@angular/forms';
 import { CoreModule } from "src/app/core/core.module";
+import { DragDropModule } from '@angular/cdk/drag-drop';
 
 
 @NgModule({
@@ -19,7 +20,8 @@ import { CoreModule } from "src/app/core/core.module";
     CommonModule,
     ChaptersRoutingModule,
     FormsModule,
-    CoreModule
+    CoreModule,
+    DragDropModule
 ]
 })
 export class ChaptersModule { }

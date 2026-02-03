@@ -62,11 +62,53 @@
                         
 
                             <!-- ORDER -->
-                        <ul *ngIf="page.Exercise.type === 'ORDER'">
-                            <li *ngFor="let order of page.Exercise.PutInOrders">
-                            {{ order.content }}
-                            </li>
-                        </ul>
+                        <div *ngIf="page.Exercise.type === 'ORDER'">
+                            <div
+                                cdkDropList
+                                (cdkDropListDropped)="drop($event, page)"
+                                class="order-list"
+                                [cdkDropListData]="getOrderItems(page)"
+                                [cdkDropListDisabled]="showFeedback[page.id_page]"
+                            >
+
+                                <div
+                                    *ngFor="let item of getOrderItems(page)"
+                                    cdkDrag
+                                    class="order-item"
+                                >
+                                    {{ item.content }}
+                                </div>
+                                
+                                <button
+                                    *ngIf="!showFeedback[page.id_page]"
+                                    (click)="validateOrder(page)"
+                                    mat-raised-button
+                                    color="primary"
+                                    class="btn-ex-next"
+                                >
+                                    Valider
+                                </button>    
+                            </div>
+
+                            
+
+                            <div *ngIf="showFeedback[page.id_page]">
+                                <div *ngIf="!isCorrect[page.id_page]" class="feedback feedback-neg">
+                                    <h4>Réponse incorrecte</h4>
+                                    {{ page.Exercise.feedback }}
+                                </div>
+                                <div *ngIf="isCorrect[page.id_page]" class="feedback feedback-pos">
+                                    <h4>Réponse correcte</h4>
+                                </div>
+                                
+                                <div class="buttons">
+                                    <a (click)="prevPage()">Retour</a>
+                                    <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                </div>
+                                
+                            </div>
+                        </div>
+                        
 
                             <!-- UNIQUE -->
                         <div *ngIf="page.Exercise.type === 'UNIQUE'">
