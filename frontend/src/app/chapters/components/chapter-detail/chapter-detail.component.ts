@@ -7,6 +7,8 @@ import { UniqueResponses } from 'src/app/core/models/uniqueResponses.model';
 import { Pairs } from 'src/app/core/models/pairs.model';
 import { PutInOrders } from 'src/app/core/models/putInOrders.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { UserExerciseService } from '../../services/userExercise.service';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-chapter-detail',
@@ -14,6 +16,8 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
   styleUrls: ['./chapter-detail.component.scss']
 })
 export class ChapterDetailComponent implements OnInit{
+
+  constructor(private route: ActivatedRoute, private userExerciseService: UserExerciseService, private authService: AuthService) {  }
 
   pageIndex = 0;
 
@@ -70,6 +74,13 @@ export class ChapterDetailComponent implements OnInit{
     );
 
     this.isCorrect[pageId] = selectedResponse?.is_correct ?? false;
+
+    // Enregistrer le résultat seulement si utilisateur connecté 
+    if(this.authService.isLogged()){
+      this.userExerciseService
+        .saveResult(pageId, this.isCorrect[pageId])
+        .subscribe();
+    }
   }
 
   // ---------- Question key-pairs
@@ -116,6 +127,14 @@ export class ChapterDetailComponent implements OnInit{
 
     if(this.matchedIds.size === total){
       this.showFeedback[page.id_page] = true;
+      this.isCorrect[page.id_page] = true;
+
+      // Enregistrer le résultat seulement si utilisateur connecté 
+      if(this.authService.isLogged()){
+        this.userExerciseService
+          .saveResult(page.id_page, true)
+          .subscribe();
+      }
     }
   }
 
@@ -148,14 +167,22 @@ export class ChapterDetailComponent implements OnInit{
 
     this.isCorrect[pageId] = 
     JSON.stringify(current) === JSON.stringify(correct);
+
+    // Enregistrer le résultat seulement si utilisateur connecté
+    if(this.authService.isLogged()){
+      this.userExerciseService
+        .saveResult(pageId, this.isCorrect[pageId])
+        .subscribe();
+    }
   }
+
+
 
   // Envoi des données
   chapter$:Observable<Chapter> = this.route.data.pipe(
     map(data => data['chapter'])
   );
 
-  constructor(private route: ActivatedRoute) {  }
 
   ngOnInit(): void {}
 

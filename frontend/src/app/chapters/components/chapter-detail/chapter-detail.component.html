@@ -78,7 +78,7 @@
                                 >
                                     {{ item.content }}
                                 </div>
-                                
+
                                 <button
                                     *ngIf="!showFeedback[page.id_page]"
                                     (click)="validateOrder(page)"
@@ -114,13 +114,16 @@
                         <div *ngIf="page.Exercise.type === 'UNIQUE'">
                             <form (ngSubmit)="validateUnique(page)" class="unique-response">
                                 <div *ngFor="let unique of page.Exercise.UniqueResponses">
-                                    <input 
-                                        type="radio" 
-                                        [name]="'answer_' + page.id_page"
-                                        [value]="unique.id_response"
-                                        [(ngModel)]="selectedAnswers[page.id_page]" 
-                                    />
-                                    {{ unique.content }}
+                                    <div class="unique-response-item">
+                                        <input 
+                                            type="radio" 
+                                            [name]="'answer_' + page.id_page"
+                                            [value]="unique.id_response"
+                                            [(ngModel)]="selectedAnswers[page.id_page]" 
+                                        />
+                                        {{ unique.content }}
+                                    </div>
+                                    
                                 </div>
                                 <button 
                                     *ngIf="!showFeedback[page.id_page]"

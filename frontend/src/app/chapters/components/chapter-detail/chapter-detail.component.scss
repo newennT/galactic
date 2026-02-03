@@ -52,7 +52,7 @@
                 background-color: #cfe8ff;
             }
             .correct{
-                background-color: #cfe8ff;
+                background-color: #b9ffe1;
                 pointer-events: none;
             }
             .wrong{
@@ -74,6 +74,17 @@
             border-radius: 8px;
             cursor: grab;
         }
+        .unique-response{
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            .unique-response-item{
+                padding: 12px;
+                border: #e0e0e0 1px solid;
+                border-radius: 8px;
+            }
+        }
+        
         .cdk-drag-preview {
             box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
         }
