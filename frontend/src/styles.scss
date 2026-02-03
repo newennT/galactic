@@ -171,10 +171,11 @@ h1{
   margin: auto;
 }
 
-a, button{
+a, button, .mat-raised-button, mat-raised-button{
   --mdc-theme-on-primary: white!important;
 }
 
 main{
-  min-height: 90vh;
+  min-height: 80vh;
+  padding-bottom: 80px;
 }

@@ -68,6 +68,8 @@ export class ChapterDetailComponent implements OnInit{
     
   }
   
+
+  // Envoi des données
   chapter$:Observable<Chapter> = this.route.data.pipe(
     map(data => data['chapter'])
   );

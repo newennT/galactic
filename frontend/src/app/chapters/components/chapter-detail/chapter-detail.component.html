@@ -1,33 +1,37 @@
 <main class="container">
-    <div *ngIf="chapter$ | async as chapter">
+    <div *ngIf="chapter$ | async as chapter" class="chapter-detail">
 
         <div *ngIf="pageIndex === 0" class="page-intro">
             <h1>{{chapter.title}}</h1>
             <h2>{{chapter.title_fr}}</h2>
-            <p>{{chapter.abstract}}</p>
-            <button (click)="nextPage(chapter)">Commencer</button>
+            <p class="chapter-abstract">{{chapter.abstract}}</p>
+            <button mat-raised-button color="primary" (click)="nextPage(chapter)" id="btn-start">Commencer</button>
         </div>
 
         <div class="contenu-chapitre">
             
             <ng-container *ngIf="isContentPage(chapter)">
-            <h2>{{ chapter.title }}</h2>
-            <p>{{ chapter.title_fr}}</p>
+            <p class="chapter-title">{{ chapter.title }}</p>
+
 
                 <ng-container *ngIf="getCurrentPage(chapter) as page">
 
                     <!-- LESSON -->
                     <div *ngIf="page.type === 'LESSON' && page.Lesson" class="page">
-                        <h4>{{ page.Lesson.title }}</h4>
+                        <h4 class="lesson-title">{{ page.Lesson.title }}</h4>
                         <p>{{ page.Lesson.content }}</p>
-                        <button (click)="nextPage(chapter)">Suivant</button>
-                        <button (click)="prevPage()">Retour</button>
+
+                        <div class="buttons">
+                            <a (click)="prevPage()">Retour</a>
+                            <button mat-raised-button color="primary" id="btn-lesson-next" (click)="nextPage(chapter)">Suivant</button>
+                        </div>
+                        
                     </div>
 
                         <!-- EXERCISE -->
                     <div *ngIf="page.type === 'EXERCISE' && page.Exercise" class="page">
 
-                        <h4>{{ page.Exercise.question }}</h4>
+                        <h4 class="question">{{ page.Exercise.question }}</h4>
 
                             <!-- PAIRS -->
                         <ul *ngIf="page.Exercise.type === 'PAIRS'">
@@ -54,15 +58,31 @@
                                 />
                                 {{ unique.content }}
                             </div>
+                            <button 
+                                *ngIf="!showFeedback[page.id_page]"
+                                mat-raised-button color="primary" 
+                                type="submit" 
+                                [disabled]="!selectedAnswers[page.id_page]" 
+                                class="btn-validate">Valider
+                            </button>
+
                         </form>
 
-                        <button type="submit" [disabled]="!selectedAnswers[page.id_page]">Valider</button>
 
-                        <div *ngIf="showFeedback[page.id_page]" class="feedback">
-                            {{ page.Exercise.feedback }}
-                        
-                            <button (click)="nextPage(chapter)">Suivant</button>
-                            <button (click)="prevPage()">Retour</button>
+                        <div *ngIf="showFeedback[page.id_page]">
+                            <div *ngIf="!isCorrect[page.id_page]" class="feedback feedback-neg">
+                                <h4>Réponse incorrecte</h4>
+                                {{ page.Exercise.feedback }}
+                            </div>
+                            <div *ngIf="isCorrect[page.id_page]" class="feedback feedback-pos">
+                                <h4>Réponse correcte</h4>
+                            </div>
+                            
+                            <div class="buttons">
+                                <a (click)="prevPage()">Retour</a>
+                                <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                            </div>
+                            
                         </div>
                     </div>
 
@@ -75,8 +95,7 @@
 
         <div *ngIf="isConclusion(chapter)" class="page-conclusion">
             <h2>Bravo, chapitre terminé</h2>
-            <button routerLink="/chapters">Liste des chapitres</button>
-            <button>Chapitre suivant</button>
+            <button mat-raised-button color="primary" id="btn-end" routerLink="/chapters">Liste des chapitres</button>
         </div>
         
     

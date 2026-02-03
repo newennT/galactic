@@ -6,6 +6,7 @@ import { ChaptersListComponent } from './components/chapters-list/chapters-list.
 import { ChaptersListItemComponent } from './components/chapters-list-item/chapters-list-item.component';
 import { ChapterDetailComponent } from './components/chapter-detail/chapter-detail.component';
 import { FormsModule } from '@angular/forms';
+import { CoreModule } from "src/app/core/core.module";
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { FormsModule } from '@angular/forms';
   imports: [
     CommonModule,
     ChaptersRoutingModule,
-    FormsModule
-  ]
+    FormsModule,
+    CoreModule
+]
 })
 export class ChaptersModule { }
