@@ -14,6 +14,9 @@
         flex-direction: column;
         align-items: center;
         width: 100%;
+        h1{
+            line-height: normal;
+        }
         .chapter-abstract{
             margin: 20px 0;
         }
@@ -30,6 +33,31 @@
         }
         form button{
             margin-top: 20px;
+        }
+        .pairs-list{
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+            margin: 0;
+            padding: 0;
+            li{
+                cursor: pointer;
+                padding: 10px;
+                border-radius: 8px;
+                background-color: #eee;
+                transition: 0.2s;
+                list-style-type: none;
+            }
+            .selected{
+                background-color: #cfe8ff;
+            }
+            .correct{
+                background-color: #cfe8ff;
+                pointer-events: none;
+            }
+            .wrong{
+                background-color: #f9cbcb;
+            }
         }
 
     }

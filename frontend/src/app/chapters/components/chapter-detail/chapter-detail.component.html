@@ -34,11 +34,32 @@
                         <h4 class="question">{{ page.Exercise.question }}</h4>
 
                             <!-- PAIRS -->
-                        <ul *ngIf="page.Exercise.type === 'PAIRS'">
-                            <li *ngFor="let pair of page.Exercise.Pairs">
-                            {{ pair.content }}
-                            </li>
-                        </ul>
+                        <div *ngIf="page.Exercise.type === 'PAIRS'">
+                            <ul class="pairs-list">
+                                <li 
+                                    *ngFor="let pair of getShuffledPairs(page)"
+                                    (click)="selectPairs(pair, page)"
+                                    [class.selected]="currentSelection.includes(pair)"
+                                    [class.correct]="matchedIds.has(pair.id_response)"
+                                    [class.wrong]="wrongIds.has(pair.id_response)"
+                                >
+                                    {{ pair.content }}
+                                </li>
+                            </ul>
+
+                            <div *ngIf="showFeedback[page.id_page]" >
+                                <div class="feedback feedback-pos">
+                                    Exercise réussi
+                                </div>
+                                
+                                <div class="buttons">
+                                    <a (click)="prevPage()">Retour</a>
+                                    <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                </div>
+                            </div>
+
+                        </div>
+                        
 
                             <!-- ORDER -->
                         <ul *ngIf="page.Exercise.type === 'ORDER'">
@@ -48,42 +69,47 @@
                         </ul>
 
                             <!-- UNIQUE -->
-                        <form *ngIf="page.Exercise.type === 'UNIQUE'" (ngSubmit)="validateUnique(page)">
-                            <div *ngFor="let unique of page.Exercise.UniqueResponses">
-                                <input 
-                                    type="radio" 
-                                    [name]="'answer_' + page.id_page"
-                                    [value]="unique.id_response"
-                                    [(ngModel)]="selectedAnswers[page.id_page]" 
-                                />
-                                {{ unique.content }}
-                            </div>
-                            <button 
-                                *ngIf="!showFeedback[page.id_page]"
-                                mat-raised-button color="primary" 
-                                type="submit" 
-                                [disabled]="!selectedAnswers[page.id_page]" 
-                                class="btn-validate">Valider
-                            </button>
+                        <div *ngIf="page.Exercise.type === 'UNIQUE'">
+                            <form (ngSubmit)="validateUnique(page)" class="unique-response">
+                                <div *ngFor="let unique of page.Exercise.UniqueResponses">
+                                    <input 
+                                        type="radio" 
+                                        [name]="'answer_' + page.id_page"
+                                        [value]="unique.id_response"
+                                        [(ngModel)]="selectedAnswers[page.id_page]" 
+                                    />
+                                    {{ unique.content }}
+                                </div>
+                                <button 
+                                    *ngIf="!showFeedback[page.id_page]"
+                                    mat-raised-button color="primary" 
+                                    type="submit" 
+                                    [disabled]="!selectedAnswers[page.id_page]" 
+                                    class="btn-validate">Valider
+                                </button>
+                            </form>
 
-                        </form>
+                            <div *ngIf="showFeedback[page.id_page]">
+                                <div *ngIf="!isCorrect[page.id_page]" class="feedback feedback-neg">
+                                    <h4>Réponse incorrecte</h4>
+                                    {{ page.Exercise.feedback }}
+                                </div>
+                                <div *ngIf="isCorrect[page.id_page]" class="feedback feedback-pos">
+                                    <h4>Réponse correcte</h4>
+                                </div>
+                                
+                                <div class="buttons">
+                                    <a (click)="prevPage()">Retour</a>
+                                    <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                </div>
+                                
+                            </div>
 
-
-                        <div *ngIf="showFeedback[page.id_page]">
-                            <div *ngIf="!isCorrect[page.id_page]" class="feedback feedback-neg">
-                                <h4>Réponse incorrecte</h4>
-                                {{ page.Exercise.feedback }}
-                            </div>
-                            <div *ngIf="isCorrect[page.id_page]" class="feedback feedback-pos">
-                                <h4>Réponse correcte</h4>
-                            </div>
-                            
-                            <div class="buttons">
-                                <a (click)="prevPage()">Retour</a>
-                                <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
-                            </div>
-                            
                         </div>
+                        
+
+
+                        
                     </div>
 
                 </ng-container>
