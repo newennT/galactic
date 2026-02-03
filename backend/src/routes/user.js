@@ -8,7 +8,7 @@ const { UniqueConstraintError } = require('sequelize');
 
 module.exports = (app) => {
     // Récupérer la liste des utilisateurs
-    app.get("/api/users", auth, (req, res) => {
+    app.get("/api/users", (req, res) => {
         User.findAll({
             order: ["last_login"],
             include: [
