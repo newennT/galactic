@@ -166,6 +166,12 @@
 
         <div *ngIf="isConclusion(chapter)" class="page-conclusion">
             <h2>Bravo, chapitre terminé</h2>
+
+            <div *ngIf="score !== undefined" class="score-box">
+                <p>Résultat : {{ correctExercises }} / {{ totalExercises }}</p>
+                <h3>{{ score }} % de réussite</h3>
+            </div>
+
             <button mat-raised-button color="primary" id="btn-end" routerLink="/chapters">Liste des chapitres</button>
         </div>
         

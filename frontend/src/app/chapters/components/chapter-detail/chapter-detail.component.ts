@@ -21,6 +21,11 @@ export class ChapterDetailComponent implements OnInit{
 
   pageIndex = 0;
 
+  // Afficher score
+  score?: number;
+  totalExercises?: number;
+  correctExercises?: number;
+
   // Pagination du chapter
   getVirtualLength(chapter: Chapter): number {
     const pages = chapter.Pages ?? [];
@@ -38,6 +43,16 @@ export class ChapterDetailComponent implements OnInit{
   nextPage(chapter: Chapter){
     if(this.pageIndex < this.getVirtualLength(chapter) - 1){
       this.pageIndex++;
+
+      if(this.isConclusion(chapter) && this.authService.isLogged()){
+        this.userExerciseService
+        .getChapterScore(chapter.id_chapter)
+        .subscribe(res => {
+          this.score = res.percentage;
+          this.totalExercises = res.total;
+          this.correctExercises = res.correct;
+        });
+      }
     }
   }
 
@@ -182,6 +197,8 @@ export class ChapterDetailComponent implements OnInit{
   chapter$:Observable<Chapter> = this.route.data.pipe(
     map(data => data['chapter'])
   );
+
+
 
 
   ngOnInit(): void {}

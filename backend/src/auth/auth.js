@@ -22,13 +22,9 @@ module.exports = (req, res, next) => {
         const decodedToken = jwt.verify(token, privatekey);
         console.log(decodedToken);
 
-        if(req.body.userId && req.body.userId !== decodedToken.userId) {
-            const message = "L'utilisateur n'est pas autorisé à accéder à la ressource";
-            return res.status(401).json({ message });
-        }
-
         req.auth = {
-            userId: decodedToken.userId
+            userId: decodedToken.userId,
+            is_admin: decodedToken.is_admin
         };
         console.log("AUTH KEY:", privatekey);
         next();
