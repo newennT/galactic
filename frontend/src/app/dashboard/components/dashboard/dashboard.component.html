@@ -1,44 +1,81 @@
 <main class="container">
+    <div class="dashboard">
+        <p class="hello-user">Le bonjour a tai, {{ user?.username }}</p>
 
-    <p>Bonjour, {{ user?.username }}</p>
+        <div *ngIf="chapters.length > 0" >
+            <a [routerLink]="['/chapters', [chapters[0].id_chapter]]">
+                <div class="last-chapter">
+                    <fa-icon [icon]="faPlay"></fa-icon>
+                    <h2>Reprendre au dernier chapitre</h2>
+                </div>
+            </a>
+        </div>
 
-    <div *ngIf="chapters.length > 0">
-        <h2>Dernier chapitre commencé {{ chapters[0].title }}</h2>
-        <p>{{ chapters[0].abstract }}</p>
-    </div>
+        <div *ngIf="loading">
+            <mat-progress-spinner></mat-progress-spinner>
+        </div>
 
-    <div *ngIf="loading">Chargement...</div>
+        <div *ngIf="!loading && chapters.length > 0">
+            <div *ngFor="let chapter of chapters">
+                <mat-expansion-panel>
+                    <mat-expansion-panel-header>
+                        <mat-panel-title>
+                            <div class="chapter-title">
+                                {{ chapter.title }}
+                                <!-- <fa-icon [icon]="faPlay"></fa-icon> -->
+                            </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                        <div *ngFor="let ex of chapter.exercises" class="list-exercises">
+                            <div *ngIf="ex.status === 'correct'" style="color:green">✔ Réussi</div>
+                            <div *ngIf="ex.status === 'raté'" style="color:red">✖ Raté</div>
+                            <div *ngIf="ex.status === 'non fait'" style="color:gray">⚪ Non fait</div>
+                        </div>
+                </mat-expansion-panel>
+            </div>
+        </div>
 
-    <table *ngIf="!loading && chapters.length > 0">
-    <thead>
-        <tr>
-        <th>Chapitre</th>
-        <th>Total Exos</th>
-        <th>Réussis</th>
-        <th>%</th>
-        <th>Détails exercices</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr *ngFor="let chapter of chapters">
-        <td>{{ chapter.title }}</td>
-        <td>{{ chapter.total }}</td>
-        <td>{{ chapter.correct }}</td>
-        <td>{{ chapter.percentage }}%</td>
-        <td>
-            <ul>
-                <li *ngFor="let ex of chapter.exercises">
-                    <span *ngIf="ex.status === 'correct'" style="color:green">✔ Réussi</span>
-                    <span *ngIf="ex.status === 'raté'" style="color:red">✖ Raté</span>
-                    <span *ngIf="ex.status === 'non fait'" style="color:gray">⚪ Non fait</span>
-                </li>
-            </ul>
-        </td>
-        </tr>
-    </tbody>
-    </table>
 
-    <div *ngIf="!loading && chapters.length === 0">
-    Aucun chapitre complété pour le moment.
-    </div>
+
+
+        
+
+        <!-- <table *ngIf="!loading && chapters.length > 0">
+        <thead>
+            <tr>
+            <th>Chapitre</th>
+            <th>Total Exos</th>
+            <th>Réussis</th>
+            <th>%</th>
+            <th>Détails exercices</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let chapter of chapters">
+            <td>{{ chapter.title }}</td>
+            <td>{{ chapter.total }}</td>
+            <td>{{ chapter.correct }}</td>
+            <td>{{ chapter.percentage }}%</td>
+            <td>
+                <ul>
+                    <li *ngFor="let ex of chapter.exercises">
+                        <span *ngIf="ex.status === 'correct'" style="color:green">✔ Réussi</span>
+                        <span *ngIf="ex.status === 'raté'" style="color:red">✖ Raté</span>
+                        <span *ngIf="ex.status === 'non fait'" style="color:gray">⚪ Non fait</span>
+                    </li>
+                </ul>
+            </td>
+            </tr>
+        </tbody>
+        </table> -->
+
+        <div *ngIf="!loading && chapters.length === 0">
+        Aucun chapitre complété pour le moment.
+        </div>
+
+        <p>Liste des chapitres</p>
+
+
+</div>
+    
 </main>

@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { UserChapter,UserChapterService } from '../../services/userChapter.service';
 import { User } from 'src/app/core/models/user.model';
-
+import { faPlay } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -13,6 +13,7 @@ export class DashboardComponent implements OnInit {
   chapters: UserChapter[] = [];
   loading = true;
   user?: User;
+  faPlay = faPlay;
 
   constructor(private userChapterService: UserChapterService) { }
 
