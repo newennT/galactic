@@ -13,19 +13,14 @@ const app = express();
 
 
 // Middlewares
-const corsOptions = {
-    origin: 'http://localhost:33947',
-    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}
+
 
 app
 .use(favicon(__dirname + "/favicon.ico"))
 .use(morgan("dev"))
 .use(bodyParser.json())
-.use(cors(corsOptions))
-.options('*', cors(corsOptions));
+.use(cors());
+
 
 
 

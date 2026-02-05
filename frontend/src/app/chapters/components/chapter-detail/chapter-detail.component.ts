@@ -9,6 +9,7 @@ import { PutInOrders } from 'src/app/core/models/putInOrders.model';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UserExerciseService } from '../../services/userExercise.service';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { ChaptersService } from '../../services/chapters.service';
 
 @Component({
   selector: 'app-chapter-detail',
@@ -17,8 +18,19 @@ import { AuthService } from 'src/app/core/services/auth.service';
 })
 export class ChapterDetailComponent implements OnInit{
 
-  constructor(private route: ActivatedRoute, private userExerciseService: UserExerciseService, private authService: AuthService) {  }
+  constructor(
+    private route: ActivatedRoute, 
+    private userExerciseService: UserExerciseService, 
+    private authService: AuthService,
+    private chaptersService: ChaptersService
+  ) {  }
 
+  startChapter(id_chapter: number): void{
+    if(this.authService.isLogged()){
+      this.chaptersService.startChapter(id_chapter).subscribe();
+    }
+  }
+  
   pageIndex = 0;
 
   // Afficher score

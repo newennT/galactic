@@ -1,1 +1,32 @@
-<p>dashboard works!</p>
+<main class="container">
+
+    <div *ngIf="chapters.length > 0">
+        <h2>Dernier chapitre commencé {{ chapters[0].title }}</h2>
+        <p>{{ chapters[0].abstract }}</p>
+    </div>
+
+    <div *ngIf="loading">Chargement...</div>
+
+    <table *ngIf="!loading && chapters.length > 0">
+    <thead>
+        <tr>
+        <th>Chapitre</th>
+        <th>Total Exos</th>
+        <th>Réussis</th>
+        <th>%</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr *ngFor="let chapter of chapters">
+        <td>{{ chapter.title }}</td>
+        <td>{{ chapter.total }}</td>
+        <td>{{ chapter.correct }}</td>
+        <td>{{ chapter.percentage }}%</td>
+        </tr>
+    </tbody>
+    </table>
+
+    <div *ngIf="!loading && chapters.length === 0">
+    Aucun chapitre complété pour le moment.
+    </div>
+</main>

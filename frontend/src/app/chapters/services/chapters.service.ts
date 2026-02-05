@@ -22,4 +22,11 @@ export class ChaptersService {
         .get<{ message: string; data: Chapter}>(`${environment.apiUrl}/chapters/${id}`)
         .pipe(map(res => res.data));
     }
+
+    startChapter(id_chapter: number){
+        return this.http.post(
+            `${environment.apiUrl}/user-chapters`,
+            { id_chapter }
+        )
+    }
 }

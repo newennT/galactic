@@ -5,7 +5,7 @@
             <h1>{{chapter.title}}</h1>
             <h2>{{chapter.title_fr}}</h2>
             <p class="chapter-abstract">{{chapter.abstract}}</p>
-            <button mat-raised-button color="primary" (click)="nextPage(chapter)" id="btn-start">Commencer</button>
+            <button mat-raised-button color="primary" (click)="startChapter(chapter.id_chapter); nextPage(chapter)" id="btn-start">Commencer</button>
         </div>
 
         <div class="contenu-chapitre">
@@ -152,9 +152,6 @@
 
                         </div>
                         
-
-
-                        
                     </div>
 
                 </ng-container>
@@ -173,6 +170,7 @@
             </div>
 
             <button mat-raised-button color="primary" id="btn-end" routerLink="/chapters">Liste des chapitres</button>
+            <button mat-raised-button routerLink="/dashboard">Tableau de bord</button>
         </div>
         
     

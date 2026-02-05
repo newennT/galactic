@@ -10,10 +10,6 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false,
             primaryKey: true
-        },
-        last_chapter_id: {
-            type: DataTypes.INTEGER,
-            allowNull: false
         }
     }, {
         timestamps: true
