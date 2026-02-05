@@ -14,6 +14,7 @@
         <th>Total Exos</th>
         <th>Réussis</th>
         <th>%</th>
+        <th>Détails exercices</th>
         </tr>
     </thead>
     <tbody>
@@ -22,6 +23,15 @@
         <td>{{ chapter.total }}</td>
         <td>{{ chapter.correct }}</td>
         <td>{{ chapter.percentage }}%</td>
+        <td>
+            <ul>
+                <li *ngFor="let ex of chapter.exercises">
+                    <span *ngIf="ex.status === 'correct'" style="color:green">✔ Réussi</span>
+                    <span *ngIf="ex.status === 'raté'" style="color:red">✖ Raté</span>
+                    <span *ngIf="ex.status === 'non fait'" style="color:gray">⚪ Non fait</span>
+                </li>
+            </ul>
+        </td>
         </tr>
     </tbody>
     </table>

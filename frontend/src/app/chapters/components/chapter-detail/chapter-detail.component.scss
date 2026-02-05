@@ -21,6 +21,13 @@
             margin: 20px 0;
         }
     }
+    .page-conclusion{
+        text-align: center;
+        h2{
+            font-weight: 500!important;
+            font-size: 30px;
+        }
+    }
     .contenu-chapitre{
         width: 100%;
         .chapter-title, .lesson-title, .question{
@@ -104,6 +111,11 @@
     #btn-start, .btn-ex-next, .btn-validate, #btn-lesson-next, #btn-end{
         color: white;
         --mdc-theme-on-primary: white;
+    }
+
+    #btn-end{
+        margin-top: 30px;
+        margin-bottom: 20px;
     }
     .buttons{
         display: flex;

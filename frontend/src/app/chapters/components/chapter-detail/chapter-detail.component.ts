@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { Chapter } from 'src/app/core/models/chapter.model';
@@ -10,13 +10,16 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UserExerciseService } from '../../services/userExercise.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ChaptersService } from '../../services/chapters.service';
+import { Chart, ArcElement, Tooltip, Legend, DoughnutController } from 'chart.js';
+
+Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
 
 @Component({
   selector: 'app-chapter-detail',
   templateUrl: './chapter-detail.component.html',
   styleUrls: ['./chapter-detail.component.scss']
 })
-export class ChapterDetailComponent implements OnInit{
+export class ChapterDetailComponent implements OnInit, AfterViewInit {
 
   constructor(
     private route: ActivatedRoute, 
@@ -63,6 +66,10 @@ export class ChapterDetailComponent implements OnInit{
           this.score = res.percentage;
           this.totalExercises = res.total;
           this.correctExercises = res.correct;
+
+          setTimeout(() => {
+            this.updateScoreChart();
+          })
         });
       }
     }
@@ -209,6 +216,55 @@ export class ChapterDetailComponent implements OnInit{
   chapter$:Observable<Chapter> = this.route.data.pipe(
     map(data => data['chapter'])
   );
+
+  // Graphique du score
+  @ViewChild('scoreChart') scoreChart!: ElementRef<HTMLCanvasElement>;
+  scoreChartInstance?: Chart;
+
+  ngAfterViewInit(): void {
+
+  }
+
+  updateScoreChart() {
+    if(!this.score || !this.correctExercises || !this.totalExercises) return;
+
+    const data = {
+      labels: ['Correct', 'Incorrect'],
+      datasets: [
+        {
+          data: [this.correctExercises, this.totalExercises - this.correctExercises],
+          backgroundColor: ['#4caf50', '#f44336'],
+        }
+      ]
+    }
+
+    if(this.scoreChartInstance){
+      this.scoreChartInstance.data = data;
+      this.scoreChartInstance.update();
+    } else {
+      this.scoreChartInstance = new Chart(this.scoreChart.nativeElement, {
+        type: 'doughnut',
+        data,
+        options: {
+          responsive: true,
+          plugins: {
+            legend: {
+              position: 'bottom',
+            },
+            tooltip: {
+              enabled: true
+            }
+          }
+        }
+      });
+    }
+  }
+
+  
+    
+
+  
+
 
 
 

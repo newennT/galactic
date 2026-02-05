@@ -2,6 +2,12 @@ import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
 import { environment } from "src/environments/environment";
 
+export interface UserExercise {
+    id_page: number;
+    is_correct: boolean;
+    status: string;
+}
+
 export interface UserChapter {
     id_chapter: number;
     title: string;
@@ -9,6 +15,7 @@ export interface UserChapter {
     total: number;
     correct: number;
     percentage: number | null;
+    exercises: UserExercise[];
 }
 
 export interface UserChaptersResponse {

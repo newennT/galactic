@@ -165,8 +165,12 @@
             <h2>Bravo, chapitre terminé</h2>
 
             <div *ngIf="score !== undefined" class="score-box">
-                <p>Résultat : {{ correctExercises }} / {{ totalExercises }}</p>
-                <h3>{{ score }} % de réussite</h3>
+                <p>{{ correctExercises }} exercices réussis sur {{ totalExercises }}</p>
+                <p>{{ score }} % </p>
+
+                <div style="max-width: 200px; margin: auto;">
+                    <canvas #scoreChart></canvas>
+                </div>
             </div>
 
             <button mat-raised-button color="primary" id="btn-end" routerLink="/chapters">Liste des chapitres</button>

@@ -14,7 +14,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
   declarations: [
     ChaptersListComponent,
     ChaptersListItemComponent,
-    ChapterDetailComponent
+    ChapterDetailComponent,
   ],
   imports: [
     CommonModule,
