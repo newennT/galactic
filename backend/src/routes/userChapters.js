@@ -5,7 +5,13 @@ const { models } = require("../db/sequelize");
 module.exports = (app) => {
     app.get('/api/user-chapters', auth, async (req, res) => {
         try {
-            const id_user = req.auth.userId;
+            const id_user = req.auth.id_user;
+
+            const user = await models.User.findByPk(id_user);
+
+            if (!user) {
+                return res.status(404).json({ message: "Utilisateur non trouvé" });
+            }
             
             // Récupérer les chapitres faits par un utilisateur
             const userChapters = await models.UserChapter.findAll({
@@ -75,7 +81,7 @@ module.exports = (app) => {
                 return { ...uc.Chapter, total, correct, percentage, exercises };
             }));
 
-            res.json({ chapters: chaptersWithScores });
+            res.json({ user, chapters: chaptersWithScores });
 
         } catch (err) {
             res.status(500).json({ message: err.message });
@@ -84,7 +90,7 @@ module.exports = (app) => {
 
     app.post('/api/user-chapters', auth, async (req, res) => {
         try {
-            const id_user = req.auth.userId;
+            const id_user = req.auth.id_user;
             const { id_chapter } = req.body;
 
             if (!id_chapter) {

@@ -1,5 +1,7 @@
 <main class="container">
 
+    <p>Bonjour, {{ user?.username }}</p>
+
     <div *ngIf="chapters.length > 0">
         <h2>Dernier chapitre commencé {{ chapters[0].title }}</h2>
         <p>{{ chapters[0].abstract }}</p>

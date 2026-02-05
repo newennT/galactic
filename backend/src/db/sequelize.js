@@ -198,6 +198,7 @@ const initDb = async () => {
   const userInstances = await Promise.all(
     users.map(user =>
       models.User.create({
+        id_user: user.id_user,
         username: user.username,
         email: user.email,
         password: user.password,

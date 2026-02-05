@@ -1,7 +1,7 @@
 // routes/chapter.js
 
 const auth = require('../auth/auth');
-const { models: { User } } = require('../db/sequelize');
+const { models: { User }, models } = require('../db/sequelize');
 const { models: { Chapter } } = require('../db/sequelize');
 const { ValidationError } = require('sequelize');
 const { UniqueConstraintError } = require('sequelize');
@@ -46,6 +46,22 @@ module.exports = (app) => {
                 res.status(500).json({ message, data: error })
             })
     });
+
+    // Récupérer l'utilisateur connecté 
+    // app.get("/api/users/me", auth, async (req, res) => {
+    //     try {
+    //         const user = await User.findByPk(req.auth.id_user);
+
+    //         if (!user) {
+    //         return res.status(404).json({ message: "Utilisateur introuvable" });
+    //         }
+
+    //         res.json({ user });
+
+    //     } catch (error) {
+    //         res.status(500).json({ message: error.message });
+    //     }
+    // });
 
     // Créer un utilisateur
     app.post("/api/users", (req, res) => {

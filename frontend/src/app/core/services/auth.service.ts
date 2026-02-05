@@ -6,7 +6,7 @@ import jwt_decode from 'jwt-decode';
 import { environment } from 'src/environments/environment';
 
 export interface TokenPayload {
-    userId: number;
+    id_user: number;
     is_admin: boolean;
 }
 @Injectable({

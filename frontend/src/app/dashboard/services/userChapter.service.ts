@@ -1,5 +1,6 @@
 import { HttpClient } from "@angular/common/http";
 import { Injectable } from "@angular/core";
+import { User } from "src/app/core/models/user.model";
 import { environment } from "src/environments/environment";
 
 export interface UserExercise {
@@ -20,6 +21,7 @@ export interface UserChapter {
 
 export interface UserChaptersResponse {
     chapters: UserChapter[];
+    user: User;
 }
 
 @Injectable({

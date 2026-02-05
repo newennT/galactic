@@ -5,7 +5,7 @@ const { models } = require('../db/sequelize');
 module.exports = (app) => {
   app.get('/api/user-exercises/chapter/:id', auth, async (req, res) => {
     try {
-      const id_user = req.auth.userId;
+      const id_user = req.auth.id_user;
       const id_chapter = req.params.id;
 
       const results = await models.UserExercise.findAll({
@@ -27,7 +27,7 @@ module.exports = (app) => {
 
   app.get('/api/user-exercises/chapter/:id/score', auth, async (req, res) => {
     try {
-      const id_user = req.auth.userId;
+      const id_user = req.auth.id_user;
       const id_chapter = req.params.id;
 
       // Récupérer les pages du chapitres 
@@ -70,7 +70,7 @@ module.exports = (app) => {
   app.post('/api/user-exercises', auth, async (req, res) => {
     try {
       const { id_page, is_correct } = req.body;
-      const id_user = req.auth.userId;
+      const id_user = req.auth.id_user;
 
       await models.UserExercise.upsert({
         id_page,

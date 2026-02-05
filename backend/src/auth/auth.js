@@ -23,7 +23,7 @@ module.exports = (req, res, next) => {
         console.log(decodedToken);
 
         req.auth = {
-            userId: decodedToken.userId,
+            id_user: decodedToken.id_user,
             is_admin: decodedToken.is_admin
         };
         console.log("AUTH KEY:", privatekey);
