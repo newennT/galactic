@@ -7,6 +7,7 @@ export interface UserExercise {
     id_page: number;
     is_correct: boolean;
     status: string;
+    question: string;
 }
 
 export interface UserChapter {

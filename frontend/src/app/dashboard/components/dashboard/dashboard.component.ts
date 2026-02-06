@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { UserChapter,UserChapterService } from '../../services/userChapter.service';
 import { User } from 'src/app/core/models/user.model';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
+import { faCircle } from '@fortawesome/free-solid-svg-icons';
 
 @Component({
   selector: 'app-dashboard',
@@ -14,6 +15,7 @@ export class DashboardComponent implements OnInit {
   loading = true;
   user?: User;
   faPlay = faPlay;
+  faCircle = faCircle;
 
   constructor(private userChapterService: UserChapterService) { }
 

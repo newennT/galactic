@@ -33,7 +33,7 @@ module.exports = (app) => {
                     },
                     include: [{
                         model: models.Exercise,
-                        attributes: ['id_page']
+                        attributes: ['id_page', 'question']
                     }],
 
                 });
@@ -69,6 +69,7 @@ module.exports = (app) => {
                     
                     return {
                         id_page: page.Exercise.id_page,
+                        question: page.Exercise.question,
                         is_correct: result ? result.is_correct : null,
                         status
                     }

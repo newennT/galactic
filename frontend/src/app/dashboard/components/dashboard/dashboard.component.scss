@@ -32,9 +32,28 @@
     .chapter-title{
         width: 80%;
         display: flex;
-        justify-content: space-between;
+        color: $color-text;
+        fa-icon{
+            width: 25px;
+        }
     }
     mat-expansion-panel{
         margin: 10px 0;
+    }
+    .list-exercises div{
+        padding: 8px 15px;
+        border-radius: 8px;
+        margin: 5px 0;
+    }
+    p {
+        text-align: center;
+        margin-top: 100px;
+        a{
+            color: $green-idg;
+            font-weight: 500;
+            &:hover{
+                text-decoration: underline;
+            }
+        } 
     }
 }

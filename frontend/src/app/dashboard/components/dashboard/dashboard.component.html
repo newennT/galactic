@@ -3,7 +3,7 @@
         <p class="hello-user">Le bonjour a tai, {{ user?.username }}</p>
 
         <div *ngIf="chapters.length > 0" >
-            <a [routerLink]="['/chapters', [chapters[0].id_chapter]]">
+            <a [routerLink]="['/chapters', chapters[0].id_chapter]">
                 <div class="last-chapter">
                     <fa-icon [icon]="faPlay"></fa-icon>
                     <h2>Reprendre au dernier chapitre</h2>
@@ -21,16 +21,20 @@
                     <mat-expansion-panel-header>
                         <mat-panel-title>
                             <div class="chapter-title">
+                                <fa-icon *ngIf="chapter.percentage !== null && chapter.percentage < 50" [icon]="faCircle" style="color: rgb(250, 156, 156)"></fa-icon>
+                                <fa-icon *ngIf="chapter.percentage !== null && chapter.percentage >= 50 && chapter.percentage < 75" [icon]="faCircle" style="color: rgb(250, 234, 156)"></fa-icon>
+                                <fa-icon *ngIf="chapter.percentage !== null && chapter.percentage >= 75" [icon]="faCircle" style="color: rgb(156, 205, 156)"></fa-icon>
                                 {{ chapter.title }}
-                                <!-- <fa-icon [icon]="faPlay"></fa-icon> -->
+                                {{ chapter.id_chapter}}
                             </div>
                         </mat-panel-title>
                     </mat-expansion-panel-header>
                         <div *ngFor="let ex of chapter.exercises" class="list-exercises">
-                            <div *ngIf="ex.status === 'correct'" style="color:green">✔ Réussi</div>
-                            <div *ngIf="ex.status === 'raté'" style="color:red">✖ Raté</div>
-                            <div *ngIf="ex.status === 'non fait'" style="color:gray">⚪ Non fait</div>
+                            <div *ngIf="ex.status === 'correct'" style="background-color:rgb(156, 205, 156);">{{ ex.question }} (réussi)</div>
+                            <div *ngIf="ex.status === 'raté'" style="background-color:rgb(250, 156, 156);">{{ ex.question }} (raté)</div>
+                            <div *ngIf="ex.status === 'non fait'" style="background-color:rgb(216, 214, 214)">{{ ex.question }} (non fait)</div>
                         </div>
+                        <a mat-raised-button [routerLink]="['/chapters', chapter.id_chapter]">Recommencer le chapitre</a>
                 </mat-expansion-panel>
             </div>
         </div>
@@ -73,7 +77,9 @@
         Aucun chapitre complété pour le moment.
         </div>
 
-        <p>Liste des chapitres</p>
+        <p>
+            <a routerLink="/chapters">Liste des chapitres</a>
+        </p>
 
 
 </div>
