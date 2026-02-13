@@ -174,7 +174,10 @@
             </div>
 
             <button mat-raised-button color="primary" id="btn-end" routerLink="/chapters">Liste des chapitres</button>
-            <button mat-raised-button routerLink="/dashboard">Tableau de bord</button>
+
+            <div *ngIf="authService.isLogged()">
+                <button mat-raised-button routerLink="/dashboard">Tableau de bord</button>
+            </div>
         </div>
         
     

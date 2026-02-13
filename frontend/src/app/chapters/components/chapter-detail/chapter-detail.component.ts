@@ -24,7 +24,7 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
   constructor(
     private route: ActivatedRoute, 
     private userExerciseService: UserExerciseService, 
-    private authService: AuthService,
+    public authService: AuthService,
     private chaptersService: ChaptersService
   ) {  }
 
