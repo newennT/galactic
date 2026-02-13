@@ -1,5 +1,5 @@
-<main class="homepage">
-    <div class="container">
+<main class="homepage container">
+    <div>
         <h1>Apprendre le gallo</h1>
     </div>
 
@@ -8,7 +8,7 @@
             <img src="../../assets/accueil-appli-02.svg" alt="">
         </div>
         <div class="btns">
-            <div *ngIf="!auth.isLogged()" class="container btn-home">
+            <div *ngIf="!auth.isLogged()" class="btn-home">
                 <a mat-raised-button color="primary" id="btn-login" routerLink="/auth/login">
                     Se connecter
                 </a>
@@ -18,7 +18,7 @@
                 </a>
             </div>
 
-            <div *ngIf="auth.isLogged()" class="container btn-home">
+            <div *ngIf="auth.isLogged()" class="btn-home">
                 <a mat-raised-button color="primary" id="btn-login" routerLink="/dashboard">
                     Tableau de bord
                 </a>
@@ -36,6 +36,3 @@
     
 
 </main>
-
-
-<router-outlet></router-outlet>

@@ -1,0 +1,44 @@
+@use '../../../../styles.scss' as *;
+
+.sidenav-container {
+  height: 100vh;
+}
+
+.spacer {
+  flex: 1 1 auto;
+}
+
+.desktop-menu{
+  a{
+    font-size: 16px;
+    font-weight: 400;
+    color: #ffffff;
+    margin-left: 20px;
+    cursor: pointer;
+    &:hover{
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Desktop : cacher hamburger */
+.mobile-only {
+  display: none;
+}
+
+/* Mobile : cacher menu horizontal */
+.desktop-menu {
+  display: flex;
+  gap: 1rem;
+}
+
+@media (max-width: 768px) {
+
+  .mobile-only {
+    display: inline-flex;
+  }
+
+  .desktop-menu {
+    display: none;
+  }
+}

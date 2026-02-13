@@ -7,6 +7,11 @@ import { AdminHomeComponent } from './components/admin-home/admin-home.component
 import { AdminListChaptersComponent } from './components/admin-list-chapters/admin-list-chapters.component';
 import { AdminListUsersComponent } from './components/admin-list-users/admin-list-users.component';
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
+import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatSidenavModule } from '@angular/material/sidenav';
+import { MatListModule } from '@angular/material/list';
 
 
 @NgModule({
@@ -19,7 +24,12 @@ import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.compone
   ],
   imports: [
     CommonModule,
-    AdminRoutingModule
+    AdminRoutingModule,
+    MatToolbarModule,
+    MatButtonModule,
+    MatIconModule,
+    MatSidenavModule,
+    MatListModule
   ],
   exports: [
     AdminHeaderComponent

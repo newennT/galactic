@@ -1,0 +1,31 @@
+@use '../../../../styles.scss' as *;
+
+.admin-home-btns{
+    margin-top: 50px;
+    display: flex;
+    gap: 30px;
+    justify-content: space-between;
+    a{
+        flex: 1;
+        div{
+            background-color: #ffffff;
+            box-shadow: 2px 2px 5px #00000021;
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 200px;
+            border-radius: 10px;
+            color: $color-text;
+            font-weight: 500;
+            font-size: 20px;
+            &:hover{
+                cursor: pointer;
+                background-color: #ffffff85;
+                box-shadow: 0 0 0 #00000000;
+            }
+        }
+    }
+    
+
+}

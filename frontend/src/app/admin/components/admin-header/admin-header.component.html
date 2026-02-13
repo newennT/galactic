@@ -1,33 +1,51 @@
-<header>
-    <nav>
-        <ul>
-            <li>
-                <a routerLink="/admin">
-                Accueil admin</a> 
-            </li>
-            <li>
-                <a routerLink="/admin/chapters">
-                Liste des chapitres</a> 
-            </li>
-            <li>
-                <a routerLink="/admin/users">
-                Liste des utilisateurs</a>
-            </li>
-            <li>
-                <a routerLink="/" target="_blank">
-                    Voir l'application
-                </a>
-            </li>
-            <li>
-                <a (click)="logout()">Se déconnecter</a>
-            </li>
-        </ul>
-    </nav>
-</header>
+<mat-sidenav-container class="sidenav-container">
 
+  <!-- MENU LATERAL MOBILE -->
+  <mat-sidenav #drawer
+               class="sidenav"
+               mode="over"
+               [fixedInViewport]="true">
 
+    <mat-nav-list>
+      <a mat-list-item routerLink="/admin" (click)="drawer.close()">Accueil admin</a>
+      <a mat-list-item routerLink="/admin/chapters" (click)="drawer.close()">Liste des chapitres</a>
+      <a mat-list-item routerLink="/admin/users" (click)="drawer.close()">Liste des utilisateurs</a>
+      <a mat-list-item routerLink="/" target="_blank">Voir l'application</a>
+      <a mat-list-item (click)="logout()">Se déconnecter</a>
+    </mat-nav-list>
 
+  </mat-sidenav>
 
+  <!-- CONTENU -->
+  <mat-sidenav-content>
 
+    <!-- TOOLBAR -->
+    <mat-toolbar color="primary">
 
+      <!-- Bouton hamburger (mobile) -->
+      <button mat-icon-button
+              (click)="drawer.toggle()"
+              class="mobile-only">
+        <mat-icon>menu</mat-icon>
+      </button>
 
+      <span>Admin</span>
+
+      <!-- Menu horizontal desktop -->
+      <span class="spacer"></span>
+
+      <div class="desktop-menu">
+        <a routerLink="/admin">Accueil</a>
+        <a routerLink="/admin/chapters">Chapitres</a>
+        <a routerLink="/admin/users">Utilisateurs</a>
+        <a routerLink="/" target="_blank">Voir l'application</a>
+        <a (click)="logout()">Se déconnecter</a>
+      </div>
+
+    </mat-toolbar>
+
+    <router-outlet></router-outlet>
+
+  </mat-sidenav-content>
+
+</mat-sidenav-container>
