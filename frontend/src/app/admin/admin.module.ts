@@ -6,6 +6,7 @@ import { AdminHeaderComponent } from './components/admin-header/admin-header.com
 import { AdminHomeComponent } from './components/admin-home/admin-home.component';
 import { AdminListChaptersComponent } from './components/admin-list-chapters/admin-list-chapters.component';
 import { AdminListUsersComponent } from './components/admin-list-users/admin-list-users.component';
+import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { AdminListUsersComponent } from './components/admin-list-users/admin-lis
     AdminHeaderComponent,
     AdminHomeComponent,
     AdminListChaptersComponent,
-    AdminListUsersComponent
+    AdminListUsersComponent,
+    AdminLayoutComponent
   ],
   imports: [
     CommonModule,

@@ -5,9 +5,19 @@
                 <a routerLink="/admin">
                 Accueil admin</a> 
             </li>
-            <li>Liste des chapitres </li>
-            <li>Liste des utilisateurs</li>
-            <li>Voir l'application</li>
+            <li>
+                <a routerLink="/admin/chapters">
+                Liste des chapitres</a> 
+            </li>
+            <li>
+                <a routerLink="/admin/users">
+                Liste des utilisateurs</a>
+            </li>
+            <li>
+                <a routerLink="/" target="_blank">
+                    Voir l'application
+                </a>
+            </li>
             <li>
                 <a (click)="logout()">Se déconnecter</a>
             </li>
