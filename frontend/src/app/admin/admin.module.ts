@@ -13,6 +13,8 @@ import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
 import { AdminListChaptersItemComponent } from './components/admin-list-chapters-item/admin-list-chapters-item.component';
+import { AdminChapterEditComponent } from './components/admin-chapter-edit/admin-chapter-edit.component';
+import { AdminChapterViewComponent } from './components/admin-chapter-view/admin-chapter-view.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { AdminListChaptersItemComponent } from './components/admin-list-chapters
     AdminListChaptersComponent,
     AdminListUsersComponent,
     AdminLayoutComponent,
-    AdminListChaptersItemComponent
+    AdminListChaptersItemComponent,
+    AdminChapterEditComponent,
+    AdminChapterViewComponent
   ],
   imports: [
     CommonModule,

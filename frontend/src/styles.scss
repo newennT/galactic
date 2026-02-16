@@ -170,11 +170,10 @@ h1{
 
 .btn{
   padding: 5px 13px;
-  border: 2px solid #ffffff00;
-  border-radius: 50px;
+  border-radius: 8px;
   font-weight: 500;
   &:hover{
-    background-color: #ffffff00;
+    box-shadow: 2px 2px 8px #aeaeae;
   }
 }
 
@@ -188,15 +187,17 @@ h1{
 }
 .btn-view{
     background-color: $green-idg;
-    border-color: $green-idg;
     color: #ffffff;
     &:hover{
-        color: $green-idg;
+      background-color: #6ed2ca;
     }
 }
 .btn-modify{
     background-color: #d4d4d4;
-    border-color: #d4d4d4;
+    color: $color-text;
+    &:hover{
+      background-color: #d8d8d8;
+    }
 }
 
 

@@ -5,6 +5,8 @@ import { AdminListChaptersComponent } from './components/admin-list-chapters/adm
 import { AdminListUsersComponent } from './components/admin-list-users/admin-list-users.component';
 import { AdminLayoutComponent } from './layout/admin-layout/admin-layout.component';
 import { adminChaptersResolver } from './resolvers/admin-chapters.resolver';
+import { AdminChapterViewComponent } from './components/admin-chapter-view/admin-chapter-view.component';
+import { AdminChapterEditComponent } from './components/admin-chapter-edit/admin-chapter-edit.component';
 
 const routes: Routes = [
   {
@@ -13,6 +15,8 @@ const routes: Routes = [
     children: [
       { path: '', component: AdminHomeComponent },
       { path: 'chapters', component: AdminListChaptersComponent, resolve: { adminChapters: adminChaptersResolver }},
+      { path: 'chapters/:id', component: AdminChapterViewComponent },
+      { path: 'chapters/:id/edit', component: AdminChapterEditComponent },
       { path: 'users', component: AdminListUsersComponent }
     ]
   }
