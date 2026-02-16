@@ -1,0 +1,18 @@
+<div class="admin-chapter-card">
+    <div class="admin-chapter-level" *ngFor="let level of adminChapter.Levels">
+        {{ level.title }}
+    </div>
+    <div class="admin-chapter-title">
+        <h3>
+            <span>Chapitre {{ adminChapter.order }} :</span>
+             
+            {{ adminChapter.title }}
+        </h3>
+    </div>
+    <div class="admin-buttons">
+        <a class="btn btn-modify">Modifier</a>
+        <a class="btn btn-view">Voir</a>
+        <a class="btn-delete">Supprimer</a>
+        
+    </div>
+</div>

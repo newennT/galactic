@@ -1,0 +1,48 @@
+@use '../../../../styles.scss' as *;
+
+.admin-chapter-card{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 98%;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    color: $color-text;
+    &:hover{
+        border: 1px solid #dadada;
+    }
+    .admin-chapter-level{
+        min-width: 30px;
+        width: 50px;
+        color: #949494;
+    }
+    .admin-chapter-title{
+        width: 50%;
+        min-width: 400px;
+        span{
+            font-weight: 400;
+            font-size: 14px;
+        }
+    }
+    .admin-buttons{
+        width: 250px;
+        min-width: 50px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+    }
+}
+
+h3{
+    margin: 0;
+    padding: 0;
+}
+
+@media screen and (max-width: 768px){
+    .admin-chapter-card .admin-buttons a{
+        margin: 5px 0;
+    }
+}

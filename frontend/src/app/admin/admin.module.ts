@@ -12,6 +12,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatSidenavModule } from '@angular/material/sidenav';
 import { MatListModule } from '@angular/material/list';
+import { AdminListChaptersItemComponent } from './components/admin-list-chapters-item/admin-list-chapters-item.component';
 
 
 @NgModule({
@@ -20,7 +21,8 @@ import { MatListModule } from '@angular/material/list';
     AdminHomeComponent,
     AdminListChaptersComponent,
     AdminListUsersComponent,
-    AdminLayoutComponent
+    AdminLayoutComponent,
+    AdminListChaptersItemComponent
   ],
   imports: [
     CommonModule,
