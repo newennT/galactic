@@ -118,11 +118,26 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
   }
 
   // ---------- Question key-pairs
-  currentSelection: Pairs[] = [];
-  matchedIds = new Set<number>();
-  wrongIds = new Set<number>();
-
   pairsCache: { [pageId: number]: Pairs[] } = {};
+
+  pairsState: {
+    [pageId: number]: {
+      currentSelection: Pairs[],
+      matchedIds: Set<number>,
+      wrongIds: Set<number>
+    }
+  } = {};
+
+  getPairsState(pageId: number) {
+    if (!this.pairsState[pageId]) {
+      this.pairsState[pageId] = {
+        currentSelection: [],
+        matchedIds: new Set(),
+        wrongIds: new Set()
+      };
+    }
+    return this.pairsState[pageId];
+  }
 
   getShuffledPairs(page: Page): Pairs[] {
     const pageId = page.id_page;
@@ -132,41 +147,48 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
     return this.pairsCache[pageId];
   }
 
-  selectPairs(item: Pairs, page: Page){
-    if(this.matchedIds.has(item.id_response)) return;
+  selectPairs(item: Pairs, page: Page) {
+    const pageId = page.id_page;
+    const state = this.getPairsState(pageId);
 
-    this.currentSelection.push(item);
-    if(this.currentSelection.length < 2) return;
-    const [a, b] = this.currentSelection;
+    if (state.matchedIds.has(item.id_response)) return;
 
-    if(a.pair_key === b.pair_key){
-      this.matchedIds.add(a.id_response);
-      this.matchedIds.add(b.id_response);
+    state.currentSelection.push(item);
+
+    if (state.currentSelection.length < 2) return;
+
+    const [a, b] = state.currentSelection;
+
+    if (a.pair_key === b.pair_key) {
+      state.matchedIds.add(a.id_response);
+      state.matchedIds.add(b.id_response);
       this.checkPairsCompleted(page);
     } else {
-      this.wrongIds.add(a.id_response);
-      this.wrongIds.add(b.id_response);
+      state.wrongIds.add(a.id_response);
+      state.wrongIds.add(b.id_response);
 
       setTimeout(() => {
-        this.wrongIds.delete(a.id_response);
-        this.wrongIds.delete(b.id_response);
+        state.wrongIds.delete(a.id_response);
+        state.wrongIds.delete(b.id_response);
       }, 800);
     }
 
-    this.currentSelection = [];
+    state.currentSelection = [];
   }
 
-  checkPairsCompleted(page: Page){
+  checkPairsCompleted(page: Page) {
+    const pageId = page.id_page;
+    const state = this.getPairsState(pageId);
+
     const total = page.Exercise?.Pairs?.length ?? 0;
 
-    if(this.matchedIds.size === total){
-      this.showFeedback[page.id_page] = true;
-      this.isCorrect[page.id_page] = true;
+    if (state.matchedIds.size === total) {
+      this.showFeedback[pageId] = true;
+      this.isCorrect[pageId] = true;
 
-      // Enregistrer le résultat seulement si utilisateur connecté 
-      if(this.authService.isLogged()){
+      if (this.authService.isLogged()) {
         this.userExerciseService
-          .saveResult(page.id_page, true)
+          .saveResult(pageId, true)
           .subscribe();
       }
     }

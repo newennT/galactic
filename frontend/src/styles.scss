@@ -190,13 +190,15 @@ h1{
     color: #ffffff;
     &:hover{
       background-color: #6ed2ca;
+      transition: 200ms ease-in-out;
     }
 }
 .btn-modify{
     background-color: #d4d4d4;
     color: $color-text;
     &:hover{
-      background-color: #d8d8d8;
+      background-color: #e4e4e4;
+      transition: 200ms ease-in-out;
     }
 }
 

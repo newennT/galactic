@@ -1,1 +1,180 @@
-<p>admin-chapter-view works!</p>
+<main class="container">
+    <div *ngIf="adminChapter$ | async as chapter" class="chapter-detail">
+
+
+        <p class="preview-title">Prévisualisation de {{chapter.title}}</p>
+        
+
+        <div class="chapter-preview">
+
+            <div *ngIf="pageIndex === 0" class="page-intro">
+                <h1>{{chapter.title}}</h1>
+                <h2>{{chapter.title_fr}}</h2>
+                <p class="chapter-abstract">{{chapter.abstract}}</p>
+                <button mat-raised-button color="primary" (click)="nextPage(chapter)" id="btn-start">Commencer</button>
+            </div>
+
+            <div class="contenu-chapitre">
+                
+                <ng-container *ngIf="isContentPage(chapter)">
+                <p class="chapter-title">{{ chapter.title }}</p>
+
+
+                    <ng-container *ngIf="getCurrentPage(chapter) as page">
+
+                        <!-- LESSON -->
+                        <div *ngIf="page.type === 'LESSON' && page.Lesson" class="page">
+                            <h4 class="lesson-title">{{ page.Lesson.title }}</h4>
+                            <p>{{ page.Lesson.content }}</p>
+
+                            <div class="buttons">
+                                <a (click)="prevPage()">Retour</a>
+                                <button mat-raised-button color="primary" id="btn-lesson-next" (click)="nextPage(chapter)">Suivant</button>
+                            </div>
+                            
+                        </div>
+
+                            <!-- EXERCISE -->
+                        <div *ngIf="page.type === 'EXERCISE' && page.Exercise" class="page">
+
+                            <h4 class="question">{{ page.Exercise.question }}</h4>
+
+                                <!-- PAIRS -->
+                            <div *ngIf="page.Exercise.type === 'PAIRS'">
+                                <ul class="pairs-list">
+                                    <li 
+                                        *ngFor="let pair of getShuffledPairs(page)"
+                                        (click)="selectPairs(pair, page)"
+                                        [class.selected]="getPairsState(page.id_page).currentSelection.includes(pair)"
+                                        [class.correct]="getPairsState(page.id_page).matchedIds.has(pair.id_response)"
+                                        [class.wrong]="getPairsState(page.id_page).wrongIds.has(pair.id_response)"
+                                    >
+                                        {{ pair.content }}
+                                    </li>
+                                </ul>
+
+                                <div *ngIf="showFeedback[page.id_page]" >
+                                    <div class="feedback feedback-pos">
+                                        Exercise réussi
+                                    </div>
+                                    
+                                    <div class="buttons">
+                                        <a (click)="prevPage()">Retour</a>
+                                        <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            
+
+                                <!-- ORDER -->
+                            <div *ngIf="page.Exercise.type === 'ORDER'">
+                                <div
+                                    cdkDropList
+                                    (cdkDropListDropped)="drop($event, page)"
+                                    class="order-list"
+                                    [cdkDropListData]="getOrderItems(page)"
+                                    [cdkDropListDisabled]="showFeedback[page.id_page]"
+                                >
+
+                                    <div
+                                        *ngFor="let item of getOrderItems(page)"
+                                        cdkDrag
+                                        class="order-item"
+                                    >
+                                        {{ item.content }}
+                                    </div>
+
+                                    <button
+                                        *ngIf="!showFeedback[page.id_page]"
+                                        (click)="validateOrder(page)"
+                                        mat-raised-button
+                                        color="primary"
+                                        class="btn-ex-next"
+                                    >
+                                        Valider
+                                    </button>    
+                                </div>
+
+                                
+
+                                <div *ngIf="showFeedback[page.id_page]">
+                                    <div *ngIf="!isCorrect[page.id_page]" class="feedback feedback-neg">
+                                        <h4>Réponse incorrecte</h4>
+                                        {{ page.Exercise.feedback }}
+                                    </div>
+                                    <div *ngIf="isCorrect[page.id_page]" class="feedback feedback-pos">
+                                        <h4>Réponse correcte</h4>
+                                    </div>
+                                    
+                                    <div class="buttons">
+                                        <a (click)="prevPage()">Retour</a>
+                                        <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                            
+
+                                <!-- UNIQUE -->
+                            <div *ngIf="page.Exercise.type === 'UNIQUE'">
+                                <form (ngSubmit)="validateUnique(page)" class="unique-response">
+                                    <div *ngFor="let unique of page.Exercise.UniqueResponses">
+                                        <div class="unique-response-item">
+                                            <input 
+                                                type="radio" 
+                                                [name]="'answer_' + page.id_page"
+                                                [value]="unique.id_response"
+                                                [(ngModel)]="selectedAnswers[page.id_page]" 
+                                            />
+                                            {{ unique.content }}
+                                        </div>
+                                        
+                                    </div>
+                                    <button 
+                                        *ngIf="!showFeedback[page.id_page]"
+                                        mat-raised-button color="primary" 
+                                        type="submit" 
+                                        [disabled]="!selectedAnswers[page.id_page]" 
+                                        class="btn-validate">Valider
+                                    </button>
+                                </form>
+
+                                <div *ngIf="showFeedback[page.id_page]">
+                                    <div *ngIf="!isCorrect[page.id_page]" class="feedback feedback-neg">
+                                        <h4>Réponse incorrecte</h4>
+                                        {{ page.Exercise.feedback }}
+                                    </div>
+                                    <div *ngIf="isCorrect[page.id_page]" class="feedback feedback-pos">
+                                        <h4>Réponse correcte</h4>
+                                    </div>
+                                    
+                                    <div class="buttons">
+                                        <a (click)="prevPage()">Retour</a>
+                                        <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                    </div>
+                                    
+                                </div>
+
+                            </div>
+                            
+                        </div>
+
+                    </ng-container>
+
+                </ng-container>
+
+                
+            </div>
+
+            <div *ngIf="isConclusion(chapter)" class="page-conclusion">
+                <h2>Bravo, chapitre terminé</h2>
+
+                <button mat-raised-button color="primary" id="btn-end" routerLink="/admin/chapters">Liste des chapitres</button>
+
+
+            </div>
+        </div>
+    
+    </div>
+</main>

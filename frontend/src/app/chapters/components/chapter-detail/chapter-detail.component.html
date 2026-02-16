@@ -39,9 +39,9 @@
                                 <li 
                                     *ngFor="let pair of getShuffledPairs(page)"
                                     (click)="selectPairs(pair, page)"
-                                    [class.selected]="currentSelection.includes(pair)"
-                                    [class.correct]="matchedIds.has(pair.id_response)"
-                                    [class.wrong]="wrongIds.has(pair.id_response)"
+                                    [class.selected]="getPairsState(page.id_page).currentSelection.includes(pair)"
+                                    [class.correct]="getPairsState(page.id_page).matchedIds.has(pair.id_response)"
+                                    [class.wrong]="getPairsState(page.id_page).wrongIds.has(pair.id_response)"
                                 >
                                     {{ pair.content }}
                                 </li>
