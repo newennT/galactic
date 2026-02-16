@@ -94,6 +94,7 @@ const initDb = async () => {
   const levelInstances = await Promise.all(
     levels.map(level =>
       models.Level.create({
+        id_level: level.id_level,
         title: level.title
       }).then(level => console.log(level.toJSON()))
     )
