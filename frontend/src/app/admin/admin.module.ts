@@ -16,7 +16,9 @@ import { AdminListChaptersItemComponent } from './components/admin-list-chapters
 import { AdminChapterEditComponent } from './components/admin-chapter-edit/admin-chapter-edit.component';
 import { AdminChapterViewComponent } from './components/admin-chapter-view/admin-chapter-view.component';
 import { DragDropModule } from '@angular/cdk/drag-drop';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -39,7 +41,10 @@ import { FormsModule } from '@angular/forms';
     MatSidenavModule,
     MatListModule,
     DragDropModule,
-    FormsModule
+    FormsModule,
+    MatFormFieldModule,
+    ReactiveFormsModule,
+    MatInputModule
   ],
   exports: [
     AdminHeaderComponent

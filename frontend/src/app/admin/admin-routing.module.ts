@@ -17,7 +17,7 @@ const routes: Routes = [
       { path: '', component: AdminHomeComponent },
       { path: 'chapters', component: AdminListChaptersComponent, resolve: { adminChapters: adminChaptersResolver }},
       { path: 'chapters/:id', component: AdminChapterViewComponent, resolve: { adminChapter: adminChapterDetailResolver }},
-      { path: 'chapters/:id/edit', component: AdminChapterEditComponent },
+      { path: 'chapters/:id/edit', component: AdminChapterEditComponent, resolve: { adminChapter: adminChapterDetailResolver }},
       { path: 'users', component: AdminListUsersComponent }
     ]
   }

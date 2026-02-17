@@ -1,1 +1,28 @@
-<p>admin-chapter-edit works!</p>
+<main class="container">
+    <h1>Modifier le chapitre</h1>
+    <div *ngIf="adminChapter$ | async as chapter" class="chapter-edit">
+        <form *ngIf="chapterForm" [formGroup]="chapterForm" (ngSubmit)="onSubmit()">
+
+            <div class="general">
+                <mat-form-field appearance="outline">
+                    <mat-label>Titre en gallo</mat-label>
+                    <input matInput type="text" formControlName="title">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Titre en français</mat-label>
+                    <input matInput type="text" formControlName="title_fr">
+                </mat-form-field>
+
+                <mat-form-field appearance="outline">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput rows="5" formControlName="abstract"></textarea>
+                </mat-form-field>
+            </div>
+
+
+
+        </form>
+        
+    </div>
+</main>
