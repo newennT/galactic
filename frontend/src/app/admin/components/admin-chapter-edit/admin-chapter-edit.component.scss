@@ -1,0 +1,47 @@
+@use '../../../../styles.scss' as *;
+
+h1{
+    margin-bottom: 50px;
+}
+
+.general{
+    background-color: #ffffff;
+    padding: 30px;
+    border-radius: 10px;
+    
+}
+
+h2{
+    color: $color-text;
+    margin-bottom: 20px;
+    font-size: 18px;
+}
+
+mat-form-field{
+    width: 100%;
+}
+
+.actions{
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 20px;
+    button, a{
+        display: inline-block;
+
+    }
+}
+
+#btn-save{
+    color: white;
+    --mdc-theme-on-primary: white;        
+}
+
+section .page{
+    background-color: rgb(255, 255, 255);
+    margin: 30px 0;
+    border: 1px solid #d6d6d6;
+    padding: 30px;
+    border-radius: 10px;
+}
