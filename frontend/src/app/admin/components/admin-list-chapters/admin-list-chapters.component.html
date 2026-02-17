@@ -1,5 +1,11 @@
 <main class="container">
     <h1>Liste des chapitres</h1>
+
+    <div class="actions">
+        <a routerLink="/admin/chapters/new" mat-raised-button color="primary">Créer un chapitre</a>
+        <a mat-raised-button>Modifier l'ordre des chapitres</a>
+    </div>
+
     <div class="admin-list-chapters">
         <app-admin-list-chapters-item *ngFor="let adminChapter of adminChapters$ | async" [adminChapter]="adminChapter"></app-admin-list-chapters-item>
     </div>

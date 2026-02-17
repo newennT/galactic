@@ -22,6 +22,7 @@ import { MatInputModule } from '@angular/material/input';
 import { MatOptionModule, MatPseudoCheckboxModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
+import { AdminChapterNewComponent } from './components/admin-chapter-new/admin-chapter-new.component';
 
 
 @NgModule({
@@ -33,7 +34,8 @@ import { MatCheckboxModule } from '@angular/material/checkbox';
     AdminLayoutComponent,
     AdminListChaptersItemComponent,
     AdminChapterEditComponent,
-    AdminChapterViewComponent
+    AdminChapterViewComponent,
+    AdminChapterNewComponent
   ],
   imports: [
     CommonModule,
