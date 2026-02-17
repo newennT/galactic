@@ -1,8 +1,8 @@
 
 <a [routerLink]="[chapter.id_chapter]">
     <div class="chapter-card">
-        <div class="chapter-level" *ngFor="let level of chapter.Levels">
-            {{ level.title }}
+        <div class="chapter-level">
+            {{ chapter.Level?.title }}
         </div>
 
         <div class="content">

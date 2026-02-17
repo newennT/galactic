@@ -9,7 +9,6 @@ const bcrypt = require("bcrypt");
 // Import des models
 const ChapterModel = require("../models/chapter");
 const LevelModel = require("../models/level");
-const ChapterLevelModel = require("../models/chapterLevel");
 const PageModel = require("../models/page");
 const LessonModel = require("../models/lesson");
 const ExerciseModel = require("../models/exercise");
@@ -25,7 +24,6 @@ const UserExerciseModel = require("../models/userExercise");
 // import des data-mock
 const chapters = require("./data-mock/chapters");
 const levels = require("./data-mock/levels");
-const chapterLevels = require("./data-mock/chapterLevels");
 const pages = require("./data-mock/pages");
 const lessons = require("./data-mock/lessons");
 const exercises = require("./data-mock/exercises");
@@ -80,7 +78,6 @@ models.PutInOrder = PutInOrderModel(sequelize, DataTypes);
 models.User = UserModel(sequelize, DataTypes);
 models.UserChapter = UserChapterModel(sequelize, DataTypes);
 models.UserExercise = UserExerciseModel(sequelize, DataTypes);
-models.ChapterLevel = ChapterLevelModel(sequelize, DataTypes);
 
 Object.keys(models).forEach(name => {
   if (models[name].associate) models[name].associate(models);
@@ -109,18 +106,9 @@ const initDb = async () => {
         title_fr: chapter.title_fr,
         abstract: chapter.abstract,
         order: chapter.order,
+        id_level: chapter.id_level,
         isPublished: true
       }).then(chapter => console.log(chapter.toJSON()))
-    )
-  );
-
-  // chapterLevels
-  const chapterLevelInstances = await Promise.all(
-    chapterLevels.map(chapterLevel =>
-      models.ChapterLevel.create({
-        id_level: chapterLevel.id_level,
-        id_chapter: chapterLevel.id_chapter
-      }).then(chapterLevel => console.log(chapterLevel.toJSON()))
     )
   );
 

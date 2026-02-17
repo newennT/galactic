@@ -20,10 +20,6 @@ module.exports = (app) => {
             include: [
                 {
                     model: Level,
-                    through: {
-                        attributes: []
-                    }
-                    
                 }
             ]
         })
@@ -45,10 +41,6 @@ module.exports = (app) => {
             include: [
                 {
                     model: Level,
-                    through: {
-                        attributes: []
-                    }
-                    
                 },
                 {
                     model: Page,

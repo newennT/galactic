@@ -28,7 +28,7 @@ module.exports = (sequelize, DataTypes) => {
     });
 
     Level.associate = models => {
-        Level.belongsToMany(models.Chapter, { through: models.ChapterLevel, foreignKey: 'id_level' });
+        Level.hasMany(models.Chapter, { foreignKey: 'id_level' });
     };
 
     return Level;

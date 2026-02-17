@@ -1,5 +1,5 @@
 
-import { Level } from "./level.model";
+import { Level } from './level.model';
 import { Page } from "./page.model";
 
 export class Chapter {
@@ -9,10 +9,11 @@ export class Chapter {
     abstract!: string;
     order!: number;
     isPublished!: boolean;
+    id_level!: number;
 
     createdAt?: string;
     updatedAt?: string;
 
-    Levels?: Level[];
     Pages?: Page[];
+    Level?: Level;
 }

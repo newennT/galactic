@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
             type: DataTypes.INTEGER,
             allowNull: false
         },
+        id_level: {
+            type: DataTypes.INTEGER,
+            allowNull: false
+        },
         isPublished: {
             type: DataTypes.BOOLEAN,
             allowNull: false,
@@ -54,7 +58,7 @@ module.exports = (sequelize, DataTypes) => {
 
     Chapter.associate = models => {
         Chapter.hasMany(models.Page, { foreignKey: 'id_chapter', onDelete: 'CASCADE' });
-        Chapter.belongsToMany(models.Level, { through: models.ChapterLevel, foreignKey: 'id_chapter' });
+        Chapter.belongsTo(models.Level, { foreignKey: 'id_level' });
         Chapter.belongsToMany(models.User, { through: models.UserChapter, foreignKey: 'id_chapter' });
   };
 

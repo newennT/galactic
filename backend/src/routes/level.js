@@ -29,9 +29,6 @@ module.exports = (app) => {
             include: [
                 {
                     model: Chapter,
-                    through: {
-                        attributes: []
-                    }
                 }
             ]
         })
@@ -52,9 +49,6 @@ module.exports = (app) => {
                 include: [
                     {
                         model: Chapter,
-                        through: {
-                            attributes: []
-                        }
                     }
                 ]
             }
