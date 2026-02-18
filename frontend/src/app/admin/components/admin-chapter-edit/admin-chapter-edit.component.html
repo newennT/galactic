@@ -90,22 +90,26 @@
 
 
                         <!-- Type UNIQUE -->
-                         <div *ngIf="page.get('exercise.type')?.value === 'UNIQUE'" class="page-exercise-responses">
-                            <div formArrayName="uniqueResponses">
+                         <div *ngIf="page.get('exercise.type')?.value === 'UNIQUE'">
+                            <div formArrayName="uniqueResponses" class="page-exercise-responses">
                                 <h4 class="header-options">Options</h4>
-                                <div *ngFor="let response of getUniqueArray(i).controls; let j = index" [formGroupName]="j">
-                                    
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Option</mat-label>
-                                        <input matInput formControlName="content" type="text" placeholder="Bonne réponse">
-                                    </mat-form-field>    
 
-                                    <mat-checkbox formControlName="is_correct">Bonne réponse</mat-checkbox>
-                                    
-                                    <button type="button" mat-icon-button (click)="removeUniqueResponse(i, j)">
-                                        <mat-icon>delete</mat-icon>
-                                    </button>
+                                <div class="content-options">
+                                    <div *ngFor="let response of getUniqueArray(i).controls; let j = index" [formGroupName]="j">
+                                        
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Option</mat-label>
+                                            <input matInput formControlName="content" type="text" placeholder="Bonne réponse">
+                                        </mat-form-field>    
+
+                                        <mat-checkbox formControlName="is_correct">Bonne réponse</mat-checkbox>
+                                        
+                                        <button type="button" mat-icon-button (click)="removeUniqueResponse(i, j)">
+                                            <mat-icon>delete</mat-icon>
+                                        </button>
+                                    </div>
                                 </div>
+                                
                             </div>
 
                             <button 
