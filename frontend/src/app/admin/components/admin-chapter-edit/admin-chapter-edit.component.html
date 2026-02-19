@@ -95,18 +95,33 @@
                                 <h4 class="header-options">Options</h4>
 
                                 <div class="content-options">
-                                    <div *ngFor="let response of getUniqueArray(i).controls; let j = index" [formGroupName]="j">
-                                        
+                                    <!-- Bonne réponse -->
+                                    <div *ngIf="getUniqueArray(i).controls.length > 0" [formGroupName]="0">
+                                        <h4>Bonne réponse</h4>
                                         <mat-form-field appearance="fill">
-                                            <mat-label>Option</mat-label>
-                                            <input matInput formControlName="content" type="text" placeholder="Bonne réponse">
-                                        </mat-form-field>    
+                                            <mat-label>Bonne réponse</mat-label>
+                                            <input matInput formControlName="content" type="text">
+                                        </mat-form-field>
+                                    </div>
 
-                                        <mat-checkbox formControlName="is_correct">Bonne réponse</mat-checkbox>
-                                        
-                                        <button type="button" mat-icon-button (click)="removeUniqueResponse(i, j)">
-                                            <mat-icon>delete</mat-icon>
-                                        </button>
+                                     <!-- Mauvaises réponses -->
+                                    <h4>Mauvaises réponses</h4>
+
+                                    <div *ngFor="let response of getUniqueArray(i).controls; let j = index">
+                                        <ng-container *ngIf="j > 0">
+                                            <div [formGroupName]="j" class="wrong-options">
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Mauvaise réponse</mat-label>
+                                                    <input matInput formControlName="content" type="text">
+                                                </mat-form-field>
+
+                                                <button type="button"
+                                                        mat-icon-button
+                                                        (click)="removeUniqueResponse(i, j)">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+                                            </div>
+                                        </ng-container>
                                     </div>
                                 </div>
                                 
@@ -116,6 +131,7 @@
                                 type="button" 
                                 mat-stroked-button 
                                 (click)="addUniqueResponse(i)">
+                                <mat-icon>add</mat-icon>
                                 Ajouter une option
                             </button>
                          </div>
@@ -148,6 +164,7 @@
                                 type="button" 
                                 mat-stroked-button 
                                 (click)="addPairs(i)">
+                                <mat-icon>add</mat-icon>
                                 Ajouter une option
                             </button>
                         </div>
@@ -189,13 +206,14 @@
                                 type="button" 
                                 mat-stroked-button 
                                 (click)="addOrderItem(i)">
+                                <mat-icon>add</mat-icon>
                                 Ajouter une option
                             </button>
                         </div>
 
-                        <mat-form-field appearance="fill">
+                        <mat-form-field appearance="fill" class="feedback-field">
                             <mat-label>Feedback</mat-label>
-                            <textarea matInput rows="10" formControlName="feedback"></textarea>
+                            <textarea matInput rows="10" formControlName="feedback" placeholder="Le texte qui sera affiché en cas de mauvaise réponse de la part de l'utilisateur. Le feedback doit contenir la bonne réponse ainsi qu'une courte explication"></textarea>
                         </mat-form-field>
                      </div>
                     </div>

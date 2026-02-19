@@ -92,3 +92,19 @@ section{
     border-radius: 10px 10px 0 0;
     padding: 5px 30px;
 }
+
+.wrong-options{
+    display: flex;
+    justify-content: space-between;
+    mat-form-field{
+        width: 90%;
+    }
+    button{
+        background-color: #ea3e3e;
+        color: #ffffff;
+    }
+}
+
+.feedback-field{
+    margin-top: 30px;
+}

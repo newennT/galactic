@@ -66,43 +66,98 @@ export class AdminChapterEditComponent implements OnInit {
 
   // Créer un exercice dans la page
   createExerciseGroup(exercise: any): FormGroup {
-    return this.formBuilder.group({
-      question: [exercise?.question],
-      type: [exercise?.type],
-      feedback: [exercise?.feedback],
+    let uniqueResponsesArray = this.formBuilder.array<FormGroup>([]);
+    if (exercise?.UniqueResponses?.length) {
 
-      uniqueResponses: this.formBuilder.array(
-        exercise?.UniqueResponses?.map((u: any) =>
+    const correct = exercise.UniqueResponses.find((u: any) => u.is_correct);
+    const wrong = exercise.UniqueResponses.filter((u: any) => !u.is_correct);
+
+    if (correct) {
+      uniqueResponsesArray.push(
+        this.formBuilder.group({
+          id_response: [correct.id_response],
+          content: [correct.content],
+          is_correct: [true],
+        })
+      );
+    } else {
+      uniqueResponsesArray.push(
+        this.formBuilder.group({
+          id_response: [0],
+          content: [''],
+          is_correct: [true],
+        })
+      );
+    }
+
+    if (wrong?.length > 0) {
+      wrong.forEach((u: any) => {
+        uniqueResponsesArray.push(
           this.formBuilder.group({
             id_response: [u.id_response],
             content: [u.content],
-            is_correct: [u.is_correct],
+            is_correct: [false],
           })
-        ) ?? []
-      ),
+        );
+      });
+    } else {
+      uniqueResponsesArray.push(
+        this.formBuilder.group({
+          id_response: [0],
+          content: [''],
+          is_correct: [false],
+        })
+      );
+    }
 
-      pairs: this.formBuilder.array(
-        exercise?.Pairs?.map((p: any) =>
-          this.formBuilder.group({
-            id_response: [p.id_response],
-            content: [p.content],
-            pair_key: [p.pair_key],
-          })
-        ) ?? []
-      ),
+  } else {
+    uniqueResponsesArray.push(
+      this.formBuilder.group({
+        id_response: [0],
+        content: [''],
+        is_correct: [true],
+      })
+    );
 
-      putInOrders: this.formBuilder.array(
-        exercise?.PutInOrders?.map((p: any) =>
-          this.formBuilder.group({
-            id_response: [p.id_response],
-            content: [p.content],
-            mixed_order: [p.mixed_order],
-            correct_order: [p.correct_order],
-          })
-        ) ?? []
-      )
-    });
+    // Une mauvaise réponse par défaut
+    uniqueResponsesArray.push(
+      this.formBuilder.group({
+        id_response: [0],
+        content: [''],
+        is_correct: [false],
+      })
+    );
   }
+
+  return this.formBuilder.group({
+    question: [exercise?.question ?? ''],
+    type: [exercise?.type ?? 'UNIQUE'],
+    feedback: [exercise?.feedback ?? ''],
+    uniqueResponses: uniqueResponsesArray,
+
+    pairs: this.formBuilder.array(
+      exercise?.Pairs?.map((p: any) =>
+        this.formBuilder.group({
+          id_response: [p.id_response],
+          content: [p.content],
+          pair_key: [p.pair_key],
+        })
+      ) ?? []
+    ),
+
+    putInOrders: this.formBuilder.array(
+      exercise?.PutInOrders?.map((p: any) =>
+        this.formBuilder.group({
+          id_response: [p.id_response],
+          content: [p.content],
+          mixed_order: [p.mixed_order],
+          correct_order: [p.correct_order],
+        })
+      ) ?? []
+    )
+  });
+}
+
 
 
   get pages(): FormArray {
@@ -137,7 +192,18 @@ addPage(){
         type: ['UNIQUE'],
         feedback: [''],
 
-        uniqueResponses: this.formBuilder.array([]),
+        uniqueResponses: this.formBuilder.array([
+          this.formBuilder.group({
+            id_response: [0],
+            content: [''],
+            is_correct: [true],
+          }),
+          this.formBuilder.group({
+            id_response: [0],
+            content: [''],
+            is_correct: [false],
+          }),
+        ]),
         pairs: this.formBuilder.array([]),
         putInOrders: this.formBuilder.array([]),
       })
@@ -160,9 +226,18 @@ addPage(){
     );
   }
 
-  removeUniqueResponse(pageIndex: number, index: number){
-    this.getUniqueArray(pageIndex).removeAt(index);
+removeUniqueResponse(pageIndex: number, index: number) {
+  const array = this.getUniqueArray(pageIndex);
+  const control = array.at(index);
+  const isCorrect = control.get('is_correct')?.value;
+  if (!isCorrect) {
+    const wrongCount = array.controls.filter(c => !c.get('is_correct')?.value).length;
+    if (wrongCount <= 1) {
+      return;
+    }
   }
+  array.removeAt(index);
+}
 
 
   // Exercice de type PAIRS
