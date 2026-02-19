@@ -72,6 +72,7 @@ export class AdminChapterEditComponent implements OnInit {
     const correct = exercise.UniqueResponses.find((u: any) => u.is_correct);
     const wrong = exercise.UniqueResponses.filter((u: any) => !u.is_correct);
 
+    // Si la réponse correcte existe déjà on la met, sinon on en crée une
     if (correct) {
       uniqueResponsesArray.push(
         this.formBuilder.group({
@@ -90,6 +91,7 @@ export class AdminChapterEditComponent implements OnInit {
       );
     }
 
+    // S'il y a des mauvaises responses on les met, sinon on en met une 
     if (wrong?.length > 0) {
       wrong.forEach((u: any) => {
         uniqueResponsesArray.push(
@@ -163,21 +165,21 @@ export class AdminChapterEditComponent implements OnInit {
 
 
 
-  get pages(): FormArray {
-    return this.chapterForm.get('pages') as FormArray;
-  }
+get pages(): FormArray {
+  return this.chapterForm.get('pages') as FormArray;
+}
 
-  getUniqueArray(pageIndex: number): FormArray {
-    return this.pages.at(pageIndex).get('exercise.uniqueResponses') as FormArray;
-  }
+getUniqueArray(pageIndex: number): FormArray {
+  return this.pages.at(pageIndex).get('exercise.uniqueResponses') as FormArray;
+}
 
-  getPairsArray(pageIndex: number): FormArray {
-    return this.pages.at(pageIndex).get('exercise.pairs') as FormArray;
-  }
+getPairsArray(pageIndex: number): FormArray {
+  return this.pages.at(pageIndex).get('exercise.pairs') as FormArray;
+}
 
-  getOrderArray(pageIndex: number): FormArray {
-    return this.pages.at(pageIndex).get('exercise.putInOrders') as FormArray;
-  }
+getOrderArray(pageIndex: number): FormArray {
+  return this.pages.at(pageIndex).get('exercise.putInOrders') as FormArray;
+}
 
 addPage(){
   this.pages.push(
@@ -229,18 +231,18 @@ addPage(){
     );
   }
 
-removeUniqueResponse(pageIndex: number, index: number) {
-  const array = this.getUniqueArray(pageIndex);
-  const control = array.at(index);
-  const isCorrect = control.get('is_correct')?.value;
-  if (!isCorrect) {
-    const wrongCount = array.controls.filter(c => !c.get('is_correct')?.value).length;
-    if (wrongCount <= 1) {
-      return;
+  removeUniqueResponse(pageIndex: number, index: number) {
+    const array = this.getUniqueArray(pageIndex);
+    const control = array.at(index);
+    const isCorrect = control.get('is_correct')?.value;
+    if (!isCorrect) {
+      const wrongCount = array.controls.filter(c => !c.get('is_correct')?.value).length;
+      if (wrongCount <= 1) {
+        return;
+      }
     }
+    array.removeAt(index);
   }
-  array.removeAt(index);
-}
 
 
   // Exercice de type PAIRS

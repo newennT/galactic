@@ -180,3 +180,13 @@
     margin-top: 80px;
 
 }
+
+.link-to-chapters{
+    display: flex;
+    justify-content: center;
+    font-weight: 500;
+    color: $green-idg;
+    &:hover{
+        text-decoration: underline;
+    }
+}
