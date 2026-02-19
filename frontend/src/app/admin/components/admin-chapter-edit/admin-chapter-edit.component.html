@@ -173,42 +173,19 @@
 
                         <!-- Type ORDER -->
                         <div *ngIf="page.get('exercise.type')?.value === 'ORDER'">
-                            <div formArrayName="putInOrders">
-                                <div 
-                                    *ngFor="let item of getOrderArray(i).controls; let j = index"
-                                    [formGroupName]="j"
-                                >
+                            <div class="page-exercise-responses">
+                                <h4 class="header-options">Texte à ordonner</h4>
+                                <div class="content-options">
                                     <mat-form-field appearance="fill">
-                                        <mat-label>Option</mat-label>
-                                        <input matInput formControlName="content" placeholder="Option" type="text">
+                                        <mat-label>Texte à ordonner (séparer chaque segment par ";")</mat-label>
+                                        <textarea 
+                                            matInput
+                                            [formControl]="getOrderTextControl(i)"
+                                            placeholder="Ex: Je vais;au marché;acheter des pommes"></textarea>
                                     </mat-form-field>
-
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Ordre correct</mat-label>
-                                        <input matInput type="number" formControlName="correct_order" placeholder="Ordre correct">
-                                    </mat-form-field>
-
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Ordre mélangé</mat-label>
-                                        <input matInput type="number" formControlName="mixed_order" placeholder="Ordre mélangé">
-                                    </mat-form-field>
-
-                                    <button type="button" mat-icon-button (click)="removeOrderItem(i, j)">
-                                        <mat-icon>delete</mat-icon>
-                                    </button>
-
                                 </div>
+                                
                             </div>
-
-                            
-
-                            <button 
-                                type="button" 
-                                mat-stroked-button 
-                                (click)="addOrderItem(i)">
-                                <mat-icon>add</mat-icon>
-                                Ajouter une option
-                            </button>
                         </div>
 
                         <mat-form-field appearance="fill" class="feedback-field">

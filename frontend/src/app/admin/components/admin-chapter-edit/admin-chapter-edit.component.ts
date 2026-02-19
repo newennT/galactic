@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { Chapter } from 'src/app/core/models/chapter.model';
@@ -129,6 +129,15 @@ export class AdminChapterEditComponent implements OnInit {
     );
   }
 
+  const isOrder = exercise?.type === 'ORDER';
+  let orderText = '';
+  if (isOrder && exercise?.PutInOrders?.length) {
+    orderText = exercise.PutInOrders
+      .sort((a: any, b: any) => a.correct_order - b.correct_order)
+      .map((p: any) => p.content)
+      .join(';');
+  }
+
   return this.formBuilder.group({
     question: [exercise?.question ?? ''],
     type: [exercise?.type ?? 'UNIQUE'],
@@ -146,15 +155,9 @@ export class AdminChapterEditComponent implements OnInit {
     ),
 
     putInOrders: this.formBuilder.array(
-      exercise?.PutInOrders?.map((p: any) =>
-        this.formBuilder.group({
-          id_response: [p.id_response],
-          content: [p.content],
-          mixed_order: [p.mixed_order],
-          correct_order: [p.correct_order],
-        })
-      ) ?? []
-    )
+      []
+    ),
+    orderText: [orderText],
   });
 }
 
@@ -256,22 +259,14 @@ removeUniqueResponse(pageIndex: number, index: number) {
 
 
   // Exercice de type PUT_IN_ORDER
-  addOrderItem(pageIndex: number){
-    const orderArray = this.getOrderArray(pageIndex);
-    orderArray.push(
-      this.formBuilder.group({
-        content: [''],
-        mixed_order: [orderArray.length + 1],
-        correct_order: [orderArray.length + 1],
-      })
-    );
+  getOrderTextControl(pageIndex: number): FormControl {
+    const control = this.pages.at(pageIndex).get('exercise.orderText');
+    if (control instanceof FormControl) {
+      return control;
+    } else {
+      return new FormControl('');
+    }
   }
-
-  removeOrderItem(pageIndex: number, index: number){
-    this.getOrderArray(pageIndex).removeAt(index);
-  }
-
-
 
 
 
@@ -279,12 +274,32 @@ removeUniqueResponse(pageIndex: number, index: number) {
 
   onSubmit(){
     if(this.chapterForm.invalid) return;
+    const formValue = this.chapterForm.value;
 
-    const updatedChapter = this.chapterForm.value;
+    formValue.pages.forEach((page: any) => {
+      if(page.type === 'EXERCISE' && page.exercise.type === 'ORDER') {
+        const segments = page.exercise.orderText
+          .split(';')
+          .map((s: string) => s.trim())
+          .filter((s: string) => s.length > 0);
 
-    console.log(updatedChapter);
+        page.exercise.putInOrders = segments.map((content: string, index: number) => ({
+          content,
+          correct_order: index + 1,
+          mixed_order: index + 1
+        }));
 
-    // Route d'update du chapter
+        for (let i = page.exercise.putInOrders.length - 1; i > 0; i--) {
+          const j = Math.floor(Math.random() * (i + 1));
+          [page.exercise.putInOrders[i].mixed_order, page.exercise.putInOrders[j].mixed_order] =
+            [page.exercise.putInOrders[j].mixed_order, page.exercise.putInOrders[i].mixed_order];
+        }
+      }
+    });
+
+    console.log(formValue);
+
+    // Envoi au back
 
     this.router.navigate(['/admin/chapters']);
   }
