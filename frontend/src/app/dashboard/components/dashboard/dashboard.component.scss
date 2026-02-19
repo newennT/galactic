@@ -61,3 +61,22 @@
         color: $color-text;
     }
 }
+
+.link-to-admin{
+    background-color: $color-text;
+    width: 100%;
+    padding: 20px 0;
+    display: flex;
+    justify-content: center;
+    div{
+        color: #ffffff;
+    }
+    &:hover{
+        cursor: pointer;
+        background-color: #525252;
+        div{
+            color: #ffffffc0;
+        }
+    }
+    
+}

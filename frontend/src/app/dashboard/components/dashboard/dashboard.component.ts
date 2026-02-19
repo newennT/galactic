@@ -3,6 +3,7 @@ import { UserChapter,UserChapterService } from '../../services/userChapter.servi
 import { User } from 'src/app/core/models/user.model';
 import { faPlay } from '@fortawesome/free-solid-svg-icons';
 import { faCircle } from '@fortawesome/free-solid-svg-icons';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -17,7 +18,7 @@ export class DashboardComponent implements OnInit {
   faPlay = faPlay;
   faCircle = faCircle;
 
-  constructor(private userChapterService: UserChapterService) { }
+  constructor(private userChapterService: UserChapterService, public authService: AuthService) { }
 
 
   ngOnInit(): void {
