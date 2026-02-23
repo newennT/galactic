@@ -11,6 +11,7 @@ const { models: { PutInOrder } } = require('../db/sequelize');
 const { ValidationError } = require('sequelize');
 const { UniqueConstraintError } = require('sequelize');
 const auth = require('../auth/auth');
+const { sequelize } = require('../db/sequelize');
 
 module.exports = (app) => {
     // Récupérer la liste des chapitres
@@ -147,5 +148,40 @@ module.exports = (app) => {
             const message = "Le chapitre n'a pas pu'être supprimé. Réessayez dans quelques instants."
             res.status(500).json({ message, data: error })
         })
+    });
+
+    // Reorder les chapitres 
+    app.patch("/api/chapters/reorder", auth, async (req, res) => {
+
+        const updates = req.body; 
+        const t = await sequelize.transaction();
+
+        try {
+
+            for (const item of updates) {
+                await Chapter.update(
+                    { order: item.order },
+                    { 
+                        where: { id_chapter: item.id_chapter },
+                        transaction: t
+                    }
+                );
+            }
+
+            await t.commit();
+
+            res.json({
+                message: "Ordre des chapitres mis à jour avec succès"
+            });
+
+        } catch (error) {
+
+            await t.rollback();
+
+            res.status(500).json({
+                message: "Erreur lors de la mise à jour de l'ordre",
+                data: error
+            });
+        }
     });
 }

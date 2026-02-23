@@ -222,5 +222,5 @@ const initDb = async () => {
 };
 
 module.exports = {
-    initDb, models
+    initDb, models, sequelize
 }

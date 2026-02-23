@@ -19,7 +19,12 @@ app
 .use(favicon(__dirname + "/favicon.ico"))
 .use(morgan("dev"))
 .use(bodyParser.json())
-.use(cors());
+.use(cors(
+  { methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
+    allowedHeaders: ['Content-Type','Authorization']
+   }
+))
+.options('*', cors());
 
 
 

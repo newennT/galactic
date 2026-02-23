@@ -52,7 +52,8 @@ import { AdminChapterNewComponent } from './components/admin-chapter-new/admin-c
     MatInputModule,
     MatOptionModule,
     MatSelectModule,
-    MatCheckboxModule
+    MatCheckboxModule,
+    DragDropModule
   ],
   exports: [
     AdminHeaderComponent

@@ -26,14 +26,15 @@
             font-size: 14px;
         }
     }
-    .admin-buttons{
-        width: 250px;
-        min-width: 50px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        flex-wrap: wrap;
-    }
+    
+}
+.admin-buttons{
+    width: 250px;
+    min-width: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
 }
 
 h3{
@@ -41,8 +42,19 @@ h3{
     padding: 0;
 }
 
+
+
 @media screen and (max-width: 768px){
     .admin-chapter-card .admin-buttons a{
         margin: 5px 0;
+    }
+}
+
+.admin-buttons-reorder{
+    display: flex;
+    gap: 10px;
+    width: 100px;
+    .btn{
+        border: none;
     }
 }

@@ -1,12 +1,25 @@
+<!-- admin-list-chapters.component.html -->
+
 <main class="container">
     <h1>Liste des chapitres</h1>
 
     <div class="actions">
         <a routerLink="/admin/chapters/new" mat-raised-button color="primary" id="btn-add-chapter">Créer un chapitre</a>
-        <a mat-raised-button id="btn-edit-order">Modifier l'ordre des chapitres</a>
+        <a mat-raised-button id="btn-edit-order" (click)="toggleReorderMode()"> {{ reorderMode ? 'Annuler' : 'Modifier l\'ordre des chapitres' }} </a>
+        <button *ngIf="reorderMode" mat-raised-button color="primary" id="btn-save-order" (click)="saveOrder()">Enregistrer></button>
     </div>
 
-    <div class="admin-list-chapters">
-        <app-admin-list-chapters-item *ngFor="let adminChapter of adminChapters$ | async" [adminChapter]="adminChapter"></app-admin-list-chapters-item>
+    <div class="admin-list-chapters" cdkDropList (cdkDropListDropped)="drop($event)" [cdkDropListData]="chapters">
+        <app-admin-list-chapters-item 
+            *ngFor="let adminChapter of chapters; let index = index" 
+            [adminChapter]="adminChapter"
+            cdkDrag
+            [adminChapter]="adminChapter"
+            [reorderMode]="reorderMode"
+            [index] = "index"
+            (moveUpEvent)="moveUp($event)"
+            (moveDownEvent)="moveDown($event)"
+            >
+        </app-admin-list-chapters-item>
     </div>
 </main>

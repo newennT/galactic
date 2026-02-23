@@ -1,3 +1,5 @@
+<!-- admin-list-chapters-item.component.html -->
+
 <div class="admin-chapter-card">
     <div class="admin-chapter-level">
         {{ adminChapter.Level?.title }}
@@ -9,10 +11,31 @@
             {{ adminChapter.title }}
         </h3>
     </div>
-    <div class="admin-buttons">
-        <a class="btn btn-modify" [routerLink]="['/admin/chapters', adminChapter.id_chapter, 'edit']">Modifier</a>
-        <a class="btn btn-view" [routerLink]="['/admin/chapters', adminChapter.id_chapter]">Voir</a>
-        <a class="btn-delete">Supprimer</a>
-        
-    </div>
+
+        <!-- Mode normal -->
+        <ng-container *ngIf="!reorderMode">
+            <div class="admin-buttons">
+                <a class="btn btn-modify"
+                [routerLink]="['/admin/chapters', adminChapter.id_chapter, 'edit']">
+                Modifier
+                </a>
+
+                <a class="btn btn-view"
+                [routerLink]="['/admin/chapters', adminChapter.id_chapter]">
+                Voir
+                </a>
+
+                <a class="btn-delete">Supprimer</a>
+            </div>
+        </ng-container>
+
+        <!-- Mode reorder -->
+        <ng-container *ngIf="reorderMode">
+            <div class="admin-buttons-reorder">
+                <button class="btn" (click)="moveUp()">↑</button>
+                <button class="btn" (click)="moveDown()">↓</button>
+            </div>
+        </ng-container>
+
+   
 </div>

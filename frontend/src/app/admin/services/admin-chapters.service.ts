@@ -22,4 +22,11 @@ export class AdminChaptersService {
         .get<{ message: string; data: Chapter}>(`${environment.apiUrl}/chapters/${id}`)
         .pipe(map(res => res.data));
     }
+
+    reorder(chapters: { id_chapter: number; order: number }[]) {
+        return this.http.patch(
+            `${environment.apiUrl}/chapters/reorder`,
+            chapters
+        );
+    }
 }
