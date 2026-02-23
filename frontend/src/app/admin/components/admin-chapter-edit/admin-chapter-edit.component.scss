@@ -78,7 +78,6 @@ section{
 
 .page-exercise-responses{
     border: #d6d6d6 1px solid;
-    
     border-radius: 10px;
     margin-bottom: 30px;
 }
@@ -112,4 +111,25 @@ section{
 h4{
     font-family: 'Stolzl-display', sans-serif!important;
     font-weight: 500;
+}
+
+.pairs-options{ 
+    margin-bottom: 20px;
+    .option{
+        display: flex;
+        justify-content: space-between;
+        background-color: #f7f7f7;
+        margin-top: 20px;
+        padding: 20px 20px 0 20px;
+        &:hover{
+            background-color: #f3f3f3;
+        }
+        mat-form-field{
+            width: 40%;
+        }
+        button{
+            background-color: #ea3e3e;
+            color: #ffffff;
+        }
+    }
 }

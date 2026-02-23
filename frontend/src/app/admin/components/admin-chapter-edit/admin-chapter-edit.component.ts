@@ -5,6 +5,7 @@ import { map, Observable } from 'rxjs';
 import { Chapter } from 'src/app/core/models/chapter.model';
 import { Level } from 'src/app/core/models/level.model';
 import { AdminLevelService } from '../../services/admin-level.service';
+import { Pairs } from 'src/app/core/models/pairs.model';
 
 @Component({
   selector: 'app-admin-chapter-edit',
@@ -147,13 +148,13 @@ export class AdminChapterEditComponent implements OnInit {
     uniqueResponses: uniqueResponsesArray,
 
     pairs: this.formBuilder.array(
-      exercise?.Pairs?.map((p: any) =>
+      this.mapPairsByKey(exercise?.Pairs ?? []).map((pair: any) => 
         this.formBuilder.group({
-          id_response: [p.id_response],
-          content: [p.content],
-          pair_key: [p.pair_key],
+          pair_key: [pair.pair_key],
+          content_left: [pair.content_left],
+          content_right: [pair.content_right],
         })
-      ) ?? []
+      )
     ),
 
     putInOrders: this.formBuilder.array(
@@ -247,27 +248,55 @@ addPage(){
 
   // Exercice de type PAIRS
   addPairs(pageIndex: number){
-    this.getPairsArray(pageIndex).push(
+    const pairsArray = this.getPairsArray(pageIndex);
+
+    pairsArray.push(
       this.formBuilder.group({
-        content: [''],
-        pair_key: [''],
+        content_left: [''],
+        content_right: [''],
+        pair_key: [this.generatePairKey()],
       })
     );
+  }
+
+  mapPairsByKey(pairs: Pairs[]): any[] {
+    const grouped: any = {};
+
+    pairs.forEach(pair => {
+      if (!grouped[pair.pair_key]) {
+        grouped[pair.pair_key] = {
+          pair_key: pair.pair_key,
+          content_left: '',
+          content_right: ''
+        };
+      }
+
+      if(!grouped[pair.pair_key].content_left) {
+        grouped[pair.pair_key].content_left = pair.content;
+      } else {
+        grouped[pair.pair_key].content_right = pair.content;
+      }
+    });
+
+    return Object.values(grouped);
+    
   }
 
   removePairs(pageIndex: number, index: number){
     this.getPairsArray(pageIndex).removeAt(index);
   }
 
+  
+
+  private generatePairKey(): string {
+    return 'pair_' + Date.now() + '_' + Math.floor(Math.random() * 10000);
+  }
+
 
   // Exercice de type PUT_IN_ORDER
   getOrderTextControl(pageIndex: number): FormControl {
-    const control = this.pages.at(pageIndex).get('exercise.orderText');
-    if (control instanceof FormControl) {
-      return control;
-    } else {
-      return new FormControl('');
-    }
+    return this.pages.at(pageIndex)
+      .get('exercise.orderText') as FormControl;
   }
 
 

@@ -123,50 +123,61 @@
                                             </div>
                                         </ng-container>
                                     </div>
+                                    <button 
+                                        type="button" 
+                                        mat-stroked-button 
+                                        (click)="addUniqueResponse(i)">
+                                        <mat-icon>add</mat-icon>
+                                        Ajouter une option
+                                    </button>
                                 </div>
-                                
                             </div>
-
-                            <button 
-                                type="button" 
-                                mat-stroked-button 
-                                (click)="addUniqueResponse(i)">
-                                <mat-icon>add</mat-icon>
-                                Ajouter une option
-                            </button>
                          </div>
 
                          <!-- Type PAIRS -->
                         <div *ngIf="page.get('exercise.type')?.value === 'PAIRS'">
-                            <div formArrayName="pairs">
-                                <div 
-                                    *ngFor="let pair of getPairsArray(i).controls; let j = index"
-                                    [formGroupName]="j"
-                                >
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Option</mat-label>
-                                        <input matInput formControlName="content" type="text" placeholder="Option" />
-                                    </mat-form-field>
-                                    <mat-form-field appearance="fill">
-                                        <mat-label>Clé</mat-label>
-                                        <input matInput formControlName="pair_key" type="text" placeholder="Clé" />
-                                    </mat-form-field>
+                            <div formArrayName="pairs" class="page-exercise-responses">
 
-                                    <button type="button" mat-icon-button (click)="removePairs(i, j)">
-                                        <mat-icon>delete</mat-icon>
+                                <h4 class="header-options">Options</h4>
+
+                                <div class="content-options">
+                                    <div 
+                                        *ngFor="let pair of getPairsArray(i).controls; let j = index"
+                                        [formGroupName]="j"
+                                        class="pairs-options"
+                                    >
+                                        <div class="option">
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>Mot gallo</mat-label>
+                                                <input matInput formControlName="content_left" type="text" placeholder="Option" />
+                                            </mat-form-field>
+
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>Mot français</mat-label>
+                                                <input matInput formControlName="content_right" type="text" placeholder="Option" />
+                                            </mat-form-field>
+
+                                            <button type="button" mat-icon-button (click)="removePairs(i, j)">
+                                                <mat-icon>delete</mat-icon>
+                                            </button>
+                                        </div>
+                                        
+
+                                        
+                                    </div>
+
+                                    <button 
+                                        type="button" 
+                                        mat-stroked-button 
+                                        (click)="addPairs(i)">
+                                        <mat-icon>add</mat-icon>
+                                        Ajouter une paire
                                     </button>
-
-
                                 </div>
+                                
                             </div>
 
-                            <button 
-                                type="button" 
-                                mat-stroked-button 
-                                (click)="addPairs(i)">
-                                <mat-icon>add</mat-icon>
-                                Ajouter une option
-                            </button>
+                            
                         </div>
 
 
@@ -189,7 +200,7 @@
 
                         <mat-form-field appearance="fill" class="feedback-field">
                             <mat-label>Feedback</mat-label>
-                            <textarea matInput rows="10" formControlName="feedback" placeholder="Le texte qui sera affiché en cas de mauvaise réponse de la part de l'utilisateur. Le feedback doit contenir la bonne réponse ainsi qu'une courte explication"></textarea>
+                            <textarea matInput rows="5" formControlName="feedback" placeholder="Le texte qui sera affiché en cas de mauvaise réponse de la part de l'utilisateur. Le feedback doit contenir la bonne réponse ainsi qu'une courte explication"></textarea>
                         </mat-form-field>
                      </div>
                     </div>
@@ -210,7 +221,7 @@
                 <button mat-raised-button color="primary" type="submit" id="btn-save">
                     Enregistrer
                 </button>
-                <a href="/admin/chapters" class="btn-delete">Annuler</a>
+                <a routerLink="/admin/chapters" class="btn-delete">Annuler</a>
             </div>
 
         </form>
