@@ -29,4 +29,12 @@ export class AdminChaptersService {
             chapters
         );
     }
+
+    updateChapter(id: number, chapter: any): Observable<Chapter> {
+        return this.http.put<{ message: String, data: Chapter }>(
+            `${environment.apiUrl}/chapters/${id}/full`,
+            chapter
+        )
+        .pipe(map(res => res.data));
+    }
 }

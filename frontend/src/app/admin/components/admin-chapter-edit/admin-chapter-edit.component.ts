@@ -6,6 +6,7 @@ import { Chapter } from 'src/app/core/models/chapter.model';
 import { Level } from 'src/app/core/models/level.model';
 import { AdminLevelService } from '../../services/admin-level.service';
 import { Pairs } from 'src/app/core/models/pairs.model';
+import { AdminChaptersService } from '../../services/admin-chapters.service';
 
 @Component({
   selector: 'app-admin-chapter-edit',
@@ -14,7 +15,13 @@ import { Pairs } from 'src/app/core/models/pairs.model';
 })
 export class AdminChapterEditComponent implements OnInit {
 
-  constructor(private route: ActivatedRoute, private formBuilder: FormBuilder, private router: Router, private adminLevelService: AdminLevelService) { }
+  constructor(
+    private route: ActivatedRoute, 
+    private formBuilder: FormBuilder, 
+    private router: Router, 
+    private adminLevelService: AdminLevelService,
+    private adminChaptersService: AdminChaptersService
+  ) { }
 
   // Récupérer le chapter
   adminChapter$: Observable<Chapter> = this.route.data.pipe(
@@ -22,9 +29,11 @@ export class AdminChapterEditComponent implements OnInit {
   )
 
   chapterForm!: FormGroup;
-  levels: Level[] = []
+  levels: Level[] = [];
+  chapterId! : number;
 
   ngOnInit(): void {
+    this.chapterId = Number(this.route.snapshot.paramMap.get('id'));
     this.adminLevelService.getLevels().subscribe(levels => {
       this.levels = levels.data;
        this.adminChapter$.subscribe(chapter => {
@@ -305,6 +314,7 @@ addPage(){
 
   onSubmit(){
     if(this.chapterForm.invalid) return;
+
     const formValue = this.chapterForm.value;
 
     formValue.pages.forEach((page: any) => {
@@ -330,9 +340,17 @@ addPage(){
 
     console.log(formValue);
 
-    // Envoi au back
+    this.adminChaptersService
+      .updateChapter(this.chapterId, formValue)
+      .subscribe({
+        next: () => {
+          this.router.navigate(['/admin/chapters']);
+        },
+        error: (err) => {
+          console.log('Erreur update chapter',err);
+        }
+      });
 
-    this.router.navigate(['/admin/chapters']);
   }
 
 }
