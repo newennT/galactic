@@ -7,6 +7,7 @@ import { Level } from 'src/app/core/models/level.model';
 import { AdminLevelService } from '../../services/admin-level.service';
 import { Pairs } from 'src/app/core/models/pairs.model';
 import { AdminChaptersService } from '../../services/admin-chapters.service';
+import { controllers } from 'chart.js';
 
 @Component({
   selector: 'app-admin-chapter-edit',
@@ -61,6 +62,7 @@ export class AdminChapterEditComponent implements OnInit {
     return this.formBuilder.group({
       id_page: [page.id_page],
       type: [page.type],
+      order_index: [page.order_index ?? 1],
       lesson: this.createLessonGroup(page.Lesson),
       exercise: this.createExerciseGroup(page.Exercise)
     });
@@ -195,6 +197,7 @@ addPage(){
   this.pages.push(
     this.formBuilder.group({
       id_page: [0],
+      order_index: [this.pages.length + 1],
       type: ['LESSON'],
 
       lesson: this.formBuilder.group({
@@ -228,6 +231,37 @@ addPage(){
 
   removePage(index: number){
     this.pages.removeAt(index);
+    this.refreshPagesOrderIndex();
+  }
+
+  // Changer l'ordre des pages 
+
+  private swapPages(index1: number, index2: number) {
+    const pagesArray = this.pages;
+
+    const control1 = pagesArray.at(index1);
+    const control2 = pagesArray.at(index2);
+
+    pagesArray.setControl(index1, control2);
+    pagesArray.setControl(index2, control1);
+
+    this.refreshPagesOrderIndex();
+  }
+
+  private refreshPagesOrderIndex() {
+    this.pages.controls.forEach((page, index) => {
+      page.get('order_index')?.setValue(index + 1, { emitEvent: false });
+    });
+  }
+
+  movePageUp(index: number) {
+    if (index <= 0) return ;
+      this.swapPages(index, index - 1);
+  }
+
+  movePageDown(index: number) {
+    if (index >= this.pages.length - 1) return ;
+    this.swapPages(index, index + 1);
   }
 
 

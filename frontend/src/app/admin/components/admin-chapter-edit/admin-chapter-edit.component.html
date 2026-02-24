@@ -48,6 +48,24 @@
                             <mat-icon>delete</mat-icon>
                         </button>
                         <h3>Page {{ i + 1 }}</h3>
+                        <div class="move-page">
+                            <button
+                                type="button"
+                                mat-icon-button
+                                (click)="movePageUp(i)"
+                                [disabled]="i === 0">
+                                <mat-icon>arrow_upward</mat-icon>
+                            </button>
+                            
+                       
+                            <button
+                                type="button"
+                                mat-icon-button
+                                (click)="movePageDown(i)"
+                                [disabled]="i === pages.length - 1">
+                                <mat-icon>arrow_downward</mat-icon>
+                            </button>
+                        </div>
                     </div>
 
                     <div class="content-page">
