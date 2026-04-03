@@ -15,74 +15,133 @@ const chapter = require('./chapter');
 module.exports = (app) => {
     app.post("/api/chapters/full", async (req, res) => {
         const t = await sequelize.transaction();
+
         try {
-            const { pages, levels, ...chapterData } = req.body;
-            const chapter = await models.Chapter.create(chapterData, { transaction: t });
+            const { pages = [], ...chapterData } = req.body;
 
-            if (levels?.length){
-                await chapter.setLevels(levels, { transaction: t });
-            }
-            
-            for (const pageData of pages) {
-                const page = await models.Page.create({
-                    title: pageData.title,
+            // Création du chapitre
+            const chapter = await Chapter.create({
+                title: chapterData.title,
+                title_fr: chapterData.title_fr,
+                abstract: chapterData.abstract,
+                isPublished: chapterData.isPublished ?? false,
+                order: chapterData.order ?? 0,
+                id_level: chapterData.id_level
+            }, {
+                transaction: t
+            });
+
+            // Création des pages
+            for (let i = 0; i < pages.length; i++) {
+                const pageData = pages[i];
+
+                const newPage = await Page.create({
                     type: pageData.type,
-                    order_index: pageData.order_index,
+                    order_index: i + 1,
                     id_chapter: chapter.id_chapter
-                }, { transaction: t });
+                }, {
+                    transaction: t
+                });
 
-            if (pageData.type === "LESSON") {
-                await models.Lesson.create({
-                    id_page: page.id_page,
-                    content: pageData.lesson.content,
-                    title: pageData.title
-                }, { transaction: t });
-            }
-
-            if (pageData.type === "EXERCISE") {
-                const exercise = await models.Exercise.create({
-                    id_page: page.id_page,
-                    question: pageData.exercise.question,
-                    feedback: pageData.exercise.feedback,
-                    type: pageData.exercise.type
-                }, { transaction: t });
-
-                if (exercise.type === "UNIQUE") {
-                    for (const r of pageData.exercise.responses) {
-                        await models.UniqueResponse.create({
-                            ...r,
-                            id_page: page.id_page
-                        }, { transaction: t });
-                    }
+                // LESSON
+                if (pageData.type === "LESSON") {
+                    await Lesson.create({
+                        id_page: newPage.id_page,
+                        title: pageData.lesson?.title || "",
+                        content: pageData.lesson?.content || ""
+                    }, {
+                        transaction: t,
+                        hooks: false
+                    });
                 }
 
-                if (exercise.type === "ORDER") {
-                    for (const r of pageData.exercise.responses) {
-                        await models.OrderResponse.create({
-                            ...r,
-                            id_page: page.id_page
-                        }, { transaction: t });
-                    }
-                }
+                // EXERCISE
+                if (pageData.type === "EXERCISE") {
+                    const ex = pageData.exercise || {};
 
-                if (exercise.type === "PAIRS") {
-                    for (const r of pageData.exercise.responses) {
-                        await models.PairsResponse.create({
-                            ...r,
-                            id_page: page.id_page
-                        }, { transaction: t });
+                    await Exercise.create({
+                        id_page: newPage.id_page,
+                        question: ex.question || "",
+                        feedback: ex.feedback || "",
+                        type: ex.type || "UNIQUE"
+                    }, {
+                        transaction: t,
+                        hooks: false
+                    });
+
+                    // UNIQUE
+                    if (ex.type === "UNIQUE") {
+                        for (const response of ex.uniqueResponses || []) {
+                            await UniqueResponse.create({
+                                content: response.content,
+                                is_correct: response.is_correct,
+                                id_page: newPage.id_page
+                            }, {
+                                transaction: t,
+                                hooks: false
+                            });
+                        }
+                    }
+
+                    // PAIRS
+                    if (ex.type === "PAIRS") {
+                        for (const pair of ex.pairs || []) {
+                            await Pairs.create({
+                                content: pair.content_left,
+                                pair_key: pair.pair_key,
+                                id_page: newPage.id_page
+                            }, {
+                                transaction: t,
+                                hooks: false
+                            });
+
+                            await Pairs.create({
+                                content: pair.content_right,
+                                pair_key: pair.pair_key,
+                                id_page: newPage.id_page
+                            }, {
+                                transaction: t,
+                                hooks: false
+                            });
+                        }
+                    }
+
+                    // ORDER
+                    if (ex.type === "ORDER") {
+                        for (const segment of ex.putInOrders || []) {
+                            await PutInOrder.create({
+                                content: segment.content,
+                                mixed_order: segment.mixed_order,
+                                correct_order: segment.correct_order,
+                                id_page: newPage.id_page
+                            }, {
+                                transaction: t,
+                                hooks: false
+                            });
+                        }
                     }
                 }
-            }
             }
 
             await t.commit();
-            res.json({ message: "Chapitre complet créé", data: chapter });
+
+            res.json({
+                message: "Chapitre complet créé",
+                data: chapter
+            });
+
         } catch (error) {
             await t.rollback();
-            res.status(500).json({ message: "Erreur création", data: error });
+            console.error(error);
+
+            res.status(500).json({
+                message: "Erreur création chapitre",
+                data: error
+            });
         }
     });
+
+
 
     app.put("/api/chapters/:id/full", auth, async (req, res) => {
 

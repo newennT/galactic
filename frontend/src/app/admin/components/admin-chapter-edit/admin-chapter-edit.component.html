@@ -24,8 +24,8 @@
 
                 <mat-form-field appearance="fill">
                     <mat-label>Niveau</mat-label>
-                    <select matNativeControl formControlName="level">
-                        <option *ngFor="let level of levels" [value]="level.title">
+                    <select matNativeControl formControlName="id_level">
+                        <option *ngFor="let level of levels" [ngValue]="level.id_level">
                             {{ level.title }}
                         </option>
                     </select>

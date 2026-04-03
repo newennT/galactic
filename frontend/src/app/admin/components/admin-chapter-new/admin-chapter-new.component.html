@@ -1,1 +1,260 @@
-<p>admin-chapter-new works!</p>
+<main class="container">
+    <h1>Créer un nouveau chapitre</h1>
+
+    <div class="chapter-edit">
+        <form *ngIf="chapterForm" [formGroup]="chapterForm" (ngSubmit)="onSubmit()">
+
+            <!-- Infos du chapitre -->
+            <div class="general">
+                <h2>Informations générales du chapitre</h2>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Titre en gallo</mat-label>
+                    <input matInput type="text" formControlName="title">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Titre en français</mat-label>
+                    <input matInput type="text" formControlName="title_fr">
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Description</mat-label>
+                    <textarea matInput rows="4" formControlName="abstract"></textarea>
+                </mat-form-field>
+
+                <mat-form-field appearance="fill">
+                    <mat-label>Niveau</mat-label>
+                    <select matNativeControl formControlName="id_level">
+                        <option *ngFor="let level of levels" [ngValue]="level.id_level">
+                            {{ level.title }}
+                        </option>
+                    </select>
+                </mat-form-field>
+            </div>
+
+            <!-- Création d'une page -->
+            <section formArrayName="pages">
+                <h2>Contenu du chapitre</h2>
+
+                <div
+                    *ngFor="let page of pages.controls; let i = index"
+                    [formGroupName]="i"
+                    class="page"
+                >
+                    <div class="header-page">
+                        <button
+                            (click)="removePage(i)"
+                            mat-icon-button
+                            type="button">
+                            <mat-icon>delete</mat-icon>
+                        </button>
+
+                        <h3>Page {{ i + 1 }}</h3>
+
+                        <div class="move-page">
+                            <button
+                                type="button"
+                                mat-icon-button
+                                (click)="movePageUp(i)"
+                                [disabled]="i === 0">
+                                <mat-icon>arrow_upward</mat-icon>
+                            </button>
+
+                            <button
+                                type="button"
+                                mat-icon-button
+                                (click)="movePageDown(i)"
+                                [disabled]="i === pages.length - 1">
+                                <mat-icon>arrow_downward</mat-icon>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="content-page">
+
+                        <mat-form-field appearance="fill">
+                            <mat-label>Type</mat-label>
+                            <mat-select formControlName="type">
+                                <mat-option value="LESSON">Leçon</mat-option>
+                                <mat-option value="EXERCISE">Exercice</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+
+                        <!-- Page leçon -->
+                        <div *ngIf="page.get('type')?.value === 'LESSON'" formGroupName="lesson">
+                            <mat-form-field appearance="fill">
+                                <mat-label>Titre</mat-label>
+                                <input matInput type="text" formControlName="title">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Contenu</mat-label>
+                                <textarea matInput rows="10" formControlName="content"></textarea>
+                            </mat-form-field>
+                        </div>
+
+                        <!-- Page Exercice -->
+                        <div *ngIf="page.get('type')?.value === 'EXERCISE'" formGroupName="exercise">
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Question</mat-label>
+                                <input matInput type="text" formControlName="question">
+                            </mat-form-field>
+
+                            <mat-form-field appearance="fill">
+                                <mat-label>Type d'exercice</mat-label>
+                                <mat-select formControlName="type">
+                                    <mat-option value="UNIQUE">Question à réponse unique</mat-option>
+                                    <mat-option value="PAIRS">Former des paires</mat-option>
+                                    <mat-option value="ORDER">Remettre une phrase dans l'ordre</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+
+                            <!-- Type UNIQUE -->
+                            <div *ngIf="page.get('exercise.type')?.value === 'UNIQUE'">
+                                <div formArrayName="uniqueResponses" class="page-exercise-responses">
+                                    <h4 class="header-options">Options</h4>
+
+                                    <div class="content-options">
+                                        <!-- Bonne réponse -->
+                                        <div *ngIf="getUniqueArray(i).controls.length > 0" [formGroupName]="0">
+                                            <h4>Bonne réponse</h4>
+                                            <mat-form-field appearance="fill">
+                                                <mat-label>Bonne réponse</mat-label>
+                                                <input matInput formControlName="content" type="text">
+                                            </mat-form-field>
+                                        </div>
+
+                                        <!-- Mauvaises réponses -->
+                                        <h4>Mauvaise(s) réponse(s)</h4>
+
+                                        <div *ngFor="let response of getUniqueArray(i).controls; let j = index">
+                                            <ng-container *ngIf="j > 0">
+                                                <div [formGroupName]="j" class="wrong-options">
+                                                    <mat-form-field appearance="fill">
+                                                        <mat-label>Mauvaise réponse</mat-label>
+                                                        <input matInput formControlName="content" type="text">
+                                                    </mat-form-field>
+
+                                                    <button
+                                                        type="button"
+                                                        mat-icon-button
+                                                        (click)="removeUniqueResponse(i, j)">
+                                                        <mat-icon>delete</mat-icon>
+                                                    </button>
+                                                </div>
+                                            </ng-container>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            mat-stroked-button
+                                            (click)="addUniqueResponse(i)">
+                                            <mat-icon>add</mat-icon>
+                                            Ajouter une option
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Type PAIRS -->
+                            <div *ngIf="page.get('exercise.type')?.value === 'PAIRS'">
+                                <div formArrayName="pairs" class="page-exercise-responses">
+                                    <h4 class="header-options">Options</h4>
+
+                                    <div class="content-options">
+                                        <div
+                                            *ngFor="let pair of getPairsArray(i).controls; let j = index"
+                                            [formGroupName]="j"
+                                            class="pairs-options"
+                                        >
+                                            <div class="option">
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Mot gallo</mat-label>
+                                                    <input
+                                                        matInput
+                                                        formControlName="content_left"
+                                                        type="text"
+                                                        placeholder="Option" />
+                                                </mat-form-field>
+
+                                                <mat-form-field appearance="fill">
+                                                    <mat-label>Mot français</mat-label>
+                                                    <input
+                                                        matInput
+                                                        formControlName="content_right"
+                                                        type="text"
+                                                        placeholder="Option" />
+                                                </mat-form-field>
+
+                                                <button
+                                                    type="button"
+                                                    mat-icon-button
+                                                    (click)="removePairs(i, j)">
+                                                    <mat-icon>delete</mat-icon>
+                                                </button>
+                                            </div>
+                                        </div>
+
+                                        <button
+                                            type="button"
+                                            mat-stroked-button
+                                            (click)="addPairs(i)">
+                                            <mat-icon>add</mat-icon>
+                                            Ajouter une paire
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Type ORDER -->
+                            <div *ngIf="page.get('exercise.type')?.value === 'ORDER'">
+                                <div class="page-exercise-responses">
+                                    <h4 class="header-options">Texte à ordonner</h4>
+
+                                    <div class="content-options">
+                                        <mat-form-field appearance="fill">
+                                            <mat-label>Texte à ordonner (séparer chaque segment par ";")</mat-label>
+                                            <textarea
+                                                matInput
+                                                [formControl]="getOrderTextControl(i)"
+                                                placeholder="Ex: Je vais;au marché;acheter des pommes"></textarea>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <mat-form-field appearance="fill" class="feedback-field">
+                                <mat-label>Feedback</mat-label>
+                                <textarea
+                                    matInput
+                                    rows="5"
+                                    formControlName="feedback"
+                                    placeholder="Le texte qui sera affiché en cas de mauvaise réponse de la part de l'utilisateur. Le feedback doit contenir la bonne réponse ainsi qu'une courte explication"></textarea>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+
+                <button
+                    (click)="addPage()"
+                    mat-stroked-button
+                    color="primary"
+                    type="button">
+                    <mat-icon>add</mat-icon>Ajouter une page
+                </button>
+            </section>
+
+            <!-- Actions -->
+            <div class="actions">
+                <button mat-raised-button color="primary" type="submit" id="btn-save">
+                    Créer le chapitre
+                </button>
+
+                <a routerLink="/admin/chapters" class="btn-delete">Annuler</a>
+            </div>
+
+        </form>
+    </div>
+</main>

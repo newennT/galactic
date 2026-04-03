@@ -18,7 +18,7 @@ export class AdminChapterFormService {
       title: [chapter.title],
       title_fr: [chapter.title_fr],
       abstract: [chapter.abstract],
-      level: [chapter.Level?.title],
+      id_level: [chapter.id_level],
       pages: this.formBuilder.array(
         chapter.Pages?.map(page => this.createPageGroup(page)) ?? []
       )
@@ -30,7 +30,7 @@ export class AdminChapterFormService {
       title: [''],
       title_fr: [''],
       abstract: [''],
-      level: [''],
+      id_level: [''],
       pages: this.formBuilder.array([])
     });
   }

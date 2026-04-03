@@ -31,9 +31,17 @@ export class AdminChaptersService {
     }
 
     updateChapter(id: number, chapter: any): Observable<Chapter> {
-        return this.http.put<{ message: String, data: Chapter }>(
+        return this.http.put<{ message: string, data: Chapter }>(
             `${environment.apiUrl}/chapters/${id}/full`,
             chapter
+        )
+        .pipe(map(res => res.data));
+    }
+
+    createChapter(payload: any): Observable<Chapter> {
+        return this.http.post<{ message: string, data: Chapter }>(
+            `${environment.apiUrl}/chapters/full`,
+            payload
         )
         .pipe(map(res => res.data));
     }
