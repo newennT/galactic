@@ -1,0 +1,27 @@
+<div class="admin-user-card">
+    <div class="admin-user-infos">
+        <div class="admin-user-mail">
+            {{ adminUser.email }}
+        </div>
+
+        <div class="admin-user-createdAt">
+            créé : {{ adminUser.createdAt | date:'dd/MM/yyyy' }} à {{ adminUser.createdAt | date:'HH:mm' }}
+        </div>
+
+        <div class="admin-user-updatedAt">
+            connecté : {{ adminUser.updatedAt | date:'dd/MM/yyyy' }} à {{ adminUser.updatedAt | date:'HH:mm' }}
+        </div>
+    </div>
+    
+
+    <div class="admin-buttons">
+        <a class="btn btn-modify"
+        [routerLink]="['/admin/users', adminUser.id_user, 'edit']">
+        Modifier
+        </a>
+
+        <a class="btn btn-delete">Supprimer</a>
+
+
+    </div>
+</div>

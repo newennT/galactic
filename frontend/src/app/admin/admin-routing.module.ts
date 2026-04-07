@@ -9,6 +9,7 @@ import { AdminChapterViewComponent } from './components/admin-chapter-view/admin
 import { AdminChapterEditComponent } from './components/admin-chapter-edit/admin-chapter-edit.component';
 import { adminChapterDetailResolver } from './resolvers/admin-chapter-detail.resolver';
 import { AdminChapterNewComponent } from './components/admin-chapter-new/admin-chapter-new.component';
+import { adminUsersResolver } from './resolvers/admin-user.resolver';
 
 const routes: Routes = [
   {
@@ -20,7 +21,7 @@ const routes: Routes = [
       { path: 'chapters/new', component: AdminChapterNewComponent },
       { path: 'chapters/:id', component: AdminChapterViewComponent, resolve: { adminChapter: adminChapterDetailResolver }},
       { path: 'chapters/:id/edit', component: AdminChapterEditComponent, resolve: { adminChapter: adminChapterDetailResolver }},
-      { path: 'users', component: AdminListUsersComponent }
+      { path: 'users', component: AdminListUsersComponent, resolve: { adminUsers: adminUsersResolver }}
     ]
   }
 ];

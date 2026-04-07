@@ -1,1 +1,15 @@
-<p>admin-list-users works!</p>
+<main class="container">
+    <h1>Liste des utilisateurs</h1>
+
+    <div class="actions">
+        <a routerLink="/admin/users/new" mat-raised-button color="primary" id="btn-add-user">Créer un utilisateur</a>
+    </div>
+
+    <div class="admin-list-users">
+        <app-admin-list-users-item 
+            *ngFor="let adminUser of users" 
+            [adminUser]="adminUser"
+            >
+        </app-admin-list-users-item>
+    </div>
+</main>

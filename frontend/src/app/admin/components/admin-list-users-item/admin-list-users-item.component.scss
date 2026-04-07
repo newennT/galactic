@@ -1,0 +1,58 @@
+@use '../../../../styles.scss' as *;
+
+.admin-user-card{
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 95%;
+    padding: 10px 15px;
+    border-radius: 8px;
+    background-color: #ffffff;
+    border: 1px solid #ffffff;
+    color: $color-text;
+    margin-bottom: 5px;
+    &:hover{
+        border: 1px solid #dadada;
+    }
+    .admin-user-infos{
+        display: flex;
+        width: 70%;
+        flex-wrap: wrap;
+        .admin-user-mail{
+            font-weight: bold;
+            width: 250px;
+        }
+        .admin-user-createdAt, .admin-user-updatedAt{
+            font-size: 12px;
+            margin-right: 20px;
+        }
+    }
+    
+}
+
+.admin-buttons{
+    width: 200px;
+    min-width: 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+}
+
+@media screen and (max-width: 999px){
+    .admin-user-card .admin-buttons a{
+        margin: 5px 0;
+    }
+
+    .admin-user-card .admin-user-infos{
+        width: 100%;
+    }
+
+    .admin-user-card .admin-user-infos{
+        flex-direction: column;
+    }
+
+    .admin-user-card .admin-user-mail{
+        width: 100%;
+    }
+}

@@ -13,9 +13,13 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 export class AdminListChaptersComponent implements OnInit {
   adminChapters$!: Observable<Chapter[]>;
   reorderMode = false;
-  chapters: Chapter[] = [];
+  chapters: Chapter[] = []; 
 
-  constructor(private route: ActivatedRoute, private adminChaptersService: AdminChaptersService){}
+  constructor(
+    private route: ActivatedRoute, 
+    private adminChaptersService: AdminChaptersService
+  )
+    {}
 
   ngOnInit(): void {
     this.adminChapters$ = this.route.data.pipe(
