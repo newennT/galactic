@@ -1,5 +1,7 @@
 <div class="admin-user-card">
+    
     <div class="admin-user-infos">
+        <div *ngIf="adminUser.is_admin === true" class="admin-user-admin">ADMIN</div>
         <div class="admin-user-mail">
             {{ adminUser.email }}
         </div>
