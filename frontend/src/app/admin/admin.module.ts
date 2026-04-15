@@ -24,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { AdminChapterNewComponent } from './components/admin-chapter-new/admin-chapter-new.component';
 import { AdminListUsersItemComponent } from './components/admin-list-users-item/admin-list-users-item.component';
+import { AdminUserNewComponent } from './components/admin-user-new/admin-user-new.component';
 
 
 @NgModule({
@@ -37,7 +38,8 @@ import { AdminListUsersItemComponent } from './components/admin-list-users-item/
     AdminChapterEditComponent,
     AdminChapterViewComponent,
     AdminChapterNewComponent,
-    AdminListUsersItemComponent
+    AdminListUsersItemComponent,
+    AdminUserNewComponent
   ],
   imports: [
     CommonModule,
