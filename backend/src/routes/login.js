@@ -6,42 +6,47 @@ const jwt = require("jsonwebtoken");
 const privatekey = require("../auth/private_key");
 
 module.exports = (app) => {
-    app.post('/api/login', (req, res) => {
-        User.findOne({
-            where: {
-                email: req.body.email
-            },
-            attributes: { include: ["password"] }
-        }).then(user => {
-            if(!user) {
-                const message = "L'utilisateur demandé n'existe pas";
-                return res.status(401).json({ message });
-            }
-            bcrypt.compare(req.body.password, user.password)
-            .then(isPasswordValid => {
-                if(!isPasswordValid) {
-                    const message = "Le mot de passe est incorrect";
-                    return res.status(401).json({ message });
-                }
+    app.post('/api/login', async (req, res) => {
+        try {
+            const user = await User.findOne({
+                where: {
+                    email: req.body.email
+                }, 
+                attributes: { include: ["password"] }
+            });
 
-                // jwt
-                const token = jwt.sign(
-                    { id_user: user.id_user,
-                        is_admin: user.is_admin
-                     },
-                    privatekey,
-                    { expiresIn: "24h" }
-                )
-                const message = "Connexion réussie";
-                console.log("LOGIN KEY:", privatekey);
-                return res.json({ message, data: user, token });
+            if (!user) {
+                return res.status(401).json({ message: "L'utilisateur n'existe pas" });
+            }
+
+            const isPasswordValid = await bcrypt.compare(req.body.password, user.password);
+            if (!isPasswordValid) {
+                return res.status(401).json({ message: "Le mot de passe est incorrect" });
+            }
+
+            // mettre à jour dernière connexion 
+            await user.update({
+                last_login: new Date()
+            });
+
+            // jwt 
+            const token = jwt.sign(
+                { id_user: user.id_user,
+                    is_admin: user.is_admin
+                 },
+                privatekey,
+                { expiresIn: "24h" }
+            )
+            const message = "Connexion réussie";
+            console.log("LOGIN KEY:", privatekey);
+            return res.json({ message, data: user, token });
+        } catch (error) {
+            console.error("LOGIN ERROR: ", error);
+            return res.status(500).json({
+                message: "Erreur lors de la connexion",
+                data: error
             })
-        })
-        .catch(error => {
-            console.error(error);
-            const message = "La connexion n'a pas pu fonctionner. Ressayez dans quelques instants.";
-            res.status(500).json({ message, data: error });
-        })
+        }
 
     })
 }

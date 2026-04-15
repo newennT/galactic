@@ -27,7 +27,6 @@ export class DashboardComponent implements OnInit {
         this.chapters = data.chapters;
         this.user = data.user;
         this.loading = false;
-        console.log('Chapitres', this.chapters);
       },
       error: (err) => {
         console.log('Erreur récupération chapitres', err);
