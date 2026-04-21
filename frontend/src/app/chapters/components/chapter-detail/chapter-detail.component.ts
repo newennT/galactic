@@ -11,6 +11,7 @@ import { UserExerciseService } from '../../services/userExercise.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ChaptersService } from '../../services/chapters.service';
 import { Chart, ArcElement, Tooltip, Legend, DoughnutController } from 'chart.js';
+import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 
 Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
 
@@ -25,7 +26,8 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
     private route: ActivatedRoute, 
     private userExerciseService: UserExerciseService, 
     public authService: AuthService,
-    private chaptersService: ChaptersService
+    private chaptersService: ChaptersService,
+    private sanitizer: DomSanitizer
   ) {  }
 
   startChapter(id_chapter: number): void{
@@ -93,6 +95,19 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
   selectedAnswers: { [pageId: number ]: number | null } = {};
   showFeedback: { [pageId: number ]: boolean } = {};
   isCorrect: { [pageId: number ]: boolean } = {};
+
+  // Afficher la vidéo
+  getYoutubeId(url: string): string | null {
+    const regExp = /(?:youtube\.com.*v=|youtu\.be\/)([^&?/]+)/;
+    const match = url.match(regExp);
+    return match ? match[1] : null;
+  }
+  getEmbedUrl(url: string): SafeResourceUrl {
+    const videoId = this.getYoutubeId(url);
+    return this.sanitizer.bypassSecurityTrustResourceUrl(
+      `https://www.youtube.com/embed/${videoId}?autoplay=1`
+    );
+  }
 
 
   // ---------- Question à réponse unique 
@@ -248,13 +263,18 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
   }
 
   updateScoreChart() {
-    if(!this.score || !this.correctExercises || !this.totalExercises) return;
+    if (!this.scoreChart?.nativeElement) return;
+    if(this.score === undefined || this.correctExercises === undefined || this.totalExercises === undefined) return;
+
+    const correct = this.correctExercises ?? 0;
+    const total = this.totalExercises ?? 0;
+    const incorrect = Math.max(total - correct, 0);
 
     const data = {
       labels: ['Correct', 'Incorrect'],
       datasets: [
         {
-          data: [this.correctExercises, this.totalExercises - this.correctExercises],
+          data: [correct, incorrect],
           backgroundColor: ['#4caf50', '#f44336'],
         }
       ]

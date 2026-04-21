@@ -143,7 +143,9 @@ const initDb = async () => {
         question: exercise.question,
         feedback: exercise.feedback,
         id_page: exercise.id_page,
-        type: exercise.type
+        type: exercise.type,
+        media_url: exercise.media_url,
+        media_type: exercise.media_type
       }).then(exercise => console.log(exercise.toJSON()))
     )
   );

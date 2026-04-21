@@ -10,6 +10,30 @@ const userExercices = [
         id_user: 1,
         is_correct: false,
         is_done: true
+    },
+    {
+        id_page: 6,
+        id_user: 1,
+        is_correct: true,
+        is_done: true
+    },
+    {
+        id_page: 7,
+        id_user: 1,
+        is_correct: true,
+        is_done: true
+    },
+    {
+        id_page: 8,
+        id_user: 1,
+        is_correct: false,
+        is_done: true
+    },
+    {
+        id_page: 9,
+        id_user: 1,
+        is_correct: true,
+        is_done: true
     }
 ]
 

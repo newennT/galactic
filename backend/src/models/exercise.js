@@ -32,9 +32,27 @@ module.exports = (sequelize, DataTypes) => {
     type: {
       type: DataTypes.ENUM('UNIQUE', 'PAIRS', 'ORDER'),
       allowNull: false
+    },
+    media_url: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    media_type: {
+      type: DataTypes.ENUM('AUDIO', 'VIDEO'),
+      allowNull: true
     }
   }, {
-    timestamps: true
+    timestamps: true,
+    validate: {
+      mediaConsistency() {
+        if ((this.media_url && !this.media_type) || (!this.media_url && this.media_type)) {
+          throw new Error("media_url et media_type doivent être définis ensemble");
+        }
+        if (this.media_url && this.media_type === 'AUDIO' && !this.media_url.endsWith('.mp3')) {
+          throw new Error("L'URL audio doit pointer vers un fichier .mp3 direct");
+        }
+      }
+    }
   });
 
   Exercise.associate = models => {

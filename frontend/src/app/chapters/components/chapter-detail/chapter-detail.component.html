@@ -33,6 +33,24 @@
 
                         <h4 class="question">{{ page.Exercise.question }}</h4>
 
+                        <!-- Audio ou vidéo -->
+                        <div *ngIf="page.Exercise.media_url">
+                            <audio *ngIf="page.Exercise.media_type === 'AUDIO'" controls>
+                                <source [src]="page.Exercise.media_url" type="audio/mpeg">
+                            </audio>
+
+                            <iframe
+                                *ngIf="page.Exercise.media_type === 'VIDEO'"
+                                width="560"
+                                height="315"
+                                [src]="getEmbedUrl(page.Exercise.media_url)"
+                                frameborder="0"
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                allowfullscreen>
+                            </iframe>
+
+                        </div>
+
                             <!-- PAIRS -->
                         <div *ngIf="page.Exercise.type === 'PAIRS'">
                             <ul class="pairs-list">

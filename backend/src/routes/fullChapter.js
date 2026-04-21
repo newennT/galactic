@@ -63,7 +63,9 @@ module.exports = (app) => {
                         id_page: newPage.id_page,
                         question: ex.question || "",
                         feedback: ex.feedback || "",
-                        type: ex.type || "UNIQUE"
+                        type: ex.type || "UNIQUE",
+                        media_url: ex.media_url || "",
+                        media_type: ex.media_type || ""
                     }, {
                         transaction: t,
                         hooks: false
@@ -250,7 +252,9 @@ module.exports = (app) => {
                         id_page: newPage.id_page,
                         question: ex.question || "",
                         feedback: ex.feedback || "",
-                        type: ex.type || "UNIQUE"
+                        type: ex.type || "UNIQUE",
+                        media_url: ex.media_url || "",
+                        media_type: ex.media_type || ""
                     }, 
                     { 
                         transaction: t, 

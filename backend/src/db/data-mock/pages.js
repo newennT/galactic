@@ -34,6 +34,24 @@ const pages = [
         type: "EXERCISE",
         order_index: 2,
         id_chapter: 3
+    },
+    {
+        id_page: 7,
+        type: "EXERCISE",
+        order_index: 3,
+        id_chapter: 1
+    },
+    {
+        id_page: 8,
+        type: "EXERCISE",
+        order_index: 3,
+        id_chapter: 2
+    },
+    {
+        id_page: 9,
+        type: "EXERCISE",
+        order_index: 3,
+        id_chapter: 3
     }
 ]
 

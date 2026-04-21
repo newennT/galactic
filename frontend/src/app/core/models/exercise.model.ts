@@ -9,6 +9,8 @@ export class Exercise {
     type!: string;
     createdAt?: string;
     updatedAt?: string;
+    media_url?: string;
+    media_type?: string;
 
     UniqueResponses?: UniqueResponses[];
     PutInOrders?: PutInOrders[];
