@@ -81,6 +81,16 @@ export class AdminChapterEditComponent implements OnInit {
     this.adminChapterFormService.movePageDown(this.chapterForm, index);
   }
 
+  tinyConfig = {
+    base_url: '/assets/tinymce',
+    suffix: '.min',
+    height: 300,
+    menubar: false,
+    plugins: 'lists link',
+    toolbar: 'blocks | bold italic underline | bullist numlist | link | removeformat',
+    branding: false
+  };
+
   showMedia: boolean[] = [];
 
   toggleMedia(index: number): void {

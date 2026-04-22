@@ -72,6 +72,16 @@ export class AdminChapterNewComponent implements OnInit {
     this.showMedia[index] = !this.showMedia[index];
   }
 
+  tinyConfig = {
+    base_url: '/assets/tinymce',
+    suffix: '.min',
+    height: 300,
+    menubar: false,
+    plugins: 'lists link',
+    toolbar: 'blocks | bold italic underline | bullist numlist | link | removeformat',
+    branding: false
+  };
+
   // Exercice de type UNIQUE 
   addUniqueResponse(pageIndex: number) {
     this.adminExerciseFormService.addUniqueResponse(

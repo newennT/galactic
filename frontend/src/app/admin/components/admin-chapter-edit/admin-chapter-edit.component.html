@@ -84,10 +84,11 @@
                             <mat-label>Titre</mat-label>
                             <input matInput type="text" formControlName="title">
                         </mat-form-field>
-                        <mat-form-field appearance="fill">
-                            <mat-label>Contenu</mat-label>
-                            <textarea matInput rows="10" formControlName="content"></textarea>
-                        </mat-form-field>
+
+                        <div>
+                            <label>Contenu</label>
+                            <editor formControlName="content" matInput [init]="tinyConfig"></editor>
+                        </div>
                     </div>
 
                     <!-- Page Exercice -->
