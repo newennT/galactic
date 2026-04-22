@@ -4,11 +4,23 @@ const userChapters = [
         id_chapter: 1
     },
     {
-        id_user: 2,
+        id_user: 1,
         id_chapter: 2
     },
     {
         id_user: 1,
+        id_chapter: 3
+    },
+    {
+        id_user: 2,
+        id_chapter: 1
+    },
+    {
+        id_user: 2,
+        id_chapter: 2
+    },
+    {
+        id_user: 2,
         id_chapter: 3
     }
 ]

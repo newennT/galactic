@@ -19,7 +19,7 @@
                     <!-- LESSON -->
                     <div *ngIf="page.type === 'LESSON' && page.Lesson" class="page">
                         <h4 class="lesson-title">{{ page.Lesson.title }}</h4>
-                        <p>{{ page.Lesson.content }}</p>
+                        <div class="lesson-content" [innerHTML]="page.Lesson.content"></div>
 
                         <div class="buttons">
                             <a (click)="prevPage()">Retour</a>
