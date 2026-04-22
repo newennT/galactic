@@ -48,7 +48,7 @@ module.exports = (sequelize, DataTypes) => {
         if ((this.media_url && !this.media_type) || (!this.media_url && this.media_type)) {
           throw new Error("media_url et media_type doivent être définis ensemble");
         }
-        if (this.media_url && this.media_type === 'AUDIO' && !this.media_url.endsWith('.mp3')) {
+        if (this.media_url && this.media_type === 'AUDIO' && !this.media_url.match(/\.mp3(\?.*)?$/)) {
           throw new Error("L'URL audio doit pointer vers un fichier .mp3 direct");
         }
       }

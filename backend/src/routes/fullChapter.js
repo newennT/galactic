@@ -64,8 +64,8 @@ module.exports = (app) => {
                         question: ex.question || "",
                         feedback: ex.feedback || "",
                         type: ex.type || "UNIQUE",
-                        media_url: ex.media_url || "",
-                        media_type: ex.media_type || ""
+                        media_url: ex.media_url || null,
+                        media_type: ex.media_type || null
                     }, {
                         transaction: t,
                         hooks: false
@@ -253,8 +253,8 @@ module.exports = (app) => {
                         question: ex.question || "",
                         feedback: ex.feedback || "",
                         type: ex.type || "UNIQUE",
-                        media_url: ex.media_url || "",
-                        media_type: ex.media_type || ""
+                        media_url: ex.media_url || null,
+                        media_type: ex.media_type || null
                     }, 
                     { 
                         transaction: t, 

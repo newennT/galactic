@@ -102,6 +102,42 @@
                                 <input matInput type="text" formControlName="question">
                             </mat-form-field>
 
+                            <div class="media-section">
+
+                            <button
+                                type="button"
+                                mat-stroked-button
+                                (click)="toggleMedia(i)">
+                                <mat-icon>perm_media</mat-icon>
+                                Ajouter un média
+                            </button>
+
+                            <div *ngIf="showMedia[i]" class="media-fields">
+
+                                <mat-form-field appearance="fill">
+                                <mat-label>Type de média</mat-label>
+                                <mat-select formControlName="media_type">
+                                    <mat-option [value]="null">Aucun</mat-option>
+                                    <mat-option value="AUDIO">Audio</mat-option>
+                                    <mat-option value="VIDEO">Vidéo</mat-option>
+                                </mat-select>
+                                </mat-form-field>
+
+                                <mat-form-field 
+                                appearance="fill"
+                                *ngIf="page.get('exercise.media_type')?.value">
+                                
+                                <mat-label>URL du média</mat-label>
+                                <input 
+                                    matInput 
+                                    formControlName="media_url"
+                                    [disabled]="!page.get('exercise.media_type')?.value" 
+                                    placeholder="https://..." />
+                                </mat-form-field>
+
+                            </div>
+                        </div>
+
                             <mat-form-field appearance="fill">
                                 <mat-label>Type d'exercice</mat-label>
                                 <mat-select formControlName="type">

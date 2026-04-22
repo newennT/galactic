@@ -66,6 +66,12 @@ export class AdminChapterNewComponent implements OnInit {
     this.adminChapterFormService.movePageDown(this.chapterForm, index);
   }
 
+  showMedia: boolean[] = [];
+
+  toggleMedia(index: number): void {
+    this.showMedia[index] = !this.showMedia[index];
+  }
+
   // Exercice de type UNIQUE 
   addUniqueResponse(pageIndex: number) {
     this.adminExerciseFormService.addUniqueResponse(

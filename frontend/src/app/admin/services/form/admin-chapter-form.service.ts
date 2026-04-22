@@ -74,6 +74,8 @@ export class AdminChapterFormService {
           question: [''],
           type: ['UNIQUE'],
           feedback: [''],
+          media_type: [''],
+          media_url: [''],
 
           uniqueResponses: this.formBuilder.array([
             this.formBuilder.group({

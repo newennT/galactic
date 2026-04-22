@@ -87,6 +87,8 @@ export class AdminExerciseFormService {
       question: [exercise?.question ?? ''],
       type: [exercise?.type ?? 'UNIQUE'],
       feedback: [exercise?.feedback ?? ''],
+      media_type: [exercise?.media_type ?? null],
+      media_url: [exercise?.media_url ?? null],
       uniqueResponses: uniqueResponsesArray,
 
       pairs: this.formBuilder.array(
@@ -170,6 +172,12 @@ export class AdminExerciseFormService {
 
   normalizeOrderExercises(formValue: any): any {
     formValue.pages.forEach((page: any) => {
+      if (page.type === 'EXERCISE') {
+      const hasMedia = !!page.exercise.media_url;
+      page.exercise.media_url = hasMedia ? page.exercise.media_url : null;
+      page.exercise.media_type = hasMedia ? page.exercise.media_type : null;
+    }
+
       if (page.type === 'EXERCISE' && page.exercise.type === 'ORDER') {
         const segments = page.exercise.orderText
           .split(';')
