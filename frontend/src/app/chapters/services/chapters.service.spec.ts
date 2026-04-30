@@ -44,4 +44,42 @@ describe('ChaptersService', () => {
         expect(req.request.method).toBe('GET');
         req.flush(mockResponse);
     });
+
+
+    it('fetch chapter by id', () => {
+        const mockResponse = {
+            message: 'Success',
+            data: { id_chapter: 1, title: 'Chapter 1', title_fr: 'Chapitre 1', isPublished: true, id_level: 1, order: 1, abstract: 'Lorem ipsum blblbllblblbl'} as Chapter
+        };
+
+        service.getChapterById(1).subscribe(chapter => {
+            expect(chapter.id_chapter).toBe(1);
+            expect(chapter.title).toBe('Chapter 1');
+            expect(chapter.title_fr).toBe('Chapitre 1');
+            expect(chapter.isPublished).toBe(true);
+            expect(chapter.id_level).toBe(1);
+            expect(chapter.order).toBe(1);
+            expect(chapter.abstract).toBe('Lorem ipsum blblbllblblbl');
+        });
+
+        const req = httpTestingController.expectOne(`${apiUrl}/chapters/1`);
+        expect(req.request.method).toBe('GET');
+        req.flush(mockResponse);
+    });
+
+    it('user starts a chapter', () => {
+        const mockResponse = {
+            message: 'Success',
+            data: { id_chapter: 1, title: 'Chapter 1', title_fr: 'Chapitre 1', isPublished: true, id_level: 1, order: 1, abstract: 'Lorem ipsum blblbllblblbl'} as Chapter
+        };
+
+        service.startChapter(1).subscribe(response => {
+            expect(response).toEqual(mockResponse);
+        });
+
+        const req = httpTestingController.expectOne(`${apiUrl}/user-chapters`);
+        expect(req.request.method).toBe('POST');
+        expect(req.request.body).toEqual({ id_chapter: 1 });
+        req.flush(mockResponse);
+    })
 });
