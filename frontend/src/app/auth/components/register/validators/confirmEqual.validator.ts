@@ -13,9 +13,16 @@ export function confirmEqualValidator(
     if (!control || !matchingControl) return null;
 
     if (control.value !== matchingControl.value) {
-      matchingControl.setErrors({ mismatch: true });
+      matchingControl.setErrors({
+        ...matchingControl.errors,
+        mismatch: true
+      });
     } else {
-      matchingControl.setErrors(null);
+      const errors = matchingControl.errors;
+      if (errors) {
+        delete errors['mismatch'];
+        matchingControl.setErrors(Object.keys(errors).length ? errors : null);
+      }
     }
 
     return null;
