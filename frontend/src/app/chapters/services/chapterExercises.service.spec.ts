@@ -7,6 +7,7 @@ describe('ExerciseService', () => {
 
   beforeEach(() => {
     service = new ChapterExercisesService();
+    jest.useRealTimers();
   });
 
   describe('ChapterExercisesService', () => {
@@ -31,27 +32,27 @@ describe('ExerciseService', () => {
     } as unknown as Page;
 
     it('should return true for correct answer', () => {
-
       service.selectedAnswers[1] = 2;
-
-      expect(service.validateUnique(page))
-        .toBe(true);
+      expect(service.validateUnique(page)).toBe(true);
     });
 
     it('should return false for wrong answer', () => {
-
       service.selectedAnswers[1] = 1;
-
-      expect(service.validateUnique(page))
-        .toBe(false);
+      expect(service.validateUnique(page)).toBe(false);
     });
 
     it('should return false if no answer selected', () => {
-
       service.selectedAnswers[1] = null;
+      expect(service.validateUnique(page)).toBe(false);
+    });
 
-      expect(service.validateUnique(page))
-        .toBe(false);
+    it('should return false for non UNIQUE exercise', () => {
+      const invalidPage = {
+        id_page: 2,
+        Exercise: { type: 'PAIRS' }
+      } as any;
+
+      expect(service.validateUnique(invalidPage)).toBe(false);
     });
 
 
@@ -81,85 +82,91 @@ describe('ExerciseService', () => {
         }
     } as unknown as Page;
 
-    it('should store first selected pair', () => {
-
-        const item =
-            pairsPage.Exercise!.Pairs![0];
-
-        service.selectPair(item, pairsPage);
-
-        const state =
-            service.getPairsState(1);
-
-        expect(state.currentSelection.length)
-            .toBe(1);
+    it('should store first selection', () => {
+      service.selectPair(pairsPage.Exercise!.Pairs![0], pairsPage);
+      const state = service.getPairsState(1);
+      expect(state.currentSelection.length).toBe(1);
     });
 
     it('should match correct pair', () => {
-
-        const a =
-            pairsPage.Exercise!.Pairs![0];
-
-        const b =
-            pairsPage.Exercise!.Pairs![1];
-
-        service.selectPair(a, pairsPage);
-
-        const completed =
-            service.selectPair(b, pairsPage);
-
-        const state =
-            service.getPairsState(1);
-
-        expect(state.matchedIds.has(1)).toBe(true);
-
-        expect(state.matchedIds.has(2)).toBe(true);
-
-        expect(completed).toBe(false);
+      const [a, b] = pairsPage.Exercise!.Pairs!;
+      service.selectPair(a, pairsPage);
+      const completed = service.selectPair(b, pairsPage);
+      const state = service.getPairsState(1);
+      expect(state.matchedIds.has(1)).toBe(true);
+      expect(state.matchedIds.has(2)).toBe(true);
+      expect(completed).toBe(false);
     });
 
-    it('should complete exercise when all pairs matched', () => {
-
-        const pairs =
-            pairsPage.Exercise!.Pairs;
-
-        service.selectPair(pairs![0], pairsPage);
-        service.selectPair(pairs![1], pairsPage);
-
-        service.selectPair(pairs![2], pairsPage);
-
-        const completed =
-            service.selectPair(pairs![3], pairsPage);
-
-        expect(completed)
-            .toBe(true);
+    it('should complete when all pairs matched', () => {
+      const p = pairsPage.Exercise!.Pairs!;
+      service.selectPair(p[0], pairsPage);
+      service.selectPair(p[1], pairsPage);
+      service.selectPair(p[2], pairsPage);
+      const completed = service.selectPair(p[3], pairsPage);
+      expect(completed).toBe(true);
     });
 
-    it('should remove wrong pair after timeout', () => {
+    it('should ignore already matched item', () => {
+      const [a, b] = pairsPage.Exercise!.Pairs!;
+      service.selectPair(a, pairsPage);
+      service.selectPair(b, pairsPage);
+      const result = service.selectPair(a, pairsPage);
+      expect(result).toBe(false);
+    });
 
-        jest.useFakeTimers();
+    it('should handle wrong pair and cleanup after timeout', () => {
+      jest.useFakeTimers();
+      const [a, , b] = pairsPage.Exercise!.Pairs!;
+      service.selectPair(a, pairsPage);
+      service.selectPair(b, pairsPage);
+      const state = service.getPairsState(1);
+      expect(state.wrongIds.size).toBeGreaterThan(0);
+      jest.advanceTimersByTime(800);
+      expect(state.wrongIds.size).toBe(0);
+      jest.useRealTimers();
+    });
 
-        const a =
-            pairsPage.Exercise!.Pairs![0];
+    it('should return shuffled list (cached)', () => {
+      const first = service.getShuffledPairs(pairsPage);
+      const second = service.getShuffledPairs(pairsPage);
+      expect(first).toBe(second);
+    });
 
-        const b =
-            pairsPage.Exercise!.Pairs![2];
+    it('should return empty array when Pairs is undefined', () => {
+        const pageWithoutPairs = {
+            id_page: 99,
+            Exercise: {
+            type: 'PAIRS'
+            }
+        } as any as Page;
+        const result = service.getShuffledPairs(pageWithoutPairs);
+        expect(result).toEqual([]);
+    });
 
-        service.selectPair(a, pairsPage);
-        service.selectPair(b, pairsPage);
+    it('should shuffle and cache pairs when first call', () => {
+        const result1 = service.getShuffledPairs(pairsPage);
+        const result2 = service.getShuffledPairs(pairsPage);
 
-        const state =
-            service.getPairsState(1);
+        expect(result1).toEqual(result2);
+    });
 
-        expect(state.wrongIds.has(1))
-            .toBe(true);
+    it('should return false when Pairs is undefined', () => {
+    const pageWithoutPairs = {
+        id_page: 1,
+        Exercise: { type: 'PAIRS' }
+    } as any as Page;
 
-        jest.advanceTimersByTime(800);
+    expect(service.isPairsComplete(pageWithoutPairs)).toBe(false);
+    });
 
-        expect(state.wrongIds.has(1))
-            .toBe(false);
+    it('should return false when Pairs is empty', () => {
+    const pageEmpty = {
+        id_page: 1,
+        Exercise: { type: 'PAIRS', Pairs: [] }
+    } as any as Page;
 
-        jest.useRealTimers();
+    expect(service.isPairsComplete(pageEmpty)).toBe(false);
     });
 
 
@@ -204,6 +211,108 @@ describe('ExerciseService', () => {
     it('should return false for incorrect order', () => {
         const result = service.validateOrder(orderPage);
         expect(result).toBe(false);
+    });
+
+    it('should not handle empty order list', () => {
+      const empty = {
+        id_page: 99,
+        Exercise: { PutInOrders: [] }
+      } as any;
+      expect(service.validateOrder(empty)).toBe(false);
+    });
+
+    it('should return false when no pairs exist but state is not empty', () => {
+        const page = {
+            id_page: 1,
+            Exercise: {
+            type: 'PAIRS'
+            }
+        } as any as Page;
+
+        const state = service.getPairsState(1);
+        state.matchedIds.add(999);
+
+        expect(service.isPairsComplete(page)).toBe(false);
+    });
+
+    it('should return empty array when PutInOrders is undefined', () => {
+        const page = {
+            id_page: 99,
+            Exercise: {
+            type: 'ORDER'
+            }
+        } as any as Page;
+
+        const result = service.getOrderItems(page);
+
+        expect(result).toEqual([]);
+    });
+
+    it('should sort PutInOrders by mixed_order', () => {
+        const page = {
+            id_page: 1,
+            Exercise: {
+            type: 'ORDER',
+            PutInOrders: [
+                { id_response: 1, mixed_order: 3, correct_order: 1 },
+                { id_response: 2, mixed_order: 1, correct_order: 2 }
+            ]
+            }
+        } as any as Page;
+
+        const result = service.getOrderItems(page);
+
+        expect(result.map(i => i.id_response)).toEqual([2, 1]);
+    });
+
+    it('should use cache on second call', () => {
+        const page = {
+            id_page: 1,
+            Exercise: {
+            type: 'ORDER',
+            PutInOrders: [
+                { id_response: 1, mixed_order: 2, correct_order: 1 },
+                { id_response: 2, mixed_order: 1, correct_order: 2 }
+            ]
+            }
+        } as any as Page;
+
+        const first = service.getOrderItems(page);
+        const second = service.getOrderItems(page);
+
+        expect(first).toEqual(second);
+    });
+
+    it('should move item in list correctly', () => {
+        const page = {
+            id_page: 1,
+            Exercise: {
+            type: 'ORDER',
+            PutInOrders: [
+                { id_response: 1, mixed_order: 1, correct_order: 1 },
+                { id_response: 2, mixed_order: 2, correct_order: 2 }
+            ]
+            }
+        } as any as Page;
+
+        service.getOrderItems(page); // init cache
+
+        service.moveOrderItem(page, 0, 1);
+
+        const result = service.getOrderItems(page);
+
+        expect(result.map(i => i.id_response)).toEqual([2, 1]);
+    });
+
+    it('should return false when PutInOrders is undefined', () => {
+        const page = {
+            id_page: 1,
+            Exercise: {
+            type: 'ORDER'
+            }
+        } as any as Page;
+
+        expect(service.validateOrder(page)).toBe(false);
     });
 
   });

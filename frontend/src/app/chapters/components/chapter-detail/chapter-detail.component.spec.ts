@@ -126,7 +126,6 @@ describe('ChapterDetailComponent', () => {
   });
 
 
-
 //  Navigation
 
   it('should call navigator nextPage', () => {
@@ -135,6 +134,15 @@ describe('ChapterDetailComponent', () => {
     component.nextPage(mockChapter as any);
     expect(navigatorMock.next).toHaveBeenCalled();
   });
+
+  it('should render conclusion page when navigator returns true', () => {
+    navigatorMock.isConclusion.mockReturnValue(true);
+    fixture.detectChanges();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('.page-conclusion')).toBeTruthy();
+  });
+
+
 
 
 
@@ -145,6 +153,16 @@ describe('ChapterDetailComponent', () => {
     component.validateUnique({ id_page: 1 } as any);
     expect(exercisesMock.validateUnique)
       .toHaveBeenCalled();
+  });
+
+  it('should call saveResult when user is logged in (validateUnique)', () => {
+    authServiceMock.isLogged.mockReturnValue(true);
+    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult')
+      .mockReturnValue(of({}));
+    const page = { id_page: 1 } as any;
+    exercisesMock.validateUnique.mockReturnValue(true);
+    component.validateUnique(page);
+    expect(saveResultSpy).toHaveBeenCalledWith(1, true);
   });
 
   it('should call selectPair service', () => {
@@ -158,6 +176,35 @@ describe('ChapterDetailComponent', () => {
       .toHaveBeenCalled();
   });
 
+  it('should call saveResult when pair exercise is completed and user is logged', () => {
+    authServiceMock.isLogged.mockReturnValue(true);
+    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult')
+      .mockReturnValue(of({}));
+
+    const page = {
+      id_page: 1
+    } as any;
+    exercisesMock.selectPair.mockReturnValue(true);
+
+    component.selectPairs(
+      { id_response: 1, pair_key: 'A' } as any,
+      page
+    );
+
+    expect(saveResultSpy).toHaveBeenCalledWith(1, true);
+  });
+
+  it('should NOT call saveResult if user is not logged', () => {
+    authServiceMock.isLogged.mockReturnValue(false);
+    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult');
+    exercisesMock.selectPair.mockReturnValue(true);
+    component.selectPairs(
+      { id_response: 1, pair_key: 'A' } as any,
+      { id_page: 1 } as any
+    );
+    expect(saveResultSpy).not.toHaveBeenCalled();
+  });
+
   it('should move order item via service', () => {
     component.drop(
       { previousIndex: 0, currentIndex: 1 } as any,
@@ -169,27 +216,94 @@ describe('ChapterDetailComponent', () => {
   });
 
   it('should validate order via service', () => {
-
     exercisesMock.validateOrder.mockReturnValue(true);
-
     component.validateOrder({ id_page: 1 } as any);
-
     expect(exercisesMock.validateOrder)
       .toHaveBeenCalled();
+  });
+
+  it('should call saveResult when user is logged in (validateOrder)', () => {
+    authServiceMock.isLogged.mockReturnValue(true);
+    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult')
+      .mockReturnValue(of({}));
+    exercisesMock.validateOrder.mockReturnValue(true);
+    const page = { id_page: 1 } as any;
+    component.validateOrder(page);
+    expect(saveResultSpy).toHaveBeenCalledWith(1, true);
+  });
+
+  it('should NOT call saveResult when user is not logged in (validateOrder)', () => {
+    authServiceMock.isLogged.mockReturnValue(false);
+    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult');
+    exercisesMock.validateOrder.mockReturnValue(true);
+    component.validateOrder({ id_page: 1 } as any);
+    expect(saveResultSpy).not.toHaveBeenCalled();
   });
 
 
 
 //   Graphique 
 
+  it('should load score and update chart on conclusion', () => {
+    jest.useFakeTimers();
+    authServiceMock.isLogged.mockReturnValue(true);
+    navigatorMock.next.mockReturnValue(true);
+    navigatorMock.isConclusion.mockReturnValue(true);
+    userExerciseServiceMock.getChapterScore.mockReturnValue(of({
+      total: 5,
+      correct: 3,
+      percentage: 60
+    }));
+    component.scoreChart = {nativeElement: document.createElement('canvas')} as any;
+    component.nextPage(mockChapter as any);
+    jest.runAllTimers();
+    expect(userExerciseServiceMock.getChapterScore).toHaveBeenCalled();
+    expect(scoreChartMock.render).toHaveBeenCalled();
+  });
+
   it('should render score chart via service', () => {
     component.correctExercises = 2;
     component.totalExercises = 5;
+    component.scoreChart = { nativeElement: document.createElement('canvas')} as any;
+    component.updateScoreChart();
+    expect(scoreChartMock.render).toHaveBeenCalled();
+  });
+
+  it('should return early when scoreChart is missing', () => {
+    component.scoreChart = undefined as any;
+    component.correctExercises = 2;
+    component.totalExercises = 5;
+    component.updateScoreChart();
+    expect(scoreChartMock.render).not.toHaveBeenCalled();
+  });
+
+  it('should return early when correctExercises is undefined', () => {
     component.scoreChart = {
       nativeElement: document.createElement('canvas')
     } as any;
+    component.correctExercises = undefined;
+    component.totalExercises = 5;
     component.updateScoreChart();
-    expect(scoreChartMock.render)
-      .toHaveBeenCalled();
+    expect(scoreChartMock.render).not.toHaveBeenCalled();
+  });
+
+  it('should return early when totalExercises is undefined', () => {
+    component.scoreChart = {
+      nativeElement: document.createElement('canvas')
+    } as any;
+    component.correctExercises = 2;
+    component.totalExercises = undefined;
+    component.updateScoreChart();
+    expect(scoreChartMock.render).not.toHaveBeenCalled();
+  });
+
+  it('should render chart when all values exist', () => {
+    component.scoreChart = {
+      nativeElement: document.createElement('canvas')
+    } as any;
+    component.correctExercises = 2;
+    component.totalExercises = 5;
+    component.updateScoreChart();
+    expect(scoreChartMock.render).toHaveBeenCalled();
   });
 });

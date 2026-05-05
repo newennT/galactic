@@ -27,7 +27,11 @@ export class ChapterNavigatorService {
   }
 
   isConclusion(chapter: Chapter): boolean {
-    return this.pageIndex === (chapter.Pages?.length ?? 0) + 1;
+    const length = chapter.Pages?.length ?? 0;
+    if (length === 0) {
+      return false;
+    }
+    return this.pageIndex === length + 1;
   }
 
   currentPage(chapter: Chapter): Page | undefined {

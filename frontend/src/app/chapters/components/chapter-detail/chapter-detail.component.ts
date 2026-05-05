@@ -157,7 +157,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
       this.correctExercises,
       this.totalExercises
     );
-}
+  }
 
   
 

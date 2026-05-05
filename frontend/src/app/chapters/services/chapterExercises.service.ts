@@ -109,6 +109,10 @@ export class ChapterExercisesService {
         const state = this.getPairsState(page.id_page);
         const total = page.Exercise?.Pairs?.length ?? 0;
 
+        if(!total){
+            return false;
+        }
+
         return state.matchedIds.size === total;
     }
 
@@ -136,11 +140,25 @@ export class ChapterExercisesService {
         list.splice(currentIndex, 0, item);
     }
 
+    // validateOrder(page: Page): boolean {
+    //     const current = this.getOrderItems(page).map(i => i.id_response);
+    //     const correct = [...(page.Exercise?.PutInOrders ?? [])]
+    //     .sort((a, b) => a.correct_order - b.correct_order)
+    //     .map(i => i.id_response);
+    //     return JSON.stringify(current) === JSON.stringify(correct);
+    // }
+
     validateOrder(page: Page): boolean {
+        const items = page.Exercise?.PutInOrders;
+        
+        if (!items || items.length === 0) {
+            return false;
+        }
         const current = this.getOrderItems(page).map(i => i.id_response);
-        const correct = [...(page.Exercise?.PutInOrders ?? [])]
-        .sort((a, b) => a.correct_order - b.correct_order)
-        .map(i => i.id_response);
+        const correct = [...items]
+            .sort((a, b) => a.correct_order - b.correct_order)
+            .map(i => i.id_response);
+
         return JSON.stringify(current) === JSON.stringify(correct);
     }
 
