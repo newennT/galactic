@@ -266,8 +266,8 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
     if (!this.scoreChart?.nativeElement) return;
     if(this.score === undefined || this.correctExercises === undefined || this.totalExercises === undefined) return;
 
-    const correct = this.correctExercises ?? 0;
-    const total = this.totalExercises ?? 0;
+    const correct = this.correctExercises;
+    const total = this.totalExercises;
     const incorrect = Math.max(total - correct, 0);
 
     const data = {
