@@ -10,10 +10,10 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UserExerciseService } from '../../services/userExercise.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ChaptersService } from '../../services/chapters.service';
-import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 import { ChapterNavigatorService } from '../../services/chapterNavigator.service';
 import { ChapterExercisesService } from '../../services/chapterExercises.service';
 import { ScoreChartService } from '../../services/scoreChart.service';
+import { ChapterExerciseYoutubeService } from '../../services/chapterExerciseYoutube.service';
 
 @Component({
   selector: 'app-chapter-detail',
@@ -27,10 +27,10 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
     private userExerciseService: UserExerciseService, 
     public authService: AuthService,
     private chaptersService: ChaptersService,
-    private sanitizer: DomSanitizer,
     public chapterNavigatorService: ChapterNavigatorService,
     public chapterExercisesService: ChapterExercisesService,
-    public scoreChartService: ScoreChartService
+    public scoreChartService: ScoreChartService,
+    public chapterExerciseYoutubeService: ChapterExerciseYoutubeService
   ) {  }
 
   startChapter(id_chapter: number): void{
@@ -77,20 +77,6 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
   // Donner le feedback selon la réponse
   showFeedback: { [pageId: number ]: boolean } = {};
   isCorrect: { [pageId: number ]: boolean } = {};
-
-  
-  // Afficher la vidéo
-  getYoutubeId(url: string): string | null {
-    const regExp = /(?:youtube\.com.*v=|youtu\.be\/)([^&?/]+)/;
-    const match = url.match(regExp);
-    return match ? match[1] : null;
-  }
-  getEmbedUrl(url: string): SafeResourceUrl {
-    const videoId = this.getYoutubeId(url);
-    return this.sanitizer.bypassSecurityTrustResourceUrl(
-      `https://www.youtube.com/embed/${videoId}?autoplay=1`
-    );
-  }
 
 
   // ---------- Question à réponse unique 

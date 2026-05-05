@@ -43,7 +43,7 @@
                                 *ngIf="page.Exercise.media_type === 'VIDEO'"
                                 width="560"
                                 height="315"
-                                [src]="getEmbedUrl(page.Exercise.media_url)"
+                                [src]="chapterExerciseYoutubeService.getEmbedUrl(page.Exercise.media_url)"
                                 frameborder="0"
                                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                                 allowfullscreen>

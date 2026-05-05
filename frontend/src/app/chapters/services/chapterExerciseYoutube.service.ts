@@ -4,7 +4,7 @@ import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
 @Injectable({
   providedIn: 'root'
 })
-export class YoutubeService {
+export class ChapterExerciseYoutubeService {
 
   constructor(private sanitizer: DomSanitizer) {}
 
@@ -17,6 +17,10 @@ export class YoutubeService {
 
   getEmbedUrl(url: string): SafeResourceUrl {
     const videoId = this.getYoutubeId(url);
+
+    if (!videoId) {
+      return this.sanitizer.bypassSecurityTrustResourceUrl('');
+    }
 
     return this.sanitizer.bypassSecurityTrustResourceUrl(
       `https://www.youtube.com/embed/${videoId}?autoplay=1`

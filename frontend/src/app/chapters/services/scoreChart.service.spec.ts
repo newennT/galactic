@@ -1,13 +1,24 @@
-import { ScoreChartService } from './scoreChart.service';
-import { Chart } from 'chart.js';
+jest.mock('chart.js', () => {
 
-jest.mock('chart.js', () => ({
-  Chart: jest.fn().mockImplementation(() => ({
+  const ChartMock: any = jest.fn().mockImplementation(() => ({
     update: jest.fn(),
     destroy: jest.fn(),
     data: {}
-  }))
-}));
+  }));
+
+  ChartMock.register = jest.fn();
+
+  return {
+    Chart: ChartMock,
+    ArcElement: {},
+    Tooltip: {},
+    Legend: {},
+    DoughnutController: {}
+  };
+});
+
+import { ScoreChartService } from './scoreChart.service';
+import { Chart } from 'chart.js';
 
 describe('ScoreChartService', () => {
   let service: ScoreChartService;
