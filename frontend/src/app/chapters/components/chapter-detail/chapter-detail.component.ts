@@ -1,4 +1,4 @@
-import { AfterViewInit, Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { map, Observable } from 'rxjs';
 import { Chapter } from 'src/app/core/models/chapter.model';
@@ -10,24 +10,27 @@ import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { UserExerciseService } from '../../services/userExercise.service';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { ChaptersService } from '../../services/chapters.service';
-import { Chart, ArcElement, Tooltip, Legend, DoughnutController } from 'chart.js';
 import { DomSanitizer, SafeResourceUrl } from '@angular/platform-browser';
-
-Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
+import { ChapterNavigatorService } from '../../services/chapterNavigator.service';
+import { ChapterExercisesService } from '../../services/chapterExercises.service';
+import { ScoreChartService } from '../../services/scoreChart.service';
 
 @Component({
   selector: 'app-chapter-detail',
   templateUrl: './chapter-detail.component.html',
   styleUrls: ['./chapter-detail.component.scss']
 })
-export class ChapterDetailComponent implements OnInit, AfterViewInit {
+export class ChapterDetailComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute, 
     private userExerciseService: UserExerciseService, 
     public authService: AuthService,
     private chaptersService: ChaptersService,
-    private sanitizer: DomSanitizer
+    private sanitizer: DomSanitizer,
+    public chapterNavigatorService: ChapterNavigatorService,
+    public chapterExercisesService: ChapterExercisesService,
+    public scoreChartService: ScoreChartService
   ) {  }
 
   startChapter(id_chapter: number): void{
@@ -36,66 +39,46 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
     }
   }
   
-  pageIndex = 0;
-
-  // Afficher score
+  // Calcul du score
   score?: number;
   totalExercises?: number;
   correctExercises?: number;
 
-  // Pagination du chapter
-  getVirtualLength(chapter: Chapter): number {
-    const pages = chapter.Pages ?? [];
-    return pages.length + 2;
-  }
 
-  getPages(chapter: Chapter) {
-    return chapter.Pages ?? [];
-  }
+    nextPage(chapter: Chapter) {
 
-  getCurrentPage(chapter: Chapter) {
-    return chapter.Pages?.[this.pageIndex - 1];
-  }
+      const moved =
+        this.chapterNavigatorService.next(chapter);
 
-  nextPage(chapter: Chapter){
-    if(this.pageIndex < this.getVirtualLength(chapter) - 1){
-      this.pageIndex++;
-
-      if(this.isConclusion(chapter) && this.authService.isLogged()){
-        this.userExerciseService
-        .getChapterScore(chapter.id_chapter)
-        .subscribe(res => {
-          this.score = res.percentage;
-          this.totalExercises = res.total;
-          this.correctExercises = res.correct;
-
-          setTimeout(() => {
-            this.updateScoreChart();
-          })
-        });
+      if (
+        moved &&
+        this.chapterNavigatorService.isConclusion(chapter) &&
+        this.authService.isLogged()
+      ) {
+        this.loadScore(chapter);
       }
     }
+
+  loadScore(chapter: Chapter): void {
+
+  this.userExerciseService
+    .getChapterScore(chapter.id_chapter)
+    .subscribe(res => {
+
+      this.score = res.percentage;
+      this.totalExercises = res.total;
+      this.correctExercises = res.correct;
+
+      setTimeout(() => this.updateScoreChart());
+    });
   }
 
-  isContentPage(chapter: Chapter){
-    return this.pageIndex > 0 && this.pageIndex <= this.getPages(chapter).length;
-  }
-
-  isConclusion(chapter: Chapter){
-    return this.pageIndex === this.getPages(chapter).length + 1;
-  }
-
-  prevPage(){
-    if(this.pageIndex > 0){
-      this.pageIndex--;
-    }
-  }
 
   // Donner le feedback selon la réponse
-  selectedAnswers: { [pageId: number ]: number | null } = {};
   showFeedback: { [pageId: number ]: boolean } = {};
   isCorrect: { [pageId: number ]: boolean } = {};
 
+  
   // Afficher la vidéo
   getYoutubeId(url: string): string | null {
     const regExp = /(?:youtube\.com.*v=|youtu\.be\/)([^&?/]+)/;
@@ -112,141 +95,56 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
 
   // ---------- Question à réponse unique 
   validateUnique(page: Page){
-    if(!page.Exercise || page.Exercise.type !== "UNIQUE") return;
-
     const pageId = page.id_page;
     this.showFeedback[pageId] = true;
+    const correct =
+      this.chapterExercisesService.validateUnique(page);
 
-    const selectedId = this.selectedAnswers[pageId];
-    const selectedResponse = page.Exercise.UniqueResponses?.find(
-      (u: UniqueResponses) => u.id_response === selectedId
-    );
+    this.isCorrect[pageId] = correct;
 
-    this.isCorrect[pageId] = selectedResponse?.is_correct ?? false;
-
-    // Enregistrer le résultat seulement si utilisateur connecté 
     if(this.authService.isLogged()){
       this.userExerciseService
-        .saveResult(pageId, this.isCorrect[pageId])
+        .saveResult(pageId, correct)
         .subscribe();
     }
   }
 
   // ---------- Question key-pairs
-  pairsCache: { [pageId: number]: Pairs[] } = {};
-
-  pairsState: {
-    [pageId: number]: {
-      currentSelection: Pairs[],
-      matchedIds: Set<number>,
-      wrongIds: Set<number>
-    }
-  } = {};
-
-  getPairsState(pageId: number) {
-    if (!this.pairsState[pageId]) {
-      this.pairsState[pageId] = {
-        currentSelection: [],
-        matchedIds: new Set(),
-        wrongIds: new Set()
-      };
-    }
-    return this.pairsState[pageId];
-  }
-
-  getShuffledPairs(page: Page): Pairs[] {
-    const pageId = page.id_page;
-    if (!this.pairsCache[pageId]) {
-      this.pairsCache[pageId] = page.Exercise?.Pairs?.sort(() => Math.random() - 0.5) ?? [];
-    }
-    return this.pairsCache[pageId];
-  }
-
   selectPairs(item: Pairs, page: Page) {
-    const pageId = page.id_page;
-    const state = this.getPairsState(pageId);
+    const completed =
+      this.chapterExercisesService.selectPair(item, page);
 
-    if (state.matchedIds.has(item.id_response)) return;
-
-    state.currentSelection.push(item);
-
-    if (state.currentSelection.length < 2) return;
-
-    const [a, b] = state.currentSelection;
-
-    if (a.pair_key === b.pair_key) {
-      state.matchedIds.add(a.id_response);
-      state.matchedIds.add(b.id_response);
-      this.checkPairsCompleted(page);
-    } else {
-      state.wrongIds.add(a.id_response);
-      state.wrongIds.add(b.id_response);
-
-      setTimeout(() => {
-        state.wrongIds.delete(a.id_response);
-        state.wrongIds.delete(b.id_response);
-      }, 800);
+    if (!completed) {
+      return;
     }
-
-    state.currentSelection = [];
-  }
-
-  checkPairsCompleted(page: Page) {
     const pageId = page.id_page;
-    const state = this.getPairsState(pageId);
+    this.showFeedback[pageId] = true;
+    this.isCorrect[pageId] = true;
+    if (this.authService.isLogged()) {
 
-    const total = page.Exercise?.Pairs?.length ?? 0;
-
-    if (state.matchedIds.size === total) {
-      this.showFeedback[pageId] = true;
-      this.isCorrect[pageId] = true;
-
-      if (this.authService.isLogged()) {
-        this.userExerciseService
-          .saveResult(pageId, true)
-          .subscribe();
-      }
+      this.userExerciseService
+        .saveResult(pageId, true)
+        .subscribe();
     }
   }
 
   // ---------- Question put in order
-  orderCache: { [pageId: number]: PutInOrders[] } = {};
-
-  getOrderItems(page: Page): PutInOrders[] {
-    const pageId = page.id_page;
-    if (!this.orderCache[pageId]) {
-      this.orderCache[pageId] = [...(page.Exercise?.PutInOrders ?? [])]
-      .sort((a, b) => a.mixed_order - b.mixed_order);
-    }
-    return this.orderCache[pageId];
-  }
-
   drop(event: CdkDragDrop<PutInOrders[]>, page: Page) {
-    const list = this.getOrderItems(page);
-    moveItemInArray(list, event.previousIndex, event.currentIndex);
-
-    this.getOrderItems(page);
+    this.chapterExercisesService.moveOrderItem(page, event.previousIndex, event.currentIndex);
   }
 
   validateOrder(page: Page){
     const pageId = page.id_page;
     this.showFeedback[pageId] = true;
-    const current = this.getOrderItems(page).map(i => i.id_response);
-    const correct = [...(page.Exercise?.PutInOrders?? [])]
-    .sort((a,b) => a.correct_order - b.correct_order)
-    .map(i => i.id_response);
+    const correct = this.chapterExercisesService.validateOrder(page);
+    this.isCorrect[pageId] = correct;
 
-    this.isCorrect[pageId] = 
-    JSON.stringify(current) === JSON.stringify(correct);
-
-    // Enregistrer le résultat seulement si utilisateur connecté
     if(this.authService.isLogged()){
       this.userExerciseService
-        .saveResult(pageId, this.isCorrect[pageId])
+        .saveResult(pageId, correct)
         .subscribe();
-    }
+    }    
   }
-
 
 
   // Envoi des données
@@ -254,63 +152,35 @@ export class ChapterDetailComponent implements OnInit, AfterViewInit {
     map(data => data['chapter'])
   );
 
+
+
   // Graphique du score
   @ViewChild('scoreChart') scoreChart!: ElementRef<HTMLCanvasElement>;
-  scoreChartInstance?: Chart;
 
-  ngAfterViewInit(): void {
-
-  }
-
-  updateScoreChart() {
-    if (!this.scoreChart?.nativeElement) return;
-    if(this.score === undefined || this.correctExercises === undefined || this.totalExercises === undefined) return;
-
-    const correct = this.correctExercises;
-    const total = this.totalExercises;
-    const incorrect = Math.max(total - correct, 0);
-
-    const data = {
-      labels: ['Correct', 'Incorrect'],
-      datasets: [
-        {
-          data: [correct, incorrect],
-          backgroundColor: ['#4caf50', '#f44336'],
-        }
-      ]
+  updateScoreChart(): void {
+    if(
+      !this.scoreChart?.nativeElement ||
+      this.correctExercises === undefined ||
+      this.totalExercises === undefined
+    ) {
+      return;
     }
 
-    if(this.scoreChartInstance){
-      this.scoreChartInstance.data = data;
-      this.scoreChartInstance.update();
-    } else {
-      this.scoreChartInstance = new Chart(this.scoreChart.nativeElement, {
-        type: 'doughnut',
-        data,
-        options: {
-          responsive: true,
-          plugins: {
-            legend: {
-              position: 'bottom',
-            },
-            tooltip: {
-              enabled: true
-            }
-          }
-        }
-      });
-    }
-  }
-
-  
-    
+    this.scoreChartService.render(
+      this.scoreChart.nativeElement,
+      this.correctExercises,
+      this.totalExercises
+    );
+}
 
   
 
+  ngOnInit(): void {
+    this.chapterNavigatorService.reset();
+  }
 
-
-
-
-  ngOnInit(): void {}
+  ngOnDestroy(): void {
+    this.scoreChartService.destroy();
+  }
 
 }
