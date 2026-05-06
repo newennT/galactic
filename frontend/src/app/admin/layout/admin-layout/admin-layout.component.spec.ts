@@ -1,17 +1,16 @@
 import { ComponentFixture } from "@angular/core/testing";
-import { NotFoundComponent } from "./not-found.component";
+import { AdminLayoutComponent } from "./admin-layout.component";
 import { TestBed } from "@angular/core/testing";
 
-describe('NotFoundComponent', () => {
-
-    let component: NotFoundComponent;
-    let fixture: ComponentFixture<NotFoundComponent>;
+describe('AdminLayoutComponent', () => {
+    let component: AdminLayoutComponent;
+    let fixture: ComponentFixture<AdminLayoutComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [NotFoundComponent],
+            declarations: [AdminLayoutComponent],
         }).compileComponents();
-        fixture = TestBed.createComponent(NotFoundComponent);
+        fixture = TestBed.createComponent(AdminLayoutComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
     });

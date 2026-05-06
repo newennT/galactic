@@ -1,20 +1,19 @@
 import { ComponentFixture } from "@angular/core/testing";
-import { NotFoundComponent } from "./not-found.component";
+import { MainLayoutComponent } from "./main-layout.component";
 import { TestBed } from "@angular/core/testing";
 
-describe('NotFoundComponent', () => {
-
-    let component: NotFoundComponent;
-    let fixture: ComponentFixture<NotFoundComponent>;
+describe('MainLayoutComponent', () => {
+    let component: MainLayoutComponent;
+    let fixture: ComponentFixture<MainLayoutComponent>;
 
     beforeEach(async () => {
         await TestBed.configureTestingModule({
-            declarations: [NotFoundComponent],
+            declarations: [MainLayoutComponent],
         }).compileComponents();
-        fixture = TestBed.createComponent(NotFoundComponent);
+        fixture = TestBed.createComponent(MainLayoutComponent);
         component = fixture.componentInstance;
         fixture.detectChanges();
-    });
+    })
     it('should create', () => {
         expect(component).toBeTruthy();
     });
