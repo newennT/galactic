@@ -174,9 +174,14 @@ export class AdminExerciseFormService {
     formValue.pages.forEach((page: any) => {
       if (page.type === 'EXERCISE') {
       const hasMedia = !!page.exercise.media_url;
-      page.exercise.media_url = hasMedia ? page.exercise.media_url : null;
-      page.exercise.media_type = hasMedia ? page.exercise.media_type : null;
-    }
+        if (hasMedia) {
+          page.exercise.media_url = page.exercise.media_url;
+          page.exercise.media_type = page.exercise.media_type;
+        } else {
+          page.exercise.media_url = null;
+          page.exercise.media_type = null;
+        }    
+      }
 
       if (page.type === 'EXERCISE' && page.exercise.type === 'ORDER') {
         const segments = page.exercise.orderText
