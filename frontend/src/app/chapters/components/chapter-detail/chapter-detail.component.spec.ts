@@ -151,8 +151,7 @@ describe('ChapterDetailComponent', () => {
   it('should validate unique exercise through service', () => {
     exercisesMock.validateUnique.mockReturnValue(true);
     component.validateUnique({ id_page: 1 } as any);
-    expect(exercisesMock.validateUnique)
-      .toHaveBeenCalled();
+    expect(exercisesMock.validateUnique).toHaveBeenCalled();
   });
 
   it('should call saveResult when user is logged in (validateUnique)', () => {
@@ -172,8 +171,7 @@ describe('ChapterDetailComponent', () => {
       { id_page: 1 } as any
     );
 
-    expect(exercisesMock.selectPair)
-      .toHaveBeenCalled();
+    expect(exercisesMock.selectPair).toHaveBeenCalled();
   });
 
   it('should call saveResult when pair exercise is completed and user is logged', () => {
@@ -211,8 +209,7 @@ describe('ChapterDetailComponent', () => {
       { id_page: 1 } as any
     );
 
-    expect(exercisesMock.moveOrderItem)
-      .toHaveBeenCalled();
+    expect(exercisesMock.moveOrderItem).toHaveBeenCalled();
   });
 
   it('should validate order via service', () => {

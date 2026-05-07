@@ -11,16 +11,16 @@
                 <h1>{{chapter.title}}</h1>
                 <h2>{{chapter.title_fr}}</h2>
                 <p class="chapter-abstract">{{chapter.abstract}}</p>
-                <button mat-raised-button color="primary" (click)="nextPage(chapter)" id="btn-start">Commencer</button>
+                <button mat-raised-button color="primary" (click)="adminChapterNavigatorService.next(chapter)" id="btn-start">Commencer</button>
             </div>
 
             <div class="contenu-chapitre">
                 
-                <ng-container *ngIf="isContentPage(chapter)">
+                <ng-container *ngIf="adminChapterNavigatorService.isContent(chapter)">
                 <p class="chapter-title">{{ chapter.title }}</p>
 
 
-                    <ng-container *ngIf="getCurrentPage(chapter) as page">
+                    <ng-container *ngIf="adminChapterNavigatorService.currentPage(chapter) as page">
 
                         <!-- LESSON -->
                         <div *ngIf="page.type === 'LESSON' && page.Lesson" class="page">
@@ -28,8 +28,8 @@
                             <div class="lesson-content" [innerHTML]="page.Lesson.content"></div>
 
                             <div class="buttons">
-                                <a (click)="prevPage()">Retour</a>
-                                <button mat-raised-button color="primary" id="btn-lesson-next" (click)="nextPage(chapter)">Suivant</button>
+                                <a (click)="adminChapterNavigatorService.prev()">Retour</a>
+                                <button mat-raised-button color="primary" id="btn-lesson-next" (click)="adminChapterNavigatorService.next(chapter)">Suivant</button>
                             </div>
                             
                         </div>
@@ -43,11 +43,11 @@
                             <div *ngIf="page.Exercise.type === 'PAIRS'">
                                 <ul class="pairs-list">
                                     <li 
-                                        *ngFor="let pair of getShuffledPairs(page)"
+                                        *ngFor="let pair of adminChapterExercisesService.getShuffledPairs(page)"
                                         (click)="selectPairs(pair, page)"
-                                        [class.selected]="getPairsState(page.id_page).currentSelection.includes(pair)"
-                                        [class.correct]="getPairsState(page.id_page).matchedIds.has(pair.id_response)"
-                                        [class.wrong]="getPairsState(page.id_page).wrongIds.has(pair.id_response)"
+                                        [class.selected]="adminChapterExercisesService.getPairsState(page.id_page).currentSelection.includes(pair)"
+                                        [class.correct]="adminChapterExercisesService.getPairsState(page.id_page).matchedIds.has(pair.id_response)"
+                                        [class.wrong]="adminChapterExercisesService.getPairsState(page.id_page).wrongIds.has(pair.id_response)"
                                     >
                                         {{ pair.content }}
                                     </li>
@@ -59,8 +59,8 @@
                                     </div>
                                     
                                     <div class="buttons">
-                                        <a (click)="prevPage()">Retour</a>
-                                        <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                        <a (click)="adminChapterNavigatorService.prev()">Retour</a>
+                                        <button (click)="adminChapterNavigatorService.next(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
                                     </div>
                                 </div>
 
@@ -73,12 +73,12 @@
                                     cdkDropList
                                     (cdkDropListDropped)="drop($event, page)"
                                     class="order-list"
-                                    [cdkDropListData]="getOrderItems(page)"
+                                    [cdkDropListData]="adminChapterExercisesService.getOrderItems(page)"
                                     [cdkDropListDisabled]="showFeedback[page.id_page]"
                                 >
 
                                     <div
-                                        *ngFor="let item of getOrderItems(page)"
+                                        *ngFor="let item of adminChapterExercisesService.getOrderItems(page)"
                                         cdkDrag
                                         class="order-item"
                                     >
@@ -108,8 +108,8 @@
                                     </div>
                                     
                                     <div class="buttons">
-                                        <a (click)="prevPage()">Retour</a>
-                                        <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                        <a (click)="adminChapterNavigatorService.prev()">Retour</a>
+                                        <button (click)="adminChapterNavigatorService.next(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
                                     </div>
                                     
                                 </div>
@@ -125,7 +125,7 @@
                                                 type="radio" 
                                                 [name]="'answer_' + page.id_page"
                                                 [value]="unique.id_response"
-                                                [(ngModel)]="selectedAnswers[page.id_page]" 
+                                                [(ngModel)]="adminChapterExercisesService.selectedAnswers[page.id_page]" 
                                             />
                                             {{ unique.content }}
                                         </div>
@@ -135,7 +135,7 @@
                                         *ngIf="!showFeedback[page.id_page]"
                                         mat-raised-button color="primary" 
                                         type="submit" 
-                                        [disabled]="!selectedAnswers[page.id_page]" 
+                                        [disabled]="!adminChapterExercisesService.selectedAnswers[page.id_page]" 
                                         class="btn-validate">Valider
                                     </button>
                                 </form>
@@ -150,8 +150,8 @@
                                     </div>
                                     
                                     <div class="buttons">
-                                        <a (click)="prevPage()">Retour</a>
-                                        <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                        <a (click)="adminChapterNavigatorService.prev()">Retour</a>
+                                        <button (click)="adminChapterNavigatorService.next(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
                                     </div>
                                     
                                 </div>
@@ -167,7 +167,7 @@
                 
             </div>
 
-            <div *ngIf="isConclusion(chapter)" class="page-conclusion">
+            <div *ngIf="adminChapterNavigatorService.isConclusion(chapter)" class="page-conclusion">
                 <h2>Bravo, chapitre terminé</h2>
 
                 <button mat-raised-button color="primary" id="btn-end" routerLink="/admin/chapters">Liste des chapitres</button>

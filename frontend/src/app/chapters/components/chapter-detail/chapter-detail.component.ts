@@ -45,19 +45,16 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
   correctExercises?: number;
 
 
-    nextPage(chapter: Chapter) {
-
-      const moved =
-        this.chapterNavigatorService.next(chapter);
-
-      if (
-        moved &&
-        this.chapterNavigatorService.isConclusion(chapter) &&
-        this.authService.isLogged()
-      ) {
-        this.loadScore(chapter);
-      }
+  nextPage(chapter: Chapter) {
+    const moved = this.chapterNavigatorService.next(chapter);
+    if (
+      moved &&
+      this.chapterNavigatorService.isConclusion(chapter) &&
+      this.authService.isLogged()
+    ) {
+      this.loadScore(chapter);
     }
+  }
 
   loadScore(chapter: Chapter): void {
 
@@ -83,8 +80,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
   validateUnique(page: Page){
     const pageId = page.id_page;
     this.showFeedback[pageId] = true;
-    const correct =
-      this.chapterExercisesService.validateUnique(page);
+    const correct = this.chapterExercisesService.validateUnique(page);
 
     this.isCorrect[pageId] = correct;
 
@@ -97,8 +93,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
 
   // ---------- Question key-pairs
   selectPairs(item: Pairs, page: Page) {
-    const completed =
-      this.chapterExercisesService.selectPair(item, page);
+    const completed = this.chapterExercisesService.selectPair(item, page);
 
     if (!completed) {
       return;
