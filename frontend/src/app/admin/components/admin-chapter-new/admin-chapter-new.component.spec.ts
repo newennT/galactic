@@ -16,6 +16,7 @@ import { MatFormFieldModule } from "@angular/material/form-field";
 import { MatInputModule } from "@angular/material/input";
 import { EditorModule } from "@tinymce/tinymce-angular";
 import { NoopAnimationsModule } from "@angular/platform-browser/animations";
+import { RouterTestingModule } from "@angular/router/testing";
 
 describe('AdminChapterNewComponent', () => {
     let component: AdminChapterNewComponent;

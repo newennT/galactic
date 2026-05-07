@@ -50,10 +50,11 @@ export class AdminUserNewComponent implements OnInit {
 
   onSubmit(): void {
     if (this.userForm.invalid) {
+      this.userForm.markAllAsTouched();
       return;
     }
 
-    const data = this.userForm.value;
+    const data = this.userForm.getRawValue();
 
     if (this.isEditMode){
       this.adminUsersService.updateUser(this.userId, data).subscribe(() => {
