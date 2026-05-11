@@ -1,7 +1,19 @@
 // routes/level.js
 
-const { models: { Level } } = require('../db/sequelize')
-const { models: { Chapter } } = require('../db/sequelize')
+const models = require("../db/models");
+
+const {
+  Chapter,
+  Level,
+  Page,
+  Lesson,
+  Exercise,
+  UniqueResponse,
+  Pairs,
+  PutInOrder
+} = models;
+
+const { sequelize } = require("../db/sequelize");
 const { ValidationError } = require('sequelize')
 const { UniqueConstraintError } = require('sequelize')
 const { Op } = require("sequelize");

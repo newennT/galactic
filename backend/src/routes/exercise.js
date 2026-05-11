@@ -1,9 +1,19 @@
 // routes/exercise.js
 
-const { models: { Exercise } } = require('../db/sequelize')
-const { models: { UniqueResponse } } = require('../db/sequelize')
-const { models: { Pairs } } = require('../db/sequelize')
-const { models: { PutInOrder } } = require('../db/sequelize')
+const models = require("../db/models");
+
+const {
+  Chapter,
+  Level,
+  Page,
+  Lesson,
+  Exercise,
+  UniqueResponse,
+  Pairs,
+  PutInOrder
+} = models;
+
+const { sequelize } = require("../db/sequelize");
 const { ValidationError } = require('sequelize')
 const { UniqueConstraintError } = require('sequelize')
 const { Op } = require("sequelize");

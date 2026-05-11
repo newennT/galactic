@@ -1,8 +1,21 @@
 // routes/chapter.js
 
 const auth = require('../auth/auth');
-const { models: { User }, models } = require('../db/sequelize');
-const { models: { Chapter } } = require('../db/sequelize');
+const models = require("../db/models");
+
+const {
+  Chapter,
+  Level,
+  Page,
+  Lesson,
+  Exercise,
+  UniqueResponse,
+  Pairs,
+  PutInOrder,
+  User
+} = models;
+
+const { sequelize } = require("../db/sequelize");
 const { ValidationError } = require('sequelize');
 const { UniqueConstraintError } = require('sequelize');
 

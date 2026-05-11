@@ -5,16 +5,14 @@ console.log("Node backend starting...");
 const express = require("express");
 const morgan = require("morgan");
 const cors = require('cors')
-const sequelize = require("./src/db/sequelize");
+const initDb = require("./src/db/initDb");
 const favicon = require("serve-favicon");
-const bodyParser = require("body-parser");
-
 const app = express();
+const path = require("path");
+const bodyParser = require("body-parser");
 
 
 // Middlewares
-
-
 app
 .use(favicon(__dirname + "/favicon.ico"))
 .use(morgan("dev"))
@@ -25,12 +23,6 @@ app
    }
 ))
 .options('*', cors());
-
-
-
-
-// Appel bdd
-sequelize.initDb();
 
 
 // Routes
@@ -59,7 +51,4 @@ app.use((req, res) => {
   res.status(404).json({ message: "URL not found" });
 });
 
-// Server
-app.listen(3000, () => {
-  console.log("Server listening on port 3000");
-});
+module.exports = app;

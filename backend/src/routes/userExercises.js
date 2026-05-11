@@ -1,6 +1,20 @@
 const { raw } = require('body-parser');
 const auth = require('../auth/auth');
-const { models } = require('../db/sequelize');
+const models = require("../db/models");
+
+const {
+  Chapter,
+  Level,
+  Page,
+  Lesson,
+  Exercise,
+  UniqueResponse,
+  Pairs,
+  PutInOrder,
+  User
+} = models;
+
+const { sequelize } = require("../db/sequelize");
 
 module.exports = (app) => {
   app.get('/api/user-exercises/chapter/:id', auth, async (req, res) => {

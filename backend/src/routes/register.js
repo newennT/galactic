@@ -1,7 +1,20 @@
 // routes/register.js
 
-const { models: { User } } = require("../db/sequelize");
-const bcrypt = require("bcrypt");
+const models = require("../db/models");
+
+const {
+  Chapter,
+  Level,
+  Page,
+  Lesson,
+  Exercise,
+  UniqueResponse,
+  Pairs,
+  PutInOrder,
+  User
+} = models;
+
+const { sequelize } = require("../db/sequelize");const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const privatekey = require("../auth/private_key");
 
