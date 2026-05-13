@@ -1,48 +1,76 @@
-const { sequelize, Chapter, Level, Page, Lesson, Exercise, UniqueResponse, Pairs, PutInOrder } = require('../db/models');
-
 class ChapterService {
-    static async getAll() {
-        return Chapter.findAll({
-            order: ['order'],
-            include: [{ model: Level }]
+    constructor({
+        sequelize,
+        Chapter,
+        Level,
+        Page,
+        Lesson,
+        Exercise,
+        UniqueResponse,
+        Pairs,
+        PutInOrder,
+        lessonService,
+        exerciseService,
+    }) {
+        this.sequelize = sequelize;
+
+        this.Chapter = Chapter;
+        this.Level = Level;
+        this.Page = Page;
+        this.Lesson = Lesson;
+        this.Exercise = Exercise;
+        this.UniqueResponse = UniqueResponse;
+        this.Pairs = Pairs;
+        this.PutInOrder = PutInOrder;
+
+        this.lessonService = lessonService;
+        this.exerciseService = exerciseService;
+    }
+
+    async getAll() {
+        return this.Chapter.findAll({
+            order: ["order"],
+            include: [{ model: this.Level }],
         });
     }
 
-    static async getById(id) {
-        return Chapter.findByPk(id, {
-        order: ['order'],
-        include: [
-            { model: Level },
-            {
-            model: Page,
+    async getById(id) {
+        return this.Chapter.findByPk(id, {
+            order: ["order"],
             include: [
-                { model: Lesson },
+                { model: this.Level },
                 {
-                model: Exercise,
-                include: [
-                    { model: UniqueResponse },
-                    { model: Pairs },
-                    { model: PutInOrder },
-                ],
+                    model: this.Page,
+                    include: [
+                        { model: this.Lesson },
+                        {
+                            model: this.Exercise,
+                            include: [
+                                { model: this.UniqueResponse },
+                                { model: this.Pairs },
+                                { model: this.PutInOrder },
+                            ],
+                        },
+                    ],
                 },
             ],
-            },
-        ],
         });
     }
 
-    static async delete(id) {
-        const chapter = await Chapter.findByPk(id);
-        if (!chapter) { return null; }
-        await Chapter.destroy({ where: { id_chapter: id } });
+    async delete(id) {
+        const chapter = await this.Chapter.findByPk(id);
+        if (!chapter) return null;
+
+        await this.Chapter.destroy({ where: { id_chapter: id } });
         return chapter;
     }
 
-    static async reorder(updates) {
-        const t = await sequelize.transaction();
+    async reorder(updates) {
+        const t = await this.sequelize.transaction();
+
         try {
             for (const item of updates) {
-                await Chapter.update(
+                await this.Chapter.update(
                     { order: item.order },
                     {
                         where: { id_chapter: item.id_chapter },
@@ -50,33 +78,35 @@ class ChapterService {
                     }
                 );
             }
+
             await t.commit();
             return true;
-        } catch (error) {
+        } catch (err) {
             await t.rollback();
-            throw error;
+            throw err;
         }
     }
 
-    static async createFull(chapterData, pages) {
-        const t = await sequelize.transaction();
+    async createFull(chapterData, pages) {
+        const t = await this.sequelize.transaction();
 
         try {
-            const chapter = await Chapter.create(
+            const chapter = await this.Chapter.create(
                 {
-                title: chapterData.title,
-                title_fr: chapterData.title_fr,
-                abstract: chapterData.abstract,
-                isPublished: chapterData.isPublished ?? false,
-                order: chapterData.order ?? 0,
-                id_level: chapterData.id_level,
+                    title: chapterData.title,
+                    title_fr: chapterData.title_fr,
+                    abstract: chapterData.abstract,
+                    isPublished: chapterData.isPublished ?? false,
+                    order: chapterData.order ?? 0,
+                    id_level: chapterData.id_level,
                 },
                 { transaction: t }
             );
 
             for (let i = 0; i < pages.length; i++) {
                 const pageData = pages[i];
-                const page = await Page.create(
+
+                const page = await this.Page.create(
                     {
                         type: pageData.type,
                         order_index: i + 1,
@@ -85,29 +115,28 @@ class ChapterService {
                     { transaction: t }
                 );
 
-                if (pageData.type === 'LESSON') {
-                    await LessonService.create(page, pageData.lesson, t);
+                if (pageData.type === "LESSON") {
+                    await this.lessonService.create(page, pageData.lesson, t);
                 }
 
-                if (pageData.type === 'EXERCISE') {
-                    await ExerciseService.create(page, pageData.exercise, t);
+                if (pageData.type === "EXERCISE") {
+                    await this.exerciseService.create(page, pageData.exercise, t);
                 }
             }
 
             await t.commit();
             return chapter;
-
-        } catch (error) {
+        } catch (err) {
             await t.rollback();
-            throw error;
+            throw err;
         }
     }
 
-    static async replaceFull(id, chapterData, pages) {
-        const t = await sequelize.transaction();
+    async replaceFull(id, chapterData, pages) {
+        const t = await this.sequelize.transaction();
 
         try {
-            const chapter = await Chapter.findByPk(id, { transaction: t });
+            const chapter = await this.Chapter.findByPk(id, { transaction: t });
 
             if (!chapter) {
                 await t.rollback();
@@ -128,126 +157,73 @@ class ChapterService {
 
             await this.deleteChapterStructure(id, t);
             await this.createPages(id, pages, t);
+
             await t.commit();
             return chapter;
-
         } catch (err) {
             await t.rollback();
             throw err;
         }
     }
 
-    static async deleteChapterStructure(id, t) {
-        const oldPages = await Page.findAll({
+    async deleteChapterStructure(id, t) {
+        const oldPages = await this.Page.findAll({
             where: { id_chapter: id },
-            include: [Exercise, Lesson],
+            include: [this.Exercise, this.Lesson],
             transaction: t,
         });
 
         for (const page of oldPages) {
-            await UniqueResponse.destroy({ where: { id_page: page.id_page }, transaction: t });
-            await Pairs.destroy({ where: { id_page: page.id_page }, transaction: t });
-            await PutInOrder.destroy({ where: { id_page: page.id_page }, transaction: t });
-            await Exercise.destroy({ where: { id_page: page.id_page }, transaction: t });
-            await Lesson.destroy({ where: { id_page: page.id_page }, transaction: t });
+            await this.UniqueResponse.destroy({ where: { id_page: page.id_page }, transaction: t });
+            await this.Pairs.destroy({ where: { id_page: page.id_page }, transaction: t });
+            await this.PutInOrder.destroy({ where: { id_page: page.id_page }, transaction: t });
+            await this.Exercise.destroy({ where: { id_page: page.id_page }, transaction: t });
+            await this.Lesson.destroy({ where: { id_page: page.id_page }, transaction: t });
             await page.destroy({ transaction: t });
         }
     }
 
-    static async createPages(chapterId, pages, t) {
-
+    async createPages(chapterId, pages, t) {
         for (let i = 0; i < pages.length; i++) {
             const pageData = pages[i];
-            const page = await Page.create(
+
+            const page = await this.Page.create(
                 {
-                type: pageData.type,
-                order_index: i + 1,
-                id_chapter: chapterId,
+                    type: pageData.type,
+                    order_index: i + 1,
+                    id_chapter: chapterId,
                 },
                 { transaction: t }
             );
 
-            if (pageData.type === 'LESSON') {
-                await Lesson.create(
-                {
-                    id_page: page.id_page,
-                    title: pageData.lesson?.title || "",
-                    content: pageData.lesson?.content || "",
-                },
-                { transaction: t, hooks: false }
+            if (pageData.type === "LESSON") {
+                await this.Lesson.create(
+                    {
+                        id_page: page.id_page,
+                        title: pageData.lesson?.title || "",
+                        content: pageData.lesson?.content || "",
+                    },
+                    { transaction: t, hooks: false }
                 );
             }
 
-            if (pageData.type === 'EXERCISE') {
+            if (pageData.type === "EXERCISE") {
                 await this.createExercise(page, pageData.exercise || {}, t);
             }
         }
     }
 
-    static async createExercise(page, ex, t) {
-        await Exercise.create(
+    async createExercise(page, ex, t) {
+        await this.Exercise.create(
             {
                 id_page: page.id_page,
                 question: ex.question || "",
                 feedback: ex.feedback || "",
                 type: ex.type || "UNIQUE",
-                media_url: ex.media_url || null,
-                media_type: ex.media_type || null,
             },
             { transaction: t, hooks: false }
         );
-
-        if (ex.type === 'UNIQUE') {
-            for (const r of ex.uniqueResponses || []) {
-                await UniqueResponse.create(
-                    {
-                        content: r.content,
-                        is_correct: r.is_correct,
-                        id_page: page.id_page,
-                    },
-                    { transaction: t, hooks: false }
-                );
-            }
-        }
-
-        if (ex.type === 'PAIRS') {
-            for (const p of ex.pairs || []) {
-                await Pairs.create(
-                    {
-                        content: p.content_left,
-                        pair_key: p.pair_key,
-                        id_page: page.id_page,
-                    },
-                    { transaction: t, hooks: false }
-                );
-
-                await Pairs.create(
-                    {
-                        content: p.content_right,
-                        pair_key: p.pair_key,
-                        id_page: page.id_page,
-                    },
-                    { transaction: t, hooks: false }
-                );
-            }
-        }
-
-        if (ex.type === 'ORDER') {
-            for (const s of ex.putInOrders || []) {
-                await PutInOrder.create(
-                {
-                    content: s.content,
-                    mixed_order: s.mixed_order,
-                    correct_order: s.correct_order,
-                    id_page: page.id_page,
-                },
-                { transaction: t, hooks: false }
-                );
-            }
-        }
     }
-
-
 }
 
 module.exports = ChapterService;
