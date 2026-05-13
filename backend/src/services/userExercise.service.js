@@ -63,5 +63,6 @@ async function upsertUserExercise(id_user, id_page, is_correct) {
 module.exports = {
   getUserExercisesByChapter,
   getChapterScore,
-  upsertUserExercise
+  upsertUserExercise,
+  computeScore
 };
