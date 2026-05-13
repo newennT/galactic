@@ -1,6 +1,7 @@
 // routes/chapter.js
 
 const models = require("../db/models");
+const ChapterController = require("../controllers/chapter.controller");
 
 const {
   Chapter,
@@ -19,174 +20,15 @@ const { UniqueConstraintError } = require('sequelize');
 const auth = require('../auth/auth');
 
 module.exports = (app) => {
-    // Récupérer la liste des chapitres
-    app.get("/api/chapters", (req, res) => {
-        Chapter.findAll({
-            order: ["order"],
-            include: [
-                {
-                    model: Level,
-                }
-            ]
-        })
-            .then(chapters => {
-                const message = "La liste des chapitres a été récupérée"
-                res.json({ message, data: chapters })
-            })
-            .catch(error => {
-                const message = "La liste des chapitres n'a pas pu'être récupérée. Réessayez dans quelques instants."
-                res.status(500).json({ message, data: error })
-            })
-    });
+    app.get('/api/chapters', ChapterController.getAll);
 
-    // Récupérer un chapitre
-    app.get("/api/chapters/:id", (req, res) => {
-        Chapter.findByPk(req.params.id, 
-            {
-            order: ["order"],
-            include: [
-                {
-                    model: Level,
-                },
-                {
-                    model: Page,
-                    include: [
-                        {
-                            model: Lesson
-                        },
-                        {
-                            model: Exercise,
-                            include: [
-                                {
-                                    model: UniqueResponse
-                                },
-                                {
-                                    model: Pairs
-                                },
-                                {
-                                    model: PutInOrder
-                                }
-                            ]
-                        }
-                    ]
-                }
-            ]
-        })
-            .then(chapter => {
-                if(chapter === null) {
-                    const message = "Le chapitre demandé n'a pas été trouvé"
-                    return res.status(404).json({ message })
-                }
-                const message = "Un chapitre a bien été trouvé"
-                res.json({ message, data: chapter })
-            })
-            .catch(error => {
-                const message = "Le chapitre n'a pas pu'être trouvé. Réessayez dans quelques instants."
-                res.status(500).json({ message, data: error })
-            })
-    });
+    app.get('/api/chapters/:id', ChapterController.getById);
 
-    // Créer un chapitre
-    app.post("/api/chapters", (req, res) => {
-        Chapter.create(req.body)
-            .then(chapter => {
-                const message = `Le chapitre ${req.body.title} a bien été créé`
-                res.json({ message, data: chapter })
-            })
-            .catch(error => {
-                if(error instanceof ValidationError) {
-                    return res.status(400).json({ message: error.message, data: error })
-                }
-                if(error instanceof UniqueConstraintError) {
-                    return res.status(400).json({ message: error.message, data: error })
-                }
-                const message = "Le chapitre n'a pas pu être créé. Réessayez dans quelques instants."
-                res.status(500).json({ message, data: error })
-            })
-    });
+    app.delete('/api/chapters/:id', ChapterController.delete);
 
-    // Modifier un chapitre
-    app.put("/api/chapters/:id", (req, res) => {
-        const id = req.params.id;
-        Chapter.update(req.body, {
-            where: { id_chapter: id}
-        })
-        .then(_ => {
-            return Chapter.findByPk(id).then(chapter => {
-                if(chapter === null) {
-                    const message = "Le chapitre demandé n'a pas été trouvé. Réessayez avec un autre identifiant."
-                    return res.status(404).json({ message })
-                }
-                const message = `Le chapitre ${chapter.title} a bien été modifié`
-                res.json({message, data: chapter})
-            })
-        })
-        .catch(error => {
-            if(error instanceof ValidationError) {
-                return res.status(400).json({ message: error.message, data: error })
-            }
-            if(error instanceof UniqueConstraintError) {
-                return res.status(400).json({ message: error.message, data: error })
-            }
-            const message = "Le chapitre n'a pas pu être modifié. Réessayez dans quelques instants."
-            res.status(500).json({ message, data: error })
-        })
-    });
+    app.patch('/api/chapters/reorder', auth, ChapterController.reorder);
 
-    // Supprimer un chapitre
-    app.delete("/api/chapters/:id", (req, res) => {
-        Chapter.findByPk(req.params.id).then(chapter => {
-            if(chapter === null) {
-                const message = "Le chapitre demandé n'a pas été trouvé. Réessayez avec un autre identifiant."
-                return res.status(404).json({ message })
-            }
-            const chapterDeleted = chapter;
-            Chapter.destroy({
-                where: { id_chapter: chapter.id_chapter }
-            })
-            .then(_ => {
-                const message = `Le chapitre n°${chapterDeleted.id} a bien été supprimé`
-                res.json({message, data: chapterDeleted})
-            })
-        })
-        .catch(error => {
-            const message = "Le chapitre n'a pas pu'être supprimé. Réessayez dans quelques instants."
-            res.status(500).json({ message, data: error })
-        })
-    });
+    app.post('/api/chapters/full', ChapterController.createFull);
 
-    // Reorder les chapitres 
-    app.patch("/api/chapters/reorder", auth, async (req, res) => {
-
-        const updates = req.body; 
-        const t = await sequelize.transaction();
-
-        try {
-
-            for (const item of updates) {
-                await Chapter.update(
-                    { order: item.order },
-                    { 
-                        where: { id_chapter: item.id_chapter },
-                        transaction: t
-                    }
-                );
-            }
-
-            await t.commit();
-
-            res.json({
-                message: "Ordre des chapitres mis à jour avec succès"
-            });
-
-        } catch (error) {
-
-            await t.rollback();
-
-            res.status(500).json({
-                message: "Erreur lors de la mise à jour de l'ordre",
-                data: error
-            });
-        }
-    });
+    app.put('/api/chapters/:id/full', auth, ChapterController.replaceFull);
 }
