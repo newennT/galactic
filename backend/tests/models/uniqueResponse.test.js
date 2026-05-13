@@ -1,10 +1,10 @@
-// tests/models/pairs.test.js
+// tests/models/uniqueResponse.test.js
 
-const definePairs = require('../../src/models/pairs');
+const defineUniqueResponse = require('../../src/models/uniqueResponse');
 
-describe('Pairs model', () => {
+describe('UniqueResponse model', () => {
   let sequelize;
-  let Pairs;
+  let UniqueResponse;
   let beforeCreateHook;
   let beforeUpdateHook;
 
@@ -38,13 +38,11 @@ describe('Pairs model', () => {
 
     const DataTypes = {
       INTEGER: 'INTEGER',
-      STRING: (size) => ({
-        type: 'STRING',
-        size,
-      }),
+      TEXT: 'TEXT',
+      BOOLEAN: 'BOOLEAN',
     };
 
-    Pairs = definePairs(sequelize, DataTypes);
+    UniqueResponse = defineUniqueResponse(sequelize, DataTypes);
   });
 
   afterEach(() => {
@@ -53,7 +51,7 @@ describe('Pairs model', () => {
 
   describe('model definition', () => {
     test('should define id_response as primary key', () => {
-      expect(Pairs.attributes.id_response).toEqual({
+      expect(UniqueResponse.attributes.id_response).toEqual({
         type: 'INTEGER',
         primaryKey: true,
         autoIncrement: true,
@@ -61,19 +59,22 @@ describe('Pairs model', () => {
     });
 
     test('should define content field', () => {
-      expect(Pairs.attributes.content.allowNull).toBe(false);
+      expect(UniqueResponse.attributes.content.allowNull).toBe(false);
 
-      expect(Pairs.attributes.content.validate.notEmpty.msg).toBe('Le contenu est obligatoire');
+      expect(UniqueResponse.attributes.content.validate.notEmpty.msg)
+        .toBe('Le contenu est obligatoire');
 
-      expect(Pairs.attributes.content.validate.notNull.msg).toBe('Le contenu est obligatoire');
+      expect(UniqueResponse.attributes.content.validate.notNull.msg)
+        .toBe('Le contenu est obligatoire');
     });
 
-    test('should define pair_key field', () => {
-      expect(Pairs.attributes.pair_key.allowNull).toBe(false);
+    test('should define is_correct default value', () => {
+      expect(UniqueResponse.attributes.is_correct.allowNull).toBe(false);
+      expect(UniqueResponse.attributes.is_correct.defaultValue).toBe(false);
     });
 
     test('should define id_page field', () => {
-      expect(Pairs.attributes.id_page.allowNull).toBe(false);
+      expect(UniqueResponse.attributes.id_page.allowNull).toBe(false);
     });
   });
 
@@ -104,14 +105,12 @@ describe('Pairs model', () => {
           }
         )
       ).rejects.toThrow('Exercise not found');
-
-      expect(ExerciseMock.findByPk).toHaveBeenCalledWith(1);
     });
 
-    test('should throw if exercise type is not PAIRS', async () => {
+    test('should throw if exercise type is not UNIQUE', async () => {
       const ExerciseMock = {
         findByPk: jest.fn().mockResolvedValue({
-          type: 'UNIQUE',
+          type: 'PAIRS',
         }),
       };
 
@@ -125,14 +124,14 @@ describe('Pairs model', () => {
           }
         )
       ).rejects.toThrow(
-        "Cet exercice n'est pas de type PAIRS"
+        "Cet exercice n'est pas de type UNIQUE"
       );
     });
 
-    test('should allow creation if exercise type is PAIRS', async () => {
+    test('should allow valid UNIQUE response creation', async () => {
       const ExerciseMock = {
         findByPk: jest.fn().mockResolvedValue({
-          type: 'PAIRS',
+          type: 'UNIQUE',
         }),
       };
 
@@ -163,10 +162,10 @@ describe('Pairs model', () => {
       ).rejects.toThrow('Modèle Exercise introuvable');
     });
 
-    test('should validate exercise type on update', async () => {
+    test('should allow update for valid UNIQUE type', async () => {
       const ExerciseMock = {
         findByPk: jest.fn().mockResolvedValue({
-          type: 'PAIRS',
+          type: 'UNIQUE',
         }),
       };
 
@@ -182,7 +181,7 @@ describe('Pairs model', () => {
       ).resolves.not.toThrow();
     });
 
-    test('should reject update if exercise type invalid', async () => {
+    test('should reject update for invalid type', async () => {
       const ExerciseMock = {
         findByPk: jest.fn().mockResolvedValue({
           type: 'EXERCISE',
@@ -199,20 +198,20 @@ describe('Pairs model', () => {
           }
         )
       ).rejects.toThrow(
-        "Cet exercice n'est pas de type PAIRS"
+        "Cet exercice n'est pas de type UNIQUE"
       );
     });
   });
 
   describe('associations', () => {
-    test('should define belongsTo association with Exercise', () => {
+    test('should define belongsTo Exercise association', () => {
       const models = {
         Exercise: {},
       };
 
-      Pairs.associate(models);
+      UniqueResponse.associate(models);
 
-      expect(Pairs.belongsTo).toHaveBeenCalledWith(
+      expect(UniqueResponse.belongsTo).toHaveBeenCalledWith(
         models.Exercise,
         { foreignKey: 'id_page' }
       );

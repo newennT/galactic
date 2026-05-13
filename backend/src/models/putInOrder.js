@@ -38,23 +38,20 @@ module.exports = (sequelize, DataTypes) => {
         PutInOrder.belongsTo(models.Exercise, { foreignKey: 'id_page' });
     };
 
-    PutInOrder.beforeCreate(async (p) => {
-        const Exercise = sequelize.models.Exercise;
-        const exercise = await Exercise.findByPk(p.id_page);
-        if (!exercise) throw new Error("Exercice non trouvé");
-        if (exercise.type !== "ORDER") {
-        throw new Error("Impossible de créer un PutInOrder sur un exercice qui n'est pas de type ORDER");
-        }
-    });
+    async function validatePutInOrderExercise(Exercise, id_page) {
+        const exercise = await Exercise.findByPk(id_page);
+        if (!exercise) throw new Error("Exercise not found");
+        if (exercise.type !== 'ORDER') throw new Error("Cet exercice n'est pas de type ORDER");
+    }
 
-    PutInOrder.beforeUpdate(async (p) => {
-        const Exercise = sequelize.models.Exercise;
-        const exercise = await Exercise.findByPk(p.id_page);
-        if (!exercise) throw new Error("Exercice non trouvé");
-        if (exercise.type !== "ORDER") {
-        throw new Error("Impossible de modifier un PutInOrder sur un exercice qui n'est pas de type ORDER");
-        }
-    });
+    async function validatePutInOrderHook(putInOrder, options) {
+        const Exercise = options?.models?.Exercise || sequelize.models.Exercise;
+        if (!Exercise) { throw new Error("Modèle Exercise introuvable"); }
+        await validatePutInOrderExercise(Exercise, putInOrder.id_page);
+    }
+
+    PutInOrder.beforeCreate(validatePutInOrderHook);
+    PutInOrder.beforeUpdate(validatePutInOrderHook);
 
     return PutInOrder;
 }

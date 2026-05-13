@@ -36,23 +36,20 @@ module.exports = (sequelize, DataTypes) => {
         UniqueResponse.belongsTo(models.Exercise, { foreignKey: 'id_page' });
     };
 
-    UniqueResponse.beforeCreate(async (ur) => {
-        const Exercise = sequelize.models.Exercise;
-        const exercise = await Exercise.findByPk(ur.id_page);
-        if (!exercise) throw new Error("Exercice non trouvé");
-        if (exercise.type !== "UNIQUE") {
-        throw new Error("Impossible de créer un UniqueResponse sur un exercice qui n'est pas de type UNIQUE");
-        }
-    });
+    async function validateUniqueResponseExercise(Exercise, id_page) {
+        const exercise = await Exercise.findByPk(id_page);
+        if (!exercise) throw new Error("Exercise not found");
+        if (exercise.type !== 'UNIQUE') throw new Error("Cet exercice n'est pas de type UNIQUE");
+    }
 
-    UniqueResponse.beforeUpdate(async (ur) => {
-        const Exercise = sequelize.models.Exercise;
-        const exercise = await Exercise.findByPk(ur.id_page);
-        if (!exercise) throw new Error("Exercice non trouvé");
-        if (exercise.type !== "UNIQUE") {
-        throw new Error("Impossible de modifier un UniqueResponse sur un exercice qui n'est pas de type UNIQUE");
-        }
-    });
+    async function validateUniqueResponseHook(uniqueResponse, options) {
+        const Exercise = options?.models?.Exercise || sequelize.models.Exercise;
+        if (!Exercise) { throw new Error("Modèle Exercise introuvable"); }
+        await validateUniqueResponseExercise(Exercise, uniqueResponse.id_page);
+    }
+
+    UniqueResponse.beforeCreate(validateUniqueResponseHook);
+    UniqueResponse.beforeUpdate(validateUniqueResponseHook);
 
     return UniqueResponse;
 };
