@@ -41,6 +41,8 @@ const { sequelize } = require("../../src/db/sequelize");
 describe("initDb", () => {
   beforeEach(() => {
     jest.clearAllMocks();
+    jest.spyOn(console, "log").mockImplementation(() => {});
+    jest.spyOn(console, "error").mockImplementation(() => {});
 
     Object.values(models).forEach((model) => {
       model.create.mockImplementation(async (data) => ({
@@ -50,15 +52,17 @@ describe("initDb", () => {
     });
   });
 
+  afterEach(() => {
+    jest.restoreAllMocks();
+  });
+
   it("devrait synchroniser la base de données", async () => {
     await initDb();
-
     expect(sequelize.sync).toHaveBeenCalledWith({ force: true });
   });
 
   it("devrait créer des levels", async () => {
     await initDb();
-
     expect(models.Level.create).toHaveBeenCalledWith({
       id_level: 1,
       title: "level",
@@ -67,7 +71,6 @@ describe("initDb", () => {
 
   it("devrait créer des chapters", async () => {
     await initDb();
-
     expect(models.Chapter.create).toHaveBeenCalledWith(
       expect.objectContaining({
         id_chapter: 1,
@@ -79,7 +82,6 @@ describe("initDb", () => {
 
   it("devrait créer des users", async () => {
     await initDb();
-
     expect(models.User.create).toHaveBeenCalledWith(
       expect.objectContaining({
         id_user: 1,
@@ -91,7 +93,6 @@ describe("initDb", () => {
 
   it("devrait appeler toutes les entités principales", async () => {
     await initDb();
-
     expect(models.Level.create).toHaveBeenCalled();
     expect(models.Chapter.create).toHaveBeenCalled();
     expect(models.Page.create).toHaveBeenCalled();
