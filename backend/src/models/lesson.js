@@ -37,11 +37,16 @@ module.exports = (sequelize, DataTypes) => {
     Lesson.belongsTo(models.Page, { foreignKey: 'id_page' });
   };
 
-  Lesson.beforeCreate(async (lesson, options) => {
-    const Page = sequelize.models.Page;
-    const page = await Page.findByPk(lesson.id_page);
+  async function validateLessonPage(Page, id_page) {
+    const page = await Page.findByPk(id_page);
     if (!page) throw new Error("Page non trouvée");
     if (page.type !== 'LESSON') throw new Error("Cette page n'est pas de type LESSON");
+  }
+  
+  Lesson.beforeCreate(async (lesson, options) => {
+    const Page = options?.models?.Page || sequelize.models.Page;
+    if (!Page) throw new Error("Modèle Page introuvable");
+    await validateLessonPage(Page, lesson.id_page);
   });
 
   return Lesson;
