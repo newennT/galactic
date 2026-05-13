@@ -1,14 +1,4 @@
-const {
-  sequelize,
-  Chapter,
-  Level,
-  Page,
-  Lesson,
-  Exercise,
-  UniqueResponse,
-  Pairs,
-  PutInOrder
-} = require('../db/models');
+const { sequelize, Chapter, Level, Page, Lesson, Exercise, UniqueResponse, Pairs, PutInOrder } = require('../db/models');
 
 class ChapterService {
     static async getAll() {
