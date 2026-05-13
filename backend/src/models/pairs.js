@@ -26,10 +26,6 @@ module.exports = (sequelize, DataTypes) => {
         id_page: {
             type: DataTypes.INTEGER,
             allowNull: false
-        },
-        id_page: {
-            type: DataTypes.INTEGER,
-            allowNull: false
         }
     }, {
         timestamps: true
@@ -39,23 +35,20 @@ module.exports = (sequelize, DataTypes) => {
         Pairs.belongsTo(models.Exercise, { foreignKey: 'id_page' });
     };
 
-    Pairs.beforeCreate(async (pair) => {
-        const Exercise = sequelize.models.Exercise;
-        const exercise = await Exercise.findByPk(pair.id_page);
-        if (!exercise) throw new Error("Exercice non trouvé");
-        if (exercise.type !== "PAIRS") {
-        throw new Error("Impossible de créer un Pairs sur un exercice qui n'est pas de type PAIRS");
-        }
-    });
+    async function validatePairsExercise(Exercise, id_page) {
+        const exercise = await Exercise.findByPk(id_page);
+        if (!exercise) throw new Error("Exercise not found");
+        if (exercise.type !== 'PAIRS') throw new Error("Cet exercice n'est pas de type PAIRS");
+    }
 
-    Pairs.beforeUpdate(async (pair) => {
-        const Exercise = sequelize.models.Exercise;
-        const exercise = await Exercise.findByPk(pair.id_page);
-        if (!exercise) throw new Error("Exercice non trouvé");
-        if (exercise.type !== "PAIRS") {
-        throw new Error("Impossible de modifier un Pairs sur un exercice qui n'est pas de type PAIRS");
-        }
-    });
+    async function validatePairsHook(pairs, options) {
+        const Exercise = options?.models?.Exercise || sequelize.models.Exercise;
+        if (!Exercise) { throw new Error("Modèle Exercise introuvable"); }
+        await validatePairsExercise(Exercise, pairs.id_page);
+    }
 
+    Pairs.beforeCreate(validatePairsHook);
+    Pairs.beforeUpdate(validatePairsHook);
+    
     return Pairs;
 };
