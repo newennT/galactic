@@ -2,7 +2,7 @@ const { Exercise, UniqueResponse, Pairs, PutInOrder} = require('../db/models');
 
 class ExerciseService {
 
-    static async create(page, ex = {}, transaction) {
+    static async createFull(page, ex = {}, transaction) {
         await Exercise.create(
             {
                 id_page: page.id_page,

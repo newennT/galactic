@@ -56,13 +56,24 @@ class ExerciseController {
 
     static async delete(req, res) {
         try {
+            const exercise = await ExerciseService.delete(req.params.id);
+
             if (!exercise) {
-                return res.status(404).json({ message: "L'exercice demandé n'a pas été trouvé. Réessayez avec un autre identifiant." });
+                return res.status(404).json({
+                    message: "L'exercice demandé n'a pas été trouvé. Réessayez avec un autre identifiant.",
+                });
             }
-            res.json({ message: "L'exercice a bien été supprimé", data: exercise });
+
+            res.json({
+                message: "L'exercice a bien été supprimé",
+                data: exercise,
+            });
 
         } catch (error) {
-            res.status(500).json({ message: "L'exercice n'a pas pu'être supprimé. Réessayez dans quelques instants.", data: error });
+            res.status(500).json({
+                message: "L'exercice n'a pas pu'être supprimé. Réessayez dans quelques instants.",
+                data: error,
+            });
         }
     }
 }
