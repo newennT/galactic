@@ -51,13 +51,6 @@ class ChapterController {
 
     static async reorder(req, res) {
         try {
-            if (!Array.isArray(req.body)) {
-                return res.status(400).json({
-                    message: "Format invalide : tableau attendu",
-                    data: req.body
-                });
-            }
-
             await chapterService.reorder(req.body);
             res.json({ message: "Ordre des chapitres mis à jour avec succès" });
 
@@ -65,7 +58,7 @@ class ChapterController {
             console.error(error);
             res.status(500).json({
                 message: "Erreur lors de la mise à jour de l'ordre",
-                data: error?.message || error
+                data: error?.message
             });
         }
     }

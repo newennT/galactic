@@ -1,5 +1,6 @@
 const { where } = require("sequelize");
 const models = require("../db/models");
+// const sequelize = require("../db/sequelize");
 
 class ChapterService {
     constructor({
@@ -40,6 +41,7 @@ class ChapterService {
                 "isPublished",
                 "id_level"
             ],
+            include: [{ model: this.Level }],
             order: [["order", "ASC"]],
             raw: true
         });
@@ -65,23 +67,6 @@ class ChapterService {
                     ],
                 },
             ],
-            order: [["order", "ASC"]],
-        });
-    }
-
-    async getByIdSingle(id) {
-        return this.Chapter.findOne({
-            where: { id_chapter: Number(id) },
-            attributes: [
-                "id_chapter",
-                "title",
-                "title_fr",
-                "abstract",
-                "order",
-                "isPublished",
-                "id_level"
-            ],
-            raw: true
         });
     }
 

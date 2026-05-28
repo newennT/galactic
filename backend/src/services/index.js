@@ -19,6 +19,4 @@ function makeChapterService() {
 
 const chapterService = makeChapterService();
 
-module.exports = {
-  chapterService,
-};
+module.exports = { chapterService };

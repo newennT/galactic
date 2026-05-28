@@ -65,7 +65,6 @@ describe("ChapterService", () => {
         expect(mocks.Chapter.findOne).toHaveBeenCalledWith(
             expect.objectContaining({
                 where: { id_chapter: 1 },
-                order: [["order", "ASC"]],
             })
         );
 
