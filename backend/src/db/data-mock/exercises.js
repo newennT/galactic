@@ -26,6 +26,8 @@ const exercices = [
     {
         id_page: 10,
         question: "Remettre les mots dans l'ordre",
+        media_type: "AUDIO",
+        media_url: "https://www.soundhelix.com/examples/mp3/SoundHelix-Song-3.mp3",
         feedback: "Ét Michaël q’il a nom.",
         type: "ORDER"
     },

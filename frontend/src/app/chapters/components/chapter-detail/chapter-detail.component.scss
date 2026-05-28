@@ -165,3 +165,18 @@
 }
 
 
+.audio-btn {
+    margin-bottom: 30px;
+    width: 100%;
+    border-radius: 10px;
+    border: none;
+    background-color: $green-idg;
+    color: #ffffff;
+    padding: 10px;
+    box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.10);
+    cursor: pointer;
+    &:hover{
+        background-color: #059084;
+        color: #f1f1f1;
+    }
+}

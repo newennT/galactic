@@ -35,9 +35,25 @@
 
                         <!-- Audio ou vidéo -->
                         <div *ngIf="page.Exercise.media_url">
-                            <audio *ngIf="page.Exercise.media_type === 'AUDIO'" controls>
-                                <source [src]="page.Exercise.media_url" type="audio/mpeg">
-                            </audio>
+                            <div *ngIf="page.Exercise.media_type === 'AUDIO'" class="audio-wrapper">
+
+                                <audio
+                                    #audioPlayer
+                                    [src]="page.Exercise.media_url"
+                                    (ended)="playingAudio[page.id_page] = false"
+                                ></audio>
+
+                                <button
+                                    color="primary"
+                                    class="audio-btn"
+                                    (click)="toggleAudio(audioPlayer, page.id_page)"
+                                >
+                                    <mat-icon>
+                                        {{ playingAudio[page.id_page] ? 'pause' : 'play_arrow' }}
+                                    </mat-icon>
+                                </button>
+
+                            </div>
 
                             <iframe
                                 *ngIf="page.Exercise.media_type === 'VIDEO'"

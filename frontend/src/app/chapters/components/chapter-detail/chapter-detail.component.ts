@@ -127,6 +127,22 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
     }    
   }
 
+  // Question avec audio
+  playingAudio: { [pageId: number]: boolean } = {};
+
+  toggleAudio(audio: HTMLAudioElement, pageId: number): void {
+
+    if (audio.paused) {
+      audio.play();
+      this.playingAudio[pageId] = true;
+    } else {
+      audio.pause();
+      this.playingAudio[pageId] = false;
+    }
+
+  }
+
+
 
   // Envoi des données
   chapter$:Observable<Chapter> = this.route.data.pipe(
