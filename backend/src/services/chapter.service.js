@@ -48,7 +48,6 @@ class ChapterService {
     async getById(id) {
         return this.Chapter.findOne({
             where: { id_chapter: Number(id) },
-            order: ["order"],
             include: [
                 { model: this.Level },
                 {

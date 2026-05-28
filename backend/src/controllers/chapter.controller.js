@@ -1,25 +1,11 @@
-const ChapterServiceClass = require('../services/chapter.service');
+// const ChapterServiceClass = require('../services/chapter.service');
 const db = require('../db/models');
-
-
-const ChapterService = new ChapterServiceClass({
-  sequelize: db.sequelize,
-  Chapter: db.Chapter,
-  Level: db.Level,
-  Page: db.Page,
-  Lesson: db.Lesson,
-  Exercise: db.Exercise,
-  UniqueResponse: db.UniqueResponse,
-  Pairs: db.Pairs,
-  PutInOrder: db.PutInOrder,
-  lessonService: db.lessonService,
-  exerciseService: db.exerciseService,
-});
+const { chapterService } = require("../services");
 
 class ChapterController {
     static async getAll(req, res) {
         try {
-            const chapters = await ChapterService.getAll();
+            const chapters = await chapterService.getAll();
             const message = "La liste des chapitres a été récupérée";
             res.json({ message, data: chapters});
         } catch (error) {
@@ -30,7 +16,7 @@ class ChapterController {
 
     static async getById(req, res) {
         try {
-            const chapter = await ChapterService.getById(req.params.id);
+            const chapter = await chapterService.getById(req.params.id);
             if (!chapter) {
                 return res.status(404).json({ message: "Le chapitre demandé n'a pas été trouvé" });
             }
@@ -40,21 +26,9 @@ class ChapterController {
         }
     }
 
-    static async getByIdSingle(req, res) {
-        try {
-            const chapter = await ChapterService.getByIdSingle(req.params.id);
-            if (!chapter) {
-                return res.status(404).json({ message: "Le chapitre demandé n'a pas été trouvée" });
-            }
-            res.json({ message: "Un chapitre a bien été trouvée", data: chapter });
-        } catch (error) {
-            res.status(500).json({ message: "Le chapitre n'a pas pu'être trouvé. Réessayez dans quelques instants.", data: error });
-        }
-    }
-
     static async delete(req, res) {
         try {
-            const chapter = await ChapterService.delete(req.params.id);
+            const chapter = await chapterService.delete(req.params.id);
 
             if (!chapter) {
                 return res.status(404).json({
@@ -84,7 +58,7 @@ class ChapterController {
                 });
             }
 
-            await ChapterService.reorder(req.body);
+            await chapterService.reorder(req.body);
             res.json({ message: "Ordre des chapitres mis à jour avec succès" });
 
         } catch (error) {
@@ -99,7 +73,7 @@ class ChapterController {
     static async createFull(req, res) {
         try {
             const { pages = [], ...chapterData } = req.body;
-            const chapter = await ChapterService.createFull(chapterData, pages);
+            const chapter = await chapterService.createFull(chapterData, pages);
             res.json({ message: "Chapitre complet créé", data: chapter });
 
         } catch (error) {
@@ -111,7 +85,7 @@ class ChapterController {
     static async replaceFull(req, res) {
         try {
             const { pages = [], ...chapterData } = req.body;
-            const chapter = await ChapterService.replaceFull(req.params.id, chapterData, pages);
+            const chapter = await chapterService.replaceFull(req.params.id, chapterData, pages);
             if (!chapter) {
                 return res.status(404).json({ message: "Chapitre non trouvé" });
             }

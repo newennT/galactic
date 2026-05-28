@@ -86,13 +86,12 @@ function buildChapterResult(chapter, pages, results) {
   return {
     id_chapter: chapter.id_chapter,
     title: chapter.title,
+    total: score.total,
     title_fr: chapter.title_fr,
     abstract: chapter.abstract,
     order: chapter.order,
     id_level: chapter.id_level,
     isPublished: chapter.isPublished,
-
-    total: score.total,
     correct: score.correct,
     percentage: score.percentage,
 

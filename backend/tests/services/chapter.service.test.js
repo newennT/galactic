@@ -16,6 +16,7 @@ describe("ChapterService (DI)", () => {
                 findAll: jest.fn(),
                 update: jest.fn(),
                 destroy: jest.fn(),
+                findOne: jest.fn(),
             },
 
             Page: {
@@ -49,7 +50,7 @@ describe("ChapterService (DI)", () => {
 
         expect(mocks.Chapter.findAll).toHaveBeenCalledWith(
             expect.objectContaining({
-                order: ["order"],
+                order: [["order", "ASC"]],
             })
         );
 
@@ -57,13 +58,15 @@ describe("ChapterService (DI)", () => {
     });
 
     it("should return chapter by id", async () => {
-        mocks.Chapter.findByPk.mockResolvedValue({ id: 1 });
+        mocks.Chapter.findOne.mockResolvedValue({ id: 1 });
 
         const result = await service.getById(1);
 
-        expect(mocks.Chapter.findByPk).toHaveBeenCalledWith(
-            1,
-            expect.any(Object)
+        expect(mocks.Chapter.findOne).toHaveBeenCalledWith(
+            expect.objectContaining({
+                where: { id_chapter: 1 },
+                order: [["order", "ASC"]],
+            })
         );
 
         expect(result).toEqual({ id: 1 });

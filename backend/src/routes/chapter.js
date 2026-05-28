@@ -7,8 +7,6 @@ module.exports = (app) => {
 
     app.get('/api/chapters/:id', chapterController.getById);
 
-    app.get('/api/chapters/:id/single', chapterController.getByIdSingle);
-
     app.delete('/api/chapters/:id', chapterController.delete);
 
     app.patch('/api/chapters/reorder', auth, chapterController.reorder);
