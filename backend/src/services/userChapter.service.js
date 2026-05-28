@@ -49,9 +49,8 @@ async function upsertUserChapter(id_user, id_chapter) {
   });
 }
 
-function buildExerciseView(pages, results) {
-  return pages.map(page => {
-    const ex = page.Exercise;
+function buildExerciseView(exercises, results) {
+  return exercises.map(ex => {
     const result = results.find(r => r.id_page === ex.id_page);
 
     let status = "non fait";
@@ -85,8 +84,18 @@ function buildChapterResult(chapter, pages, results) {
   const score = computeScore(pages, results);
 
   return {
-    ...chapter,
-    ...score,
+    id_chapter: chapter.id_chapter,
+    title: chapter.title,
+    title_fr: chapter.title_fr,
+    abstract: chapter.abstract,
+    order: chapter.order,
+    id_level: chapter.id_level,
+    isPublished: chapter.isPublished,
+
+    total: score.total,
+    correct: score.correct,
+    percentage: score.percentage,
+
     exercises
   };
 }

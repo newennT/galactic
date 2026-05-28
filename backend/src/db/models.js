@@ -33,4 +33,7 @@ Object.values(models).forEach(model => {
   if (model.associate) model.associate(models);
 });
 
-module.exports = models;
+module.exports = {
+  ...models,
+  sequelize
+};

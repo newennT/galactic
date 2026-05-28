@@ -6,7 +6,7 @@
     <div class="dashboard">
         <p class="hello-user">Le bonjour a tai, {{ user?.username }}</p>
 
-        <div *ngIf="chapters.length > 0" >
+        <div *ngIf="chapters.length > 0 && chapters[0]?.id_chapter">
             <a [routerLink]="['/chapters', chapters[0].id_chapter]">
                 <div class="last-chapter">
                     <fa-icon [icon]="faPlay"></fa-icon>
