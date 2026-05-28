@@ -237,6 +237,43 @@ describe('ChapterDetailComponent', () => {
     expect(saveResultSpy).not.toHaveBeenCalled();
   });
 
+  // Audio
+  it('should play audio when paused', () => {
+
+    const playMock = jest.fn();
+    const pauseMock = jest.fn();
+
+    const audio = {
+      paused: true,
+      play: playMock,
+      pause: pauseMock
+    } as any;
+
+    component.toggleAudio(audio, 1);
+
+    expect(playMock).toHaveBeenCalled();
+    expect(component.playingAudio[1]).toBe(true);
+
+  });
+
+  it('should pause audio when playing', () => {
+
+    const playMock = jest.fn();
+    const pauseMock = jest.fn();
+
+    const audio = {
+      paused: false,
+      play: playMock,
+      pause: pauseMock
+    } as any;
+
+    component.toggleAudio(audio, 1);
+
+    expect(pauseMock).toHaveBeenCalled();
+    expect(component.playingAudio[1]).toBe(false);
+
+  });
+
 
 
 //   Graphique 
