@@ -1,6 +1,6 @@
 const { makeChapterService } = require("./chapterService.factory");
 
-describe("ChapterService (DI)", () => {
+describe("ChapterService", () => {
     let service;
     let mocks;
 
