@@ -34,5 +34,7 @@ Object.values(models).forEach(model => {
 });
 
 sequelize.models = models;
-
-module.exports = models;
+module.exports = {
+    sequelize,
+    ...models
+};

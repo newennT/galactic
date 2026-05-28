@@ -43,7 +43,6 @@ class ChapterService {
             ],
             include: [{ model: this.Level }],
             order: [["order", "ASC"]],
-            raw: true
         });
     }
 
