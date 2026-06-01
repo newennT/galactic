@@ -44,7 +44,6 @@ docker_frontend:
     - docker build -t $FRONTEND_IMAGE:latest frontend
     - docker push $FRONTEND_IMAGE:latest
 
-
 docker_backend:
   stage: docker
   script:
