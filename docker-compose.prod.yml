@@ -1,0 +1,29 @@
+services:
+  mysql:
+    image: mysql:8.0
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: bd_galactic
+    volumes:
+      - mysql_data:/var/lib/mysql
+
+  backend:
+    image: registry.gitlab.com/newenn.turbiau/galactic/backend:latest
+    restart: always
+    env_file:
+      - ./backend/.env
+    ports:
+      - "3000:3000"
+    depends_on:
+      - mysql
+
+  frontend:
+    image: registry.gitlab.com/newenn.turbiau/galactic/frontend:latest
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+
+volumes:
+  mysql_data:
