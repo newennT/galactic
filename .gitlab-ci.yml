@@ -1,8 +1,18 @@
 stages:
+  - test
   - build
   - docker
 
-build_frontend:
+
+frontend_test:
+  image: node:18
+  stage: test
+  script:
+    - cd frontend
+    - npm ci
+    - npm run test -- --watch=false
+
+frontend_build:
   image: node:18
   stage: build
   script:
@@ -12,6 +22,26 @@ build_frontend:
   artifacts:
     paths:
       - frontend/dist/
+
+
+backend_test:
+  image: node:18
+  stage: test
+  script:
+    - cd backend
+    - npm ci
+    - npm run test
+
+backend_build:
+  image: node:18
+  stage: build
+  script:
+    - cd backend
+    - npm ci
+  artifacts:
+    paths:
+      - backend/
+
 
 docker_frontend:
   image: docker:24
@@ -24,3 +54,16 @@ docker_frontend:
     - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
     - docker build -t $CI_REGISTRY_IMAGE/frontend:latest frontend
     - docker push $CI_REGISTRY_IMAGE/frontend:latest
+
+
+docker_backend:
+  image: docker:24
+  services:
+    - docker:dind
+  stage: docker
+  variables:
+    DOCKER_TLS_CERTDIR: ""
+  script:
+    - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+    - docker build -t $CI_REGISTRY_IMAGE/backend:latest backend
+    - docker push $CI_REGISTRY_IMAGE/backend:latest
