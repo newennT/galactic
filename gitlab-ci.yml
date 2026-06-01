@@ -38,7 +38,6 @@ build_backend:
     paths:
       - backend/
 
-
 docker_frontend:
   stage: docker
   script:
