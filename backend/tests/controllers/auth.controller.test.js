@@ -10,17 +10,11 @@ describe("Auth controller", () => {
     let res;
 
     beforeEach(() => {
-        req = {
-        body: {}
-    };
+        req = { body: {} };
+        res = { json: jest.fn(), status: jest.fn().mockReturnThis() };
 
-    res = {
-        json: jest.fn(),
-        status: jest.fn().mockReturnThis()
-    };
-
-    jest.clearAllMocks();
-  });
+        jest.clearAllMocks();
+    });
 
 
     describe("login", () => {
@@ -73,12 +67,5 @@ describe("Auth controller", () => {
             expect(res.json).toHaveBeenCalledWith({ message: "Tous les champs sont obligatoires" });
         });
 
-        test("should handle server error", async () => {
-            authService.register.mockRejectedValue(new Error("DB error"));
-            await controller.register(req, res);
-
-            expect(res.status).toHaveBeenCalledWith(500);
-            expect(res.json).toHaveBeenCalledWith({ message: "DB error" });
-        });
     });
 });

@@ -1,16 +1,12 @@
 // index.js
-
 console.log("Node backend starting...");
-
 const express = require("express");
 const morgan = require("morgan");
 const cors = require('cors')
-// const initDb = require("./src/db/initDb");
 const favicon = require("serve-favicon");
 const app = express();
 const path = require("path");
 const bodyParser = require("body-parser");
-
 
 // Middlewares
 app
@@ -21,9 +17,7 @@ app
   { methods: ['GET','POST','PUT','PATCH','DELETE','OPTIONS'],
     allowedHeaders: ['Content-Type','Authorization']
    }
-))
-.options('*', cors());
-
+)).options('*', cors());
 
 // Routes
 app.get("/", (req, res) => {

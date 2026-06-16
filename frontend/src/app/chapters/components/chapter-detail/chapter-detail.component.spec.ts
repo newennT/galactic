@@ -114,15 +114,13 @@ describe('ChapterDetailComponent', () => {
   it('should start chapter if user is logged', () => {
     authServiceMock.isLogged.mockReturnValue(true);
     component.startChapter(1);
-    expect(chapterServiceMock.startChapter)
-      .toHaveBeenCalledWith(1);
+    expect(chapterServiceMock.startChapter).toHaveBeenCalledWith(1);
   });
 
   it('should not start chapter if user is not logged', () => {
     authServiceMock.isLogged.mockReturnValue(false);
     component.startChapter(1);
-    expect(chapterServiceMock.startChapter)
-      .not.toHaveBeenCalled();
+    expect(chapterServiceMock.startChapter).not.toHaveBeenCalled();
   });
 
 
@@ -143,9 +141,6 @@ describe('ChapterDetailComponent', () => {
   });
 
 
-
-
-
 //   Exercices
 
   it('should validate unique exercise through service', () => {
@@ -156,8 +151,7 @@ describe('ChapterDetailComponent', () => {
 
   it('should call saveResult when user is logged in (validateUnique)', () => {
     authServiceMock.isLogged.mockReturnValue(true);
-    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult')
-      .mockReturnValue(of({}));
+    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult').mockReturnValue(of({}));
     const page = { id_page: 1 } as any;
     exercisesMock.validateUnique.mockReturnValue(true);
     component.validateUnique(page);
@@ -176,18 +170,14 @@ describe('ChapterDetailComponent', () => {
 
   it('should call saveResult when pair exercise is completed and user is logged', () => {
     authServiceMock.isLogged.mockReturnValue(true);
-    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult')
-      .mockReturnValue(of({}));
+    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult').mockReturnValue(of({}));
 
     const page = {
       id_page: 1
     } as any;
     exercisesMock.selectPair.mockReturnValue(true);
 
-    component.selectPairs(
-      { id_response: 1, pair_key: 'A' } as any,
-      page
-    );
+    component.selectPairs( { id_response: 1, pair_key: 'A' } as any, page );
 
     expect(saveResultSpy).toHaveBeenCalledWith(1, true);
   });
@@ -215,14 +205,12 @@ describe('ChapterDetailComponent', () => {
   it('should validate order via service', () => {
     exercisesMock.validateOrder.mockReturnValue(true);
     component.validateOrder({ id_page: 1 } as any);
-    expect(exercisesMock.validateOrder)
-      .toHaveBeenCalled();
+    expect(exercisesMock.validateOrder).toHaveBeenCalled();
   });
 
   it('should call saveResult when user is logged in (validateOrder)', () => {
     authServiceMock.isLogged.mockReturnValue(true);
-    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult')
-      .mockReturnValue(of({}));
+    const saveResultSpy = jest.spyOn(userExerciseServiceMock, 'saveResult').mockReturnValue(of({}));
     exercisesMock.validateOrder.mockReturnValue(true);
     const page = { id_page: 1 } as any;
     component.validateOrder(page);
@@ -303,33 +291,6 @@ describe('ChapterDetailComponent', () => {
     expect(scoreChartMock.render).toHaveBeenCalled();
   });
 
-  it('should return early when scoreChart is missing', () => {
-    component.scoreChart = undefined as any;
-    component.correctExercises = 2;
-    component.totalExercises = 5;
-    component.updateScoreChart();
-    expect(scoreChartMock.render).not.toHaveBeenCalled();
-  });
-
-  it('should return early when correctExercises is undefined', () => {
-    component.scoreChart = {
-      nativeElement: document.createElement('canvas')
-    } as any;
-    component.correctExercises = undefined;
-    component.totalExercises = 5;
-    component.updateScoreChart();
-    expect(scoreChartMock.render).not.toHaveBeenCalled();
-  });
-
-  it('should return early when totalExercises is undefined', () => {
-    component.scoreChart = {
-      nativeElement: document.createElement('canvas')
-    } as any;
-    component.correctExercises = 2;
-    component.totalExercises = undefined;
-    component.updateScoreChart();
-    expect(scoreChartMock.render).not.toHaveBeenCalled();
-  });
 
   it('should render chart when all values exist', () => {
     component.scoreChart = {

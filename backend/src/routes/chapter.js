@@ -11,7 +11,7 @@ module.exports = (app) => {
 
     app.patch('/api/chapters/reorder', auth, chapterController.reorder);
 
-    app.post('/api/chapters/full', chapterController.createFull);
+    app.post('/api/chapters/full', auth, chapterController.createFull);
 
     app.put('/api/chapters/:id/full', auth, chapterController.replaceFull);
 }

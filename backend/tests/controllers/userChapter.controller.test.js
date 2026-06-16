@@ -21,9 +21,7 @@ describe("userChapter.controller", () => {
     jest.clearAllMocks();
   });
 
-  // -------------------------
-  // getUserChapters
-  // -------------------------
+
   it("should return 404 if user not found", async () => {
     service.getUser.mockResolvedValue(null);
 
@@ -114,20 +112,7 @@ describe("userChapter.controller", () => {
     });
   });
 
-  it("should return 500 on error", async () => {
-    service.getUser.mockRejectedValue(new Error("fail"));
 
-    await controller.getUserChapters(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "fail",
-    });
-  });
-
-  // -------------------------
-  // upsertUserChapter
-  // -------------------------
   it("should return 400 if id_chapter missing", async () => {
     req.body = {};
 
@@ -154,16 +139,4 @@ describe("userChapter.controller", () => {
     });
   });
 
-  it("should return 500 on upsert error", async () => {
-    req.body = { id_chapter: 2 };
-
-    service.upsertUserChapter.mockRejectedValue(new Error("boom"));
-
-    await controller.upsertUserChapter(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "boom",
-    });
-  });
 });

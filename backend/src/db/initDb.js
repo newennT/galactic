@@ -1,8 +1,6 @@
 // src/db/initDb.js
-
 const models = require("./models");
 const { connectWithRetry } = require("./sequelize");
-
 const chapters = require("./data-mock/chapters");
 const levels = require("./data-mock/levels");
 const pages = require("./data-mock/pages");
@@ -17,23 +15,23 @@ const userExercises = require("./data-mock/userExercises");
 
 async function initDb(){
     const { sequelize } = require("./sequelize");
-    await sequelize.sync({ force: true });
+    await sequelize.sync({ force: false });
     console.log("La base de données a été synchronisée avec succès");
 
     // levels
-    const levelInstances = await Promise.all(
-        levels.map(level =>
-            models.Level.create({
-                id_level: level.id_level,
-                title: level.title
-            }).then(level => console.log(level.toJSON()))
-        )
+    const levelInstances = await models.Level.bulkCreate(
+        levels.map(level => ({
+            id_level: level.id_level,
+            title: level.title
+        })),
+        {
+            ignoreDuplicates: true
+        }
     );
 
     // Chapters 
-    const chapterInstances = await Promise.all(
-        chapters.map(chapter =>
-            models.Chapter.create({
+    const chapterInstances = await models.Chapter.bulkCreate(
+        chapters.map(chapter => ({
                 id_chapter: chapter.id_chapter,
                 title: chapter.title,
                 title_fr: chapter.title_fr,
@@ -41,38 +39,42 @@ async function initDb(){
                 order: chapter.order,
                 id_level: chapter.id_level,
                 isPublished: true
-            }).then(chapter => console.log(chapter.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
+        
 
     // Pages
-    const pageInstances = await Promise.all(
-        pages.map(page =>
-            models.Page.create({
+    const pageInstances = await models.Page.bulkCreate(
+        pages.map(page => ({
                 id_page: page.id_page,
                 title: page.title,
                 id_chapter: page.id_chapter,
                 order_index: page.order_index,
                 type: page.type
-            }).then(page => console.log(page.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 
     // Lessons
-    const lessonInstances = await Promise.all(
-        lessons.map(lesson =>
-            models.Lesson.create({
+    const lessonInstances = await models.Lesson.bulkCreate(
+        lessons.map(lesson => ({
                 id_page: lesson.id_page,
                 title: lesson.title,
                 content: lesson.content
-            }).then(lesson => console.log(lesson.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 
     // Exercises
-    const exerciseInstances = await Promise.all(
-        exercises.map(exercise =>
-            models.Exercise.create({
+    const exerciseInstances = await models.Exercise.bulkCreate(
+        exercises.map(exercise => ({
                 id_page: exercise.id_page,
                 title: exercise.title,
                 question: exercise.question,
@@ -80,79 +82,87 @@ async function initDb(){
                 type: exercise.type,
                 media_url: exercise.media_url,
                 media_type: exercise.media_type
-            }).then(exercise => console.log(exercise.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 
     // UniqueResponses
-    const uniqueResponseInstances = await Promise.all(
-        uniqueResponses.map(uniqueResponse =>
-            models.UniqueResponse.create({
+    const uniqueResponseInstances = await models.UniqueResponse.bulkCreate(
+        uniqueResponses.map(uniqueResponse => ({
                 id_page: uniqueResponse.id_page,
                 content: uniqueResponse.content,
                 is_correct: uniqueResponse.is_correct
-            }).then(uniqueResponse => console.log(uniqueResponse.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 
     // Pairs
-    const pairsInstances = await Promise.all(
-        pairs.map(pair =>
-            models.Pairs.create({
+    const pairsInstances = await models.Pairs.bulkCreate(
+        pairs.map(pair => ({
                 id_page: pair.id_page,
                 content: pair.content,
                 pair_key: pair.pair_key
-            }).then(pair => console.log(pair.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 
     // PutInOrder
-    const putInOrderInstances = await Promise.all(
-        putInOrder.map(putInOrder =>
-            models.PutInOrder.create({
+    const putInOrderInstances = await models.PutInOrder.bulkCreate(
+        putInOrder.map(putInOrder => ({
                 id_page: putInOrder.id_page,
                 content: putInOrder.content,
                 mixed_order: putInOrder.mixed_order,
                 correct_order: putInOrder.correct_order
-            }).then(putInOrder => console.log(putInOrder.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 
     // Users
-    const userInstances = await Promise.all(
-        users.map(user =>
-            models.User.create({
+    const userInstances = await models.User.bulkCreate(
+        users.map(user => ({
                 id_user: user.id_user,
                 username: user.username,
                 email: user.email,
                 password: user.password,
                 is_admin: user.is_admin,
                 last_login: user.last_login
-            }).then(user => console.log(user.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 
     // UserChapters
-    const userChapterInstances = await Promise.all(
-        userChapters.map(userChapter =>
-            models.UserChapter.create({
+    const userChapterInstances = await models.UserChapter.bulkCreate(
+        userChapters.map(userChapter => ({
                 id_user: userChapter.id_user,
                 id_chapter: userChapter.id_chapter,
                 last_chapter_id: userChapter.last_chapter_id
-            }).then(userChapter => console.log(userChapter.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 
     // UserExercises
-    const userExercisesInstances = await Promise.all(
-        userExercises.map(userExercise =>
-            models.UserExercise.create({
+    const userExercisesInstances = await models.UserExercise.bulkCreate(
+        userExercises.map(userExercise => ({
                 id_user: userExercise.id_user,
                 id_page: userExercise.id_page,
                 is_correct: userExercise.is_correct,
                 is_done: userExercise.is_done
-            }).then(userExercise => console.log(userExercise.toJSON()))
-        )
+            })),
+            {
+                ignoreDuplicates: true
+            }
     );
 }
 

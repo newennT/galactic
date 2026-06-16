@@ -56,11 +56,6 @@ describe("initDb", () => {
     jest.restoreAllMocks();
   });
 
-  it("devrait synchroniser la base de données", async () => {
-    await initDb();
-    expect(sequelize.sync).toHaveBeenCalledWith({ force: true });
-  });
-
   it("devrait créer des levels", async () => {
     await initDb();
     expect(models.Level.create).toHaveBeenCalledWith({

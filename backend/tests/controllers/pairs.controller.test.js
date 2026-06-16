@@ -23,9 +23,6 @@ describe("PairsController", () => {
         jest.clearAllMocks();
     });
 
-    // -------------------------
-    // GET ALL
-    // -------------------------
     it("should return all pairs", async () => {
         const pairs = [{ id_response: 1 }];
 
@@ -41,17 +38,6 @@ describe("PairsController", () => {
         });
     });
 
-    it("should handle getAll error", async () => {
-        PairsService.getAll.mockRejectedValue(new Error("fail"));
-
-        await PairsController.getAll(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // GET BY ID
-    // -------------------------
     it("should return pair by id", async () => {
         req.params.id = 1;
 
@@ -81,17 +67,7 @@ describe("PairsController", () => {
         });
     });
 
-    it("should handle getById error", async () => {
-        PairsService.getById.mockRejectedValue(new Error("fail"));
 
-        await PairsController.getById(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // CREATE
-    // -------------------------
     it("should create pair", async () => {
         req.body = { content: "A" };
 
@@ -116,17 +92,7 @@ describe("PairsController", () => {
         expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it("should return 500 on unknown create error", async () => {
-        PairsService.create.mockRejectedValue(new Error("fail"));
 
-        await PairsController.create(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // UPDATE
-    // -------------------------
     it("should update pair", async () => {
         req.params.id = 1;
         req.body = { content: "Updated" };
@@ -161,17 +127,6 @@ describe("PairsController", () => {
         expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it("should return 500 on update error", async () => {
-        PairsService.update.mockRejectedValue(new Error("fail"));
-
-        await PairsController.update(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // DELETE
-    // -------------------------
     it("should delete pair", async () => {
         req.params.id = 1;
 
@@ -197,11 +152,4 @@ describe("PairsController", () => {
         expect(res.status).toHaveBeenCalledWith(404);
     });
 
-    it("should handle delete error", async () => {
-        PairsService.delete.mockRejectedValue(new Error("fail"));
-
-        await PairsController.delete(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
 });

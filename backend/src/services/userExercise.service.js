@@ -10,9 +10,9 @@ function computeScore(results) {
 
 async function getUserExercisesByChapter(id_user, id_chapter) {
   return models.UserExercise.findAll({
-    include: [{
-      model: models.Exercise,
-      where: { id_chapter }
+    include: [{ 
+      model: models.Exercise, 
+      where: { id_chapter } 
     }],
     where: { id_user }
   });
@@ -33,10 +33,7 @@ async function getChapterScore(id_user, id_chapter) {
 
   const results = await models.UserExercise.findAll({
     attributes: ['is_correct'],
-    where: {
-      id_user,
-      id_page: pageIds
-    },
+    where: { id_user, id_page: pageIds },
     raw: true
   });
 

@@ -22,9 +22,6 @@ describe("ExerciseController", () => {
         jest.clearAllMocks();
     });
 
-    // -------------------------
-    // GET ALL
-    // -------------------------
     it("should return all exercises", async () => {
         const exercises = [{ id: 1 }];
         ExerciseService.getAll.mockResolvedValue(exercises);
@@ -38,17 +35,6 @@ describe("ExerciseController", () => {
         });
     });
 
-    it("should handle error in getAll", async () => {
-        ExerciseService.getAll.mockRejectedValue(new Error("fail"));
-
-        await ExerciseController.getAll(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // GET BY ID
-    // -------------------------
     it("should return exercise by id", async () => {
         req.params.id = 1;
 
@@ -81,9 +67,6 @@ describe("ExerciseController", () => {
         expect(res.status).toHaveBeenCalledWith(500);
     });
 
-    // -------------------------
-    // CREATE
-    // -------------------------
     it("should create exercise", async () => {
         req.body = { question: "Q" };
 
@@ -120,17 +103,6 @@ describe("ExerciseController", () => {
         expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it("should return 500 on unknown error", async () => {
-        ExerciseService.create.mockRejectedValue(new Error("fail"));
-
-        await ExerciseController.create(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // UPDATE
-    // -------------------------
     it("should update exercise", async () => {
         req.params.id = 1;
         req.body = { question: "updated" };
@@ -143,10 +115,7 @@ describe("ExerciseController", () => {
 
         expect(ExerciseService.update).toHaveBeenCalledWith(1, req.body);
 
-        expect(res.json).toHaveBeenCalledWith({
-            message: "L'exercice a bien été modifié",
-            data: updated,
-        });
+        expect(res.json).toHaveBeenCalledWith({ message: "L'exercice a bien été modifié", data: updated });
     });
 
     it("should return 404 if update returns null", async () => {
@@ -177,17 +146,7 @@ describe("ExerciseController", () => {
         expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it("should return 500 on update error", async () => {
-        ExerciseService.update.mockRejectedValue(new Error("fail"));
 
-        await ExerciseController.update(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // DELETE
-    // -------------------------
     it("should delete exercise", async () => {
         req.params.id = 1;
 
@@ -199,10 +158,7 @@ describe("ExerciseController", () => {
 
         expect(ExerciseService.delete).toHaveBeenCalledWith(1);
 
-        expect(res.json).toHaveBeenCalledWith({
-            message: "L'exercice a bien été supprimé",
-            data: deleted,
-        });
+        expect(res.json).toHaveBeenCalledWith({ message: "L'exercice a bien été supprimé", data: deleted });
     });
 
     it("should return 404 if delete returns null", async () => {

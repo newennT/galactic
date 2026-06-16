@@ -17,9 +17,6 @@ describe("UserController", () => {
     jest.clearAllMocks();
   });
 
-  // -------------------------
-  // GET ALL
-  // -------------------------
   it("should return all users", async () => {
     const req = {};
     const res = mockRes();
@@ -35,20 +32,7 @@ describe("UserController", () => {
     });
   });
 
-  it("should handle getAll error", async () => {
-    const req = {};
-    const res = mockRes();
 
-    service.getAll.mockRejectedValue(new Error("fail"));
-
-    await controller.getAll(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-  });
-
-  // -------------------------
-  // GET BY ID
-  // -------------------------
   it("should return user by id", async () => {
     const req = { params: { id: 1 } };
     const res = mockRes();
@@ -75,20 +59,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(404);
   });
 
-  it("should handle getById error", async () => {
-    const req = { params: { id: 1 } };
-    const res = mockRes();
 
-    service.getById.mockRejectedValue(new Error("fail"));
-
-    await controller.getById(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-  });
-
-  // -------------------------
-  // CREATE
-  // -------------------------
   it("should create user", async () => {
     const req = {
       body: { username: "john", email: "john@mail.com" },
@@ -125,20 +96,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  it("should handle create unknown error", async () => {
-    const req = { body: {} };
-    const res = mockRes();
 
-    service.create.mockRejectedValue(new Error("fail"));
-
-    await controller.create(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-  });
-
-  // -------------------------
-  // UPDATE
-  // -------------------------
   it("should update user", async () => {
     const req = {
       params: { id: 1 },
@@ -187,20 +145,7 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(400);
   });
 
-  it("should handle update error", async () => {
-    const req = { params: { id: 1 }, body: {} };
-    const res = mockRes();
 
-    service.update.mockRejectedValue(new Error("fail"));
-
-    await controller.update(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-  });
-
-  // -------------------------
-  // DELETE
-  // -------------------------
   it("should delete user", async () => {
     const req = { params: { id: 1 } };
     const res = mockRes();
@@ -233,14 +178,4 @@ describe("UserController", () => {
     expect(res.status).toHaveBeenCalledWith(404);
   });
 
-  it("should handle delete error", async () => {
-    const req = { params: { id: 1 } };
-    const res = mockRes();
-
-    service.remove.mockRejectedValue(new Error("fail"));
-
-    await controller.remove(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-  });
 });

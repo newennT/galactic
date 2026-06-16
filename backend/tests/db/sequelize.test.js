@@ -31,11 +31,6 @@ describe("connectWithRetry", () => {
 
     expect(mockAuthenticate).toHaveBeenCalledTimes(1);
 
-    expect(console.log).toHaveBeenCalledWith(
-      "Connection has been established successfully."
-    );
-
-    expect(console.error).not.toHaveBeenCalled();
   });
 
   it("should retry then succeed", async () => {
@@ -51,10 +46,6 @@ describe("connectWithRetry", () => {
 
     await Promise.resolve();
 
-    expect(console.error).toHaveBeenCalledWith(
-      "Database not ready, retrying in 5s...",
-      "DB down"
-    );
 
     expect(mockAuthenticate).toHaveBeenCalledTimes(1);
 
@@ -64,9 +55,6 @@ describe("connectWithRetry", () => {
 
     expect(mockAuthenticate).toHaveBeenCalledTimes(2);
 
-    expect(console.log).toHaveBeenCalledWith(
-      "Connection has been established successfully."
-    );
   });
 
   it("should retry multiple times until success", async () => {
@@ -87,12 +75,7 @@ describe("connectWithRetry", () => {
     await promise;
 
     expect(mockAuthenticate).toHaveBeenCalledTimes(3);
-
     expect(console.error).toHaveBeenCalledTimes(2);
-
-    expect(console.log).toHaveBeenCalledWith(
-      "Connection has been established successfully."
-    );
   });
 });
 

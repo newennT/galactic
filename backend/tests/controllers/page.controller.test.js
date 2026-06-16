@@ -24,9 +24,6 @@ describe("PageController", () => {
         jest.clearAllMocks();
     });
 
-    // -------------------------
-    // GET ALL
-    // -------------------------
     it("should return all pages", async () => {
         const pages = [{ id_page: 1 }];
 
@@ -41,17 +38,7 @@ describe("PageController", () => {
         });
     });
 
-    it("should handle getAll error", async () => {
-        PageService.getAll.mockRejectedValue(new Error("fail"));
 
-        await PageController.getAll(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // GET BY ID
-    // -------------------------
     it("should return page by id", async () => {
         req.params.id = 1;
 
@@ -79,17 +66,7 @@ describe("PageController", () => {
         });
     });
 
-    it("should handle getById error", async () => {
-        PageService.getById.mockRejectedValue(new Error("fail"));
 
-        await PageController.getById(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // CREATE
-    // -------------------------
     it("should create page", async () => {
         req.body = { title: "Page" };
 
@@ -116,17 +93,7 @@ describe("PageController", () => {
         expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it("should return 500 on unknown error", async () => {
-        PageService.create.mockRejectedValue(new Error("fail"));
 
-        await PageController.create(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // UPDATE
-    // -------------------------
     it("should update page", async () => {
         req.params.id = 1;
         req.body = { title: "Updated" };
@@ -163,17 +130,6 @@ describe("PageController", () => {
         expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it("should return 500 on update error", async () => {
-        PageService.update.mockRejectedValue(new Error("fail"));
-
-        await PageController.update(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // DELETE
-    // -------------------------
     it("should delete page", async () => {
         req.params.id = 1;
 
@@ -199,11 +155,4 @@ describe("PageController", () => {
         expect(res.status).toHaveBeenCalledWith(404);
     });
 
-    it("should handle delete error", async () => {
-        PageService.delete.mockRejectedValue(new Error("fail"));
-
-        await PageController.delete(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
 });

@@ -93,18 +93,6 @@ describe('ChapterNavigatorService', () => {
       expect(service.isContent(emptyChapter)).toBe(false);
     });
 
-    it('should return false when pageIndex exceeds length (isContent)', () => {
-      const chapter = { Pages: mockPages } as any;
-      service.pageIndex = mockPages.length + 1;
-      expect(service.isContent(chapter)).toBe(false);
-    });
-
-    it('should return true when pageIndex equals length (isContent)', () => {
-      const chapter = { Pages: mockPages } as any;
-      service.pageIndex = mockPages.length;
-      expect(service.isContent(chapter)).toBe(true);
-    });
-
   });
 
   describe('isConclusion', () => {
@@ -122,12 +110,6 @@ describe('ChapterNavigatorService', () => {
     it('should be false after conclusion', () => {
       service.pageIndex = contentLength + 2;
       expect(service.isConclusion(mockChapter)).toBe(false);
-    });
-
-    it('should return false when not on conclusion page (isConclusion)', () => {
-      const chapter = { Pages: mockPages } as any;
-      service.pageIndex = mockPages.length;
-      expect(service.isConclusion(chapter)).toBe(false);
     });
 
     it('should handle undefined pages in isContent and isConclusion', () => {

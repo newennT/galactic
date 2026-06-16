@@ -49,9 +49,7 @@ describe("ChapterService", () => {
         const result = await service.getAll();
 
         expect(mocks.Chapter.findAll).toHaveBeenCalledWith(
-            expect.objectContaining({
-                order: [["order", "ASC"]],
-            })
+            expect.objectContaining({ order: [["order", "ASC"]] })
         );
 
         expect(result).toEqual([{ id: 1 }]);
@@ -63,9 +61,7 @@ describe("ChapterService", () => {
         const result = await service.getById(1);
 
         expect(mocks.Chapter.findOne).toHaveBeenCalledWith(
-            expect.objectContaining({
-                where: { id_chapter: 1 },
-            })
+            expect.objectContaining({ where: { id_chapter: 1 } })
         );
 
         expect(result).toEqual({ id: 1 });
@@ -89,10 +85,7 @@ describe("ChapterService", () => {
 
         const result = await service.delete(1);
 
-        expect(mocks.Chapter.destroy).toHaveBeenCalledWith({
-            where: { id_chapter: 1 },
-        });
-
+        expect(mocks.Chapter.destroy).toHaveBeenCalledWith({ where: { id_chapter: 1 } });
         expect(result).toEqual(chapter);
     });
 
@@ -111,9 +104,7 @@ describe("ChapterService", () => {
 
         expect(mocks.Chapter.update).toHaveBeenCalledWith(
             { order: 2 },
-            expect.objectContaining({
-                where: { id_chapter: 1 },
-            })
+            expect.objectContaining({ where: { id_chapter: 1 } })
         );
 
         expect(commit).toHaveBeenCalled();
@@ -129,10 +120,7 @@ describe("ChapterService", () => {
 
         mocks.Chapter.update.mockRejectedValue(new Error("fail"));
 
-        await expect(
-            service.reorder([{ id_chapter: 1, order: 1 }])
-        ).rejects.toThrow("fail");
-
+        await expect(service.reorder([{ id_chapter: 1, order: 1 }])).rejects.toThrow("fail");
         expect(rollback).toHaveBeenCalled();
     });
 
@@ -246,14 +234,8 @@ describe("ChapterService", () => {
         mocks.Chapter.update = jest.fn();
         mocks.Page.findAll.mockResolvedValue([]);
 
-        const deleteSpy = jest
-            .spyOn(service, "deleteChapterStructure")
-            .mockResolvedValue();
-
-        const createSpy = jest
-            .spyOn(service, "createPages")
-            .mockResolvedValue();
-
+        const deleteSpy = jest.spyOn(service, "deleteChapterStructure").mockResolvedValue();
+        const createSpy = jest.spyOn(service, "createPages").mockResolvedValue();
         const result = await service.replaceFull(1, {}, []);
 
         expect(chapter.update).toHaveBeenCalled();
@@ -447,15 +429,7 @@ describe("ChapterService", () => {
 
         mocks.Chapter.findByPk.mockResolvedValue(chapter);
 
-        await expect(
-            service.replaceFull(
-                1,
-                {
-                    title: "New title",
-                },
-                []
-            )
-        ).rejects.toThrow("update failed");
+        await expect(service.replaceFull(1, { title: "New title" }, [])).rejects.toThrow("update failed");
 
         expect(rollback).toHaveBeenCalled();
         expect(commit).not.toHaveBeenCalled();

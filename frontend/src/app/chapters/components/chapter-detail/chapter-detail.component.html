@@ -43,16 +43,11 @@
                                     (ended)="playingAudio[page.id_page] = false"
                                 ></audio>
 
-                                <button
-                                    color="primary"
-                                    class="audio-btn"
-                                    (click)="toggleAudio(audioPlayer, page.id_page)"
-                                >
+                                <button color="primary" class="audio-btn" (click)="toggleAudio(audioPlayer, page.id_page)">
                                     <mat-icon>
                                         {{ playingAudio[page.id_page] ? 'pause' : 'play_arrow' }}
                                     </mat-icon>
                                 </button>
-
                             </div>
 
                             <iframe
@@ -82,16 +77,13 @@
                             </ul>
 
                             <div *ngIf="showFeedback[page.id_page]" >
-                                <div class="feedback feedback-pos">
-                                    Exercice réussi
-                                </div>
+                                <div class="feedback feedback-pos">Exercice réussi</div>
                                 
                                 <div class="buttons">
                                     <a (click)="chapterNavigatorService.prev()">Retour</a>
                                     <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
                                 </div>
                             </div>
-
                         </div>
                         
 
@@ -105,26 +97,14 @@
                                 [cdkDropListDisabled]="showFeedback[page.id_page]"
                             >
 
-                                <div
-                                    *ngFor="let item of chapterExercisesService.getOrderItems(page)"
-                                    cdkDrag
-                                    class="order-item"
-                                >
+                                <div *ngFor="let item of chapterExercisesService.getOrderItems(page)" cdkDrag class="order-item">
                                     {{ item.content }}
                                 </div>
 
-                                <button
-                                    *ngIf="!showFeedback[page.id_page]"
-                                    (click)="validateOrder(page)"
-                                    mat-raised-button
-                                    color="primary"
-                                    class="btn-ex-next"
-                                >
+                                <button *ngIf="!showFeedback[page.id_page]" (click)="validateOrder(page)" mat-raised-button color="primary" class="btn-ex-next">
                                     Valider
                                 </button>    
                             </div>
-
-                            
 
                             <div *ngIf="showFeedback[page.id_page]">
                                 <div *ngIf="!isCorrect[page.id_page]" class="feedback feedback-neg">

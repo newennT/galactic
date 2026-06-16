@@ -7,11 +7,9 @@ const { connectWithRetry } = require("./src/db/sequelize");
 
 async function startServer() {
   try {
-    console.log("Connecting to DB...");
     await connectWithRetry();
     console.log('DB connected');
     if (process.env.NODE_ENV !== "test") {
-      console.log('Initializing DB...');
       await initDb();
       console.log('DB Initialized');
     }

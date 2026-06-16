@@ -13,24 +13,19 @@ export class ScoreChartService {
     if (this.initialized) {
         return;
     }
-
     Chart.register(ArcElement, Tooltip, Legend, DoughnutController);
     this.initialized = true;
   }
 
-  render(
-        canvas: HTMLCanvasElement,
-        correct: number,
-        total: number
-  ): void {
+  render( canvas: HTMLCanvasElement, correct: number, total: number): void {
     this.initChartJS();
     const incorrect = Math.max(total - correct, 0);
     const data = {
         labels: ['Correct', 'Incorrect'],
         datasets: [
             {
-            data: [correct, incorrect],
-            backgroundColor: ['#4caf50', '#f44336']
+                data: [correct, incorrect],
+                backgroundColor: ['#4caf50', '#f44336']
             }
         ]
     };

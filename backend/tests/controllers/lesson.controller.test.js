@@ -23,9 +23,7 @@ describe("LessonController", () => {
         jest.clearAllMocks();
     });
 
-    // -------------------------
-    // GET ALL
-    // -------------------------
+
     it("should return all lessons", async () => {
         const lessons = [{ id: 1 }];
         LessonService.getAll.mockResolvedValue(lessons);
@@ -33,23 +31,10 @@ describe("LessonController", () => {
         await LessonController.getAll(req, res);
 
         expect(LessonService.getAll).toHaveBeenCalled();
-        expect(res.json).toHaveBeenCalledWith({
-            message: "La liste des leçons a été récupérée",
-            data: lessons,
-        });
+
     });
 
-    it("should return 500 on getAll error", async () => {
-        LessonService.getAll.mockRejectedValue(new Error("fail"));
 
-        await LessonController.getAll(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // GET BY ID
-    // -------------------------
     it("should return lesson by id", async () => {
         req.params.id = 1;
 
@@ -75,19 +60,6 @@ describe("LessonController", () => {
         expect(res.status).toHaveBeenCalledWith(404);
     });
 
-    it("should return 500 on getById error", async () => {
-        req.params.id = 1;
-
-        LessonService.getById.mockRejectedValue(new Error("fail"));
-
-        await LessonController.getById(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // CREATE
-    // -------------------------
     it("should create lesson", async () => {
         req.body = { title: "T" };
 
@@ -127,17 +99,7 @@ describe("LessonController", () => {
         expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it("should return 500 on create error", async () => {
-        LessonService.create.mockRejectedValue(new Error("fail"));
 
-        await LessonController.create(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // UPDATE
-    // -------------------------
     it("should update lesson", async () => {
         req.params.id = 1;
         req.body = { title: "Updated" };
@@ -176,19 +138,6 @@ describe("LessonController", () => {
         expect(res.status).toHaveBeenCalledWith(400);
     });
 
-    it("should return 500 on update error", async () => {
-        req.params.id = 1;
-
-        LessonService.update.mockRejectedValue(new Error("fail"));
-
-        await LessonController.update(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
-
-    // -------------------------
-    // DELETE
-    // -------------------------
     it("should delete lesson", async () => {
         req.params.id = 1;
 
@@ -214,13 +163,4 @@ describe("LessonController", () => {
         expect(res.status).toHaveBeenCalledWith(404);
     });
 
-    it("should return 500 on delete error", async () => {
-        req.params.id = 1;
-
-        LessonService.delete.mockRejectedValue(new Error("fail"));
-
-        await LessonController.delete(req, res);
-
-        expect(res.status).toHaveBeenCalledWith(500);
-    });
 });

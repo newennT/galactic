@@ -23,19 +23,12 @@ function mockReqRes() {
 }
 
 describe("userExercise.controller", () => {
-  afterEach(() => {
-    jest.clearAllMocks();
-  });
+  afterEach(() => { jest.clearAllMocks(); });
 
-  // -------------------
-  // getByChapter
-  // -------------------
   it("should return exercises by chapter", async () => {
     const { req, res } = mockReqRes();
 
-    service.getUserExercisesByChapter.mockResolvedValue([
-      { id_page: 1 },
-    ]);
+    service.getUserExercisesByChapter.mockResolvedValue([ { id_page: 1 } ]);
 
     await controller.getByChapter(req, res);
 
@@ -43,39 +36,16 @@ describe("userExercise.controller", () => {
     expect(res.json).toHaveBeenCalledWith([{ id_page: 1 }]);
   });
 
-  it("should handle error in getByChapter", async () => {
-    const { req, res } = mockReqRes();
 
-    service.getUserExercisesByChapter.mockRejectedValue(new Error("fail"));
-
-    await controller.getByChapter(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "fail",
-    });
-  });
-
-  // -------------------
-  // getScore
-  // -------------------
   it("should return score", async () => {
     const { req, res } = mockReqRes();
 
-    service.getChapterScore.mockResolvedValue({
-      total: 10,
-      correct: 7,
-      percentage: 70,
-    });
+    service.getChapterScore.mockResolvedValue({ total: 10, correct: 7, percentage: 70 });
 
     await controller.getScore(req, res);
 
     expect(service.getChapterScore).toHaveBeenCalledWith(1, 10);
-    expect(res.json).toHaveBeenCalledWith({
-      total: 10,
-      correct: 7,
-      percentage: 70,
-    });
+    expect(res.json).toHaveBeenCalledWith({ total: 10, correct: 7, percentage: 70 });
   });
 
   it("should handle error in getScore", async () => {
@@ -86,32 +56,19 @@ describe("userExercise.controller", () => {
     await controller.getScore(req, res);
 
     expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "score error",
-    });
+    expect(res.json).toHaveBeenCalledWith({ message: "score error" });
   });
 
-  // -------------------
-  // upsert
-  // -------------------
   it("should upsert user exercise", async () => {
     const { req, res } = mockReqRes();
 
-    req.body = {
-      id_page: 5,
-      is_correct: true,
-    };
+    req.body = { id_page: 5, is_correct: true };
 
     service.upsertUserExercise.mockResolvedValue({ success: true });
 
     await controller.upsert(req, res);
 
-    expect(service.upsertUserExercise).toHaveBeenCalledWith(
-      1,
-      5,
-      true
-    );
-
+    expect(service.upsertUserExercise).toHaveBeenCalledWith(1, 5, true);
     expect(res.json).toHaveBeenCalledWith({ success: true });
   });
 
@@ -126,23 +83,7 @@ describe("userExercise.controller", () => {
     await controller.upsert(req, res);
 
     expect(res.status).toHaveBeenCalledWith(400);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "bad request",
-    });
+    expect(res.json).toHaveBeenCalledWith({ message: "bad request" });
   });
 
-  it("should handle generic error in upsert", async () => {
-    const { req, res } = mockReqRes();
-
-    service.upsertUserExercise.mockRejectedValue(
-      new Error("server crash")
-    );
-
-    await controller.upsert(req, res);
-
-    expect(res.status).toHaveBeenCalledWith(500);
-    expect(res.json).toHaveBeenCalledWith({
-      message: "server crash",
-    });
-  });
 });

@@ -3,21 +3,8 @@ const models = require("../db/models");
 // const sequelize = require("../db/sequelize");
 
 class ChapterService {
-    constructor({
-        sequelize,
-        Chapter,
-        Level,
-        Page,
-        Lesson,
-        Exercise,
-        UniqueResponse,
-        Pairs,
-        PutInOrder,
-        lessonService,
-        exerciseService,
-    }) {
+    constructor({sequelize, Chapter, Level, Page, Lesson, Exercise, UniqueResponse, Pairs, PutInOrder, lessonService, exerciseService }) {
         this.sequelize = sequelize;
-
         this.Chapter = Chapter;
         this.Level = Level;
         this.Page = Page;
@@ -26,7 +13,6 @@ class ChapterService {
         this.UniqueResponse = UniqueResponse;
         this.Pairs = Pairs;
         this.PutInOrder = PutInOrder;
-
         this.lessonService = lessonService;
         this.exerciseService = exerciseService;
     }

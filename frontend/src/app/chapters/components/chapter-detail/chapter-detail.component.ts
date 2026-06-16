@@ -38,43 +38,33 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
       this.chaptersService.startChapter(id_chapter).subscribe();
     }
   }
-  
-  // Calcul du score
-  score?: number;
-  totalExercises?: number;
-  correctExercises?: number;
-
 
   nextPage(chapter: Chapter) {
     const moved = this.chapterNavigatorService.next(chapter);
     if (
-      moved &&
-      this.chapterNavigatorService.isConclusion(chapter) &&
-      this.authService.isLogged()
+      moved && this.chapterNavigatorService.isConclusion(chapter) && this.authService.isLogged()
     ) {
       this.loadScore(chapter);
     }
   }
 
+  // Calcul du score
+  score?: number;
+  totalExercises?: number;
+  correctExercises?: number;
+
   loadScore(chapter: Chapter): void {
-
-  this.userExerciseService
-    .getChapterScore(chapter.id_chapter)
-    .subscribe(res => {
-
+    this.userExerciseService.getChapterScore(chapter.id_chapter).subscribe(res => {
       this.score = res.percentage;
       this.totalExercises = res.total;
       this.correctExercises = res.correct;
-
       setTimeout(() => this.updateScoreChart());
     });
   }
 
-
   // Donner le feedback selon la réponse
   showFeedback: { [pageId: number ]: boolean } = {};
   isCorrect: { [pageId: number ]: boolean } = {};
-
 
   // ---------- Question à réponse unique 
   validateUnique(page: Page){
@@ -85,9 +75,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
     this.isCorrect[pageId] = correct;
 
     if(this.authService.isLogged()){
-      this.userExerciseService
-        .saveResult(pageId, correct)
-        .subscribe();
+      this.userExerciseService.saveResult(pageId, correct).subscribe();
     }
   }
 
@@ -95,17 +83,13 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
   selectPairs(item: Pairs, page: Page) {
     const completed = this.chapterExercisesService.selectPair(item, page);
 
-    if (!completed) {
-      return;
-    }
+    if (!completed) { return; }
+
     const pageId = page.id_page;
     this.showFeedback[pageId] = true;
     this.isCorrect[pageId] = true;
     if (this.authService.isLogged()) {
-
-      this.userExerciseService
-        .saveResult(pageId, true)
-        .subscribe();
+      this.userExerciseService.saveResult(pageId, true).subscribe();
     }
   }
 
@@ -121,9 +105,7 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
     this.isCorrect[pageId] = correct;
 
     if(this.authService.isLogged()){
-      this.userExerciseService
-        .saveResult(pageId, correct)
-        .subscribe();
+      this.userExerciseService.saveResult(pageId, correct).subscribe();
     }    
   }
 
@@ -142,35 +124,20 @@ export class ChapterDetailComponent implements OnInit, OnDestroy {
 
   }
 
-
-
   // Envoi des données
   chapter$:Observable<Chapter> = this.route.data.pipe(
     map(data => data['chapter'])
   );
 
-
-
   // Graphique du score
   @ViewChild('scoreChart') scoreChart!: ElementRef<HTMLCanvasElement>;
 
   updateScoreChart(): void {
-    if(
-      !this.scoreChart?.nativeElement ||
-      this.correctExercises === undefined ||
-      this.totalExercises === undefined
-    ) {
+    if( !this.scoreChart?.nativeElement || this.correctExercises === undefined || this.totalExercises === undefined ) {
       return;
     }
-
-    this.scoreChartService.render(
-      this.scoreChart.nativeElement,
-      this.correctExercises,
-      this.totalExercises
-    );
+    this.scoreChartService.render(this.scoreChart.nativeElement, this.correctExercises, this.totalExercises);
   }
-
-  
 
   ngOnInit(): void {
     this.chapterNavigatorService.reset();
