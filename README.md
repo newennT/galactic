@@ -72,9 +72,9 @@ In `backend/src`:
 
 ## Test
 ### Front
-Runs Angular unit tests
+Runs Angular unit tests \
 Run `npm test`
 
 ### Back
-Runs API and business logic tests
+Runs API and business logic tests \
 Run `npm run test`
