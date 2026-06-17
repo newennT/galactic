@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormControl, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Pairs } from 'src/app/core/models/pairs.model';
 
 @Injectable({
@@ -132,7 +132,7 @@ export class AdminExerciseFormService {
     uniqueArray.push(
       this.formBuilder.group({
         id_response: [0],
-        content: [''],
+        content: ['', [Validators.required]],
         is_correct: [false],
       })
     );
@@ -155,8 +155,8 @@ export class AdminExerciseFormService {
   addPair(pairsArray: FormArray): void {
     pairsArray.push(
       this.formBuilder.group({
-        content_left: [''],
-        content_right: [''],
+        content_left: ['', [Validators.required]],
+        content_right: ['', [Validators.required]],
         pair_key: [this.generatePairKey()],
       })
     );

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { FormArray, FormBuilder, FormGroup } from '@angular/forms';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Chapter } from 'src/app/core/models/chapter.model';
 import { AdminExerciseFormService } from './admin-exercise-form.service';
 
@@ -27,11 +27,11 @@ export class AdminChapterFormService {
 
   initEmptyForm(): FormGroup {
     return this.formBuilder.group({
-      title: [''],
-      title_fr: [''],
-      abstract: [''],
-      id_level: [''],
-      pages: this.formBuilder.array([])
+      title: ['', [Validators.required]],
+      title_fr: ['', [Validators.required]],
+      abstract: ['', [Validators.required]],
+      id_level: ['', [Validators.required]],
+      pages: this.formBuilder.array([], Validators.minLength(1))
     });
   }
 
@@ -47,8 +47,8 @@ export class AdminChapterFormService {
 
   createLessonGroup(lesson: any): FormGroup {
     return this.formBuilder.group({
-      title: [lesson?.title ?? ''],
-      content: [lesson?.content ?? ''],
+      title: [lesson?.title ?? '',[Validators.required]],
+      content: [lesson?.content ?? '', [Validators.required]],
     });
   }
 
@@ -66,12 +66,12 @@ export class AdminChapterFormService {
         type: ['LESSON'],
 
         lesson: this.formBuilder.group({
-          title: [''],
-          content: [''],
+          title: ['', [Validators.required]],
+          content: ['', [Validators.required]],
         }),
 
         exercise: this.formBuilder.group({
-          question: [''],
+          question: ['', [Validators.required]],
           type: ['UNIQUE'],
           feedback: [''],
           media_type: [''],
@@ -80,7 +80,7 @@ export class AdminChapterFormService {
           uniqueResponses: this.formBuilder.array([
             this.formBuilder.group({
               id_response: [0],
-              content: [''],
+              content: ['', [Validators.required]],
               is_correct: [true],
             }),
             this.formBuilder.group({

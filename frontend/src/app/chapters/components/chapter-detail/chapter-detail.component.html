@@ -17,19 +17,19 @@
                 <ng-container *ngIf="chapterNavigatorService.currentPage(chapter) as page">
 
                     <!-- LESSON -->
-                    <div *ngIf="page.type === 'LESSON' && page.Lesson" class="page">
+                    <div *ngIf="page.type === 'LESSON' && page.Lesson" class="page" aria-label="Page de leçon">
                         <h4 class="lesson-title">{{ page.Lesson.title }}</h4>
                         <div class="lesson-content" [innerHTML]="page.Lesson.content"></div>
 
                         <div class="buttons">
                             <a (click)="chapterNavigatorService.prev()">Retour</a>
-                            <button mat-raised-button color="primary" id="btn-lesson-next" (click)="nextPage(chapter)">Suivant</button>
+                            <button mat-raised-button color="primary" id="btn-lesson-next" (click)="nextPage(chapter)" aria-label="Passer à la page suivante">Suivant</button>
                         </div>
                         
                     </div>
 
                         <!-- EXERCISE -->
-                    <div *ngIf="page.type === 'EXERCISE' && page.Exercise" class="page">
+                    <div *ngIf="page.type === 'EXERCISE' && page.Exercise" class="page" aria-label="Exercice">
 
                         <h4 class="question">{{ page.Exercise.question }}</h4>
 
@@ -64,7 +64,7 @@
 
                             <!-- PAIRS -->
                         <div *ngIf="page.Exercise.type === 'PAIRS'">
-                            <ul class="pairs-list">
+                            <ul class="pairs-list" aria-label="Liste des éléments à associer">
                                 <li 
                                     *ngFor="let pair of chapterExercisesService.getShuffledPairs(page)"
                                     (click)="selectPairs(pair, page)"
@@ -81,7 +81,7 @@
                                 
                                 <div class="buttons">
                                     <a (click)="chapterNavigatorService.prev()">Retour</a>
-                                    <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next">Suivant</button>
+                                    <button (click)="nextPage(chapter)" mat-raised-button color="primary" class="btn-ex-next" aria-label="Passer à la page suivante">Suivant</button>
                                 </div>
                             </div>
                         </div>
@@ -101,7 +101,7 @@
                                     {{ item.content }}
                                 </div>
 
-                                <button *ngIf="!showFeedback[page.id_page]" (click)="validateOrder(page)" mat-raised-button color="primary" class="btn-ex-next">
+                                <button *ngIf="!showFeedback[page.id_page]" (click)="validateOrder(page)" mat-raised-button color="primary" class="btn-ex-next"  aria-label="Valider l'ordre choisi">
                                     Valider
                                 </button>    
                             </div>
@@ -183,14 +183,14 @@
                 <p>{{ score }} % </p>
 
                 <div style="max-width: 200px; margin: auto;">
-                    <canvas #scoreChart></canvas>
+                    <canvas #scoreChart aria-label="Graphique représentant le score obtenu"></canvas>
                 </div>
             </div>
 
-            <button mat-raised-button color="primary" id="btn-end" routerLink="/chapters">Liste des chapitres</button>
+            <button mat-raised-button color="primary" id="btn-end" routerLink="/chapters" aria-label="Retour à la liste des chapitres">Liste des chapitres</button>
 
             <div *ngIf="authService.isLogged()">
-                <button mat-raised-button routerLink="/dashboard">Tableau de bord</button>
+                <button mat-raised-button routerLink="/dashboard" aria-label="Accéder au tableau de bord">Tableau de bord</button>
             </div>
         </div>
         

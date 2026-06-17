@@ -12,37 +12,22 @@ export class AdminChaptersService {
     constructor(private http: HttpClient) {}
 
     getChapters(): Observable<Chapter[]>{
-        return this.http
-        .get<{ message: string; data: Chapter[]}>(`${environment.apiUrl}/chapters`)
-        .pipe(map(res => res.data));
+        return this.http.get<{ message: string; data: Chapter[]}>(`${environment.apiUrl}/chapters`).pipe(map(res => res.data));
     }
 
     getChapterById(id: number): Observable<Chapter> {
-        return this.http
-        .get<{ message: string; data: Chapter}>(`${environment.apiUrl}/chapters/${id}`)
-        .pipe(map(res => res.data));
+        return this.http.get<{ message: string; data: Chapter}>(`${environment.apiUrl}/chapters/${id}`).pipe(map(res => res.data));
     }
 
     reorder(chapters: { id_chapter: number; order: number }[]) {
-        return this.http.patch(
-            `${environment.apiUrl}/chapters/reorder`,
-            chapters
-        );
+        return this.http.patch(`${environment.apiUrl}/chapters/reorder`, chapters);
     }
 
     updateChapter(id: number, chapter: any): Observable<Chapter> {
-        return this.http.put<{ message: string, data: Chapter }>(
-            `${environment.apiUrl}/chapters/${id}/full`,
-            chapter
-        )
-        .pipe(map(res => res.data));
+        return this.http.put<{ message: string, data: Chapter }>(`${environment.apiUrl}/chapters/${id}/full`, chapter).pipe(map(res => res.data));
     }
 
     createChapter(payload: any): Observable<Chapter> {
-        return this.http.post<{ message: string, data: Chapter }>(
-            `${environment.apiUrl}/chapters/full`,
-            payload
-        )
-        .pipe(map(res => res.data));
+        return this.http.post<{ message: string, data: Chapter }>(`${environment.apiUrl}/chapters/full`, payload).pipe(map(res => res.data));
     }
 }
