@@ -11,16 +11,25 @@
                 <mat-form-field appearance="fill">
                     <mat-label>Titre en gallo</mat-label>
                     <input matInput type="text" formControlName="title">
+                    <mat-error *ngIf="chapterForm.get('title')?.hasError('required')">
+                        Le titre est obligatoire
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
                     <mat-label>Titre en français</mat-label>
                     <input matInput type="text" formControlName="title_fr">
+                    <mat-error *ngIf="chapterForm.get('title_fr')?.hasError('required')">
+                        Le titre en français est obligatoire
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
                     <mat-label>Description</mat-label>
                     <textarea matInput rows="4" formControlName="abstract"></textarea>
+                    <mat-error *ngIf="chapterForm.get('abstract')?.hasError('required')">
+                        La description est obligatoire
+                    </mat-error>
                 </mat-form-field>
 
                 <mat-form-field appearance="fill">
@@ -30,6 +39,9 @@
                             {{ level.title }}
                         </option>
                     </select>
+                    <mat-error *ngIf="chapterForm.get('id_level')?.hasError('required')">
+                        Le niveau est obligatoire
+                    </mat-error>
                 </mat-form-field>
             </div>
 

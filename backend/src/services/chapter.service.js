@@ -1,6 +1,6 @@
 const { where } = require("sequelize");
 const models = require("../db/models");
-// const sequelize = require("../db/sequelize");
+const chapterValidator = require("./validators/chapter.validator");
 
 class ChapterService {
     constructor({sequelize, Chapter, Level, Page, Lesson, Exercise, UniqueResponse, Pairs, PutInOrder, lessonService, exerciseService }) {
@@ -17,6 +17,7 @@ class ChapterService {
         this.exerciseService = exerciseService;
     }
 
+    
     async getAll() {
         return this.Chapter.findAll({
             attributes: [
@@ -86,9 +87,14 @@ class ChapterService {
     }
 
     async createFull(chapterData, pages) {
+        
         const t = await this.sequelize.transaction();
 
-        try {
+         try {
+
+            chapterValidator.validateChapterData(chapterData);
+            chapterValidator.validatePages(pages);
+
             const chapter = await this.Chapter.create(
                 {
                     title: chapterData.title,
@@ -103,6 +109,7 @@ class ChapterService {
 
             for (let i = 0; i < pages.length; i++) {
                 const pageData = pages[i];
+                console.log("LESSON INPUT:", pageData.lesson);
 
                 const page = await this.Page.create(
                     {

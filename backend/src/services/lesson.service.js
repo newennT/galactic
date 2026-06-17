@@ -2,7 +2,7 @@ const { Lesson } = require('../db/models');
 
 class LessonService {
 
-    static async createFromPage(page, lessonData, transaction) {
+    static async create(page, lessonData, transaction) {
         return Lesson.create(
             {
                 id_page: page.id_page,
@@ -23,10 +23,6 @@ class LessonService {
 
     static async getById(id) {
         return Lesson.findByPk(id);
-    }
-
-    static async create(data) {
-        return Lesson.create(data);
     }
 
     static async update(id, data) {

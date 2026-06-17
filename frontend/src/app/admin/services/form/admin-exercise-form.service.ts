@@ -155,8 +155,8 @@ export class AdminExerciseFormService {
   addPair(pairsArray: FormArray): void {
     pairsArray.push(
       this.formBuilder.group({
-        content_left: ['', [Validators.required]],
-        content_right: ['', [Validators.required]],
+        content_left: [''],
+        content_right: [''],
         pair_key: [this.generatePairKey()],
       })
     );

@@ -15,7 +15,7 @@ const userExercises = require("./data-mock/userExercises");
 
 async function initDb(){
     const { sequelize } = require("./sequelize");
-    await sequelize.sync({ force: false });
+    await sequelize.sync({ force: true });
     console.log("La base de données a été synchronisée avec succès");
 
     // levels
@@ -92,6 +92,7 @@ async function initDb(){
     const uniqueResponseInstances = await models.UniqueResponse.bulkCreate(
         uniqueResponses.map(uniqueResponse => ({
                 id_page: uniqueResponse.id_page,
+                id_response: uniqueResponse.id_response,
                 content: uniqueResponse.content,
                 is_correct: uniqueResponse.is_correct
             })),
@@ -104,6 +105,7 @@ async function initDb(){
     const pairsInstances = await models.Pairs.bulkCreate(
         pairs.map(pair => ({
                 id_page: pair.id_page,
+                id_response: pair.id_response,
                 content: pair.content,
                 pair_key: pair.pair_key
             })),
@@ -116,6 +118,7 @@ async function initDb(){
     const putInOrderInstances = await models.PutInOrder.bulkCreate(
         putInOrder.map(putInOrder => ({
                 id_page: putInOrder.id_page,
+                id_response: putInOrder.id_response,
                 content: putInOrder.content,
                 mixed_order: putInOrder.mixed_order,
                 correct_order: putInOrder.correct_order

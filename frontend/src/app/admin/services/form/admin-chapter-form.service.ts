@@ -31,7 +31,7 @@ export class AdminChapterFormService {
       title_fr: ['', [Validators.required]],
       abstract: ['', [Validators.required]],
       id_level: ['', [Validators.required]],
-      pages: this.formBuilder.array([], Validators.minLength(1))
+      pages: this.formBuilder.array([])
     });
   }
 
@@ -47,8 +47,8 @@ export class AdminChapterFormService {
 
   createLessonGroup(lesson: any): FormGroup {
     return this.formBuilder.group({
-      title: [lesson?.title ?? '',[Validators.required]],
-      content: [lesson?.content ?? '', [Validators.required]],
+      title: [lesson?.title ?? ''],
+      content: [lesson?.content ?? ''],
     });
   }
 
@@ -66,12 +66,12 @@ export class AdminChapterFormService {
         type: ['LESSON'],
 
         lesson: this.formBuilder.group({
-          title: ['', [Validators.required]],
-          content: ['', [Validators.required]],
+          title: [''],
+          content: [''],
         }),
 
         exercise: this.formBuilder.group({
-          question: ['', [Validators.required]],
+          question: [''],
           type: ['UNIQUE'],
           feedback: [''],
           media_type: [''],
@@ -80,7 +80,7 @@ export class AdminChapterFormService {
           uniqueResponses: this.formBuilder.array([
             this.formBuilder.group({
               id_response: [0],
-              content: ['', [Validators.required]],
+              content: [''],
               is_correct: [true],
             }),
             this.formBuilder.group({

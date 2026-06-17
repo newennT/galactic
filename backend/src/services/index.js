@@ -1,4 +1,6 @@
 const ChapterService = require('./chapter.service');
+const lessonService = require('./lesson.service');
+const exerciseService = require('./exercise.service');
 const db = require('../db/models');
 
 function makeChapterService() {
@@ -12,8 +14,8 @@ function makeChapterService() {
     UniqueResponse: db.UniqueResponse,
     Pairs: db.Pairs,
     PutInOrder: db.PutInOrder,
-    lessonService: db.lessonService,
-    exerciseService: db.exerciseService,
+    lessonService,
+    exerciseService
   });
 }
 

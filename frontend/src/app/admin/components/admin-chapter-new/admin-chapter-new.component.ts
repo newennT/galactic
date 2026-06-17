@@ -119,13 +119,14 @@ export class AdminChapterNewComponent implements OnInit {
 
   // Soumettre le chapitre entier
   onSubmit(){
-    if (this.chapterForm.invalid) return;
-
     let formValue = this.chapterForm.value;
 
     formValue = this.adminExerciseFormService.normalizeOrderExercises(formValue);
 
+    
+    console.log(JSON.stringify(this.chapterForm.value, null, 2));
     console.log('Payload envoyé', formValue);
+
 
     this.adminChaptersService
       .createChapter(formValue)

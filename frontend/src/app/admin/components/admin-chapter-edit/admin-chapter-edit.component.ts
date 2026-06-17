@@ -134,8 +134,6 @@ export class AdminChapterEditComponent implements OnInit {
 
   onSubmit() {
 
-    if (this.chapterForm.invalid) return;
-
     let formValue = this.chapterForm.value;
 
     formValue = this.adminExerciseFormService.normalizeOrderExercises(formValue);
