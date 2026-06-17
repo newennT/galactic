@@ -15,8 +15,7 @@ export class UserExerciseService {
 
     getChapterScore(id_chapter: number){
         const token = this.authService.getToken();
-        console.log("token depuis userExercise.service", token);
-        
+       
         return this.http.get<{ total: number, correct: number, percentage: number; }>(`${environment.apiUrl}/user-exercises/chapter/${id_chapter}/score`);
     }
 }
