@@ -3,17 +3,17 @@
 Galactic is a Gallo language learning application. It is organized into chapters, each containing lessons and interactive exercises.
 
 ## Architecture
-Angular > REST API > Node.js / Express > Sequelize > MySQL
+Angular → REST API → Node.js / Express → Sequelize → MySQL
 
 ## Install 
 ### Prerequisites
 - Docker
 - Docker compose
-- Nodejs 18
+- Node.js 18
 - Angular CLI
 
 ## Setup
-- clone repo `git clone https://github.com/newennT/galactic`
+- clone repo `git clone https://github.com/newennT/galactic.git`
 - `cd galactic`
 - `docker compose up -d`  
 - Start frontend with  `cd frontend` and `ng serve`
@@ -25,7 +25,7 @@ Angular > REST API > Node.js / Express > Sequelize > MySQL
 - Angular Material
 
 ### Backend
-- Node 18
+- Node.js 18
 - Express
 - Sequelize
 - MySQL
