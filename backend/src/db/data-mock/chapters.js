@@ -26,8 +26,6 @@ const chapters = [
   order: 3,
   id_level: 3
  }
-
-
 ]
 
 module.exports = chapters;
