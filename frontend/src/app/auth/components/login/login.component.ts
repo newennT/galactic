@@ -13,7 +13,7 @@ export class LoginComponent implements OnInit{
   loading = false;
 
   loginForm = this.formBuilder.group({
-    email: ['', [Validators.required, Validators.email]],
+    email: ['', Validators.required],
     password: ['', Validators.required]
   });
 
@@ -29,12 +29,14 @@ export class LoginComponent implements OnInit{
 
   onLogin(): void {
     if (this.loginForm.invalid) return;
-
     this.loading = true;
 
     this.auth.login(this.loginForm.value).subscribe({
+
       next: () => {
-        this.router.navigate(['/dashboard']);
+        setTimeout(() => {
+            this.router.navigate(['/dashboard']);
+        }, 50);
       },
       error: () => {
         this.loading = false;

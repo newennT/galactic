@@ -1,9 +1,11 @@
+const bcrypt = require("bcrypt");
+
 const users = [
     {
         id_user: 1,
         username: "superadmin",
         email: "admin@example.com",
-        password: "bcrypt",
+        password: bcrypt.hashSync("bcrypt", 10),
         is_admin: true,
         last_login: new Date(),
     },
@@ -11,7 +13,7 @@ const users = [
         id_user: 2,
         username: "user2",
         email: "user@example.com",
-        password: "bcrypt",
+        password: bcrypt.hashSync("bcrypt", 10),
         is_admin: false,
         last_login: new Date(),
     }

@@ -6,17 +6,23 @@ const privatekey = require("./private_key");
 module.exports = (req, res, next) => {
     try {
         const authorizationHeader = req.headers.authorization 
+
+        console.log(req.headers.authorization);
         if(!authorizationHeader) {
-            return res.status(401).json({ message: "Unauthorized" });
+            return res.status(401).json({ message: "Pas de token" });
         }
         
         const parts = authorizationHeader.split(" ");
         if (parts.length !== 2 || parts[0] !== "Bearer") {
-            return res.status(401).json({ message: "Unauthorized" });
+            return res.status(401).json({ message: "Format du token invalide" });
         }
     
         const token = parts[1];
         const decodedToken = jwt.verify(token, privatekey);
+
+        if (!decodedToken) {
+            return res.status(401).json({ message: "Token non valide" });
+        }
 
         req.auth = {
             id_user: decodedToken.id_user,

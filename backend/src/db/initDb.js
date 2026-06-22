@@ -137,10 +137,8 @@ async function initDb(){
                 password: user.password,
                 is_admin: user.is_admin,
                 last_login: user.last_login
-            })),
-            {
-                ignoreDuplicates: true
-            }
+            }))
+
     );
 
     // UserChapters

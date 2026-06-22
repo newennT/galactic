@@ -17,10 +17,10 @@ export class AuthService {
     constructor(private http: HttpClient, private router: Router) { }
 
     login(credentials: any){
+        console.log(credentials);
         return this.http.post<any>(`${environment.apiUrl}/login`, credentials).pipe(
             tap(response => {
                 localStorage.setItem('token', response.token);
-
             })
         );
     }
