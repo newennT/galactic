@@ -4,48 +4,48 @@
 // Plus imports for other components in your app.
 
 @font-face {
-  font-family: 'Stolzl';
-  src: url('/assets/Stolzl-Book.woff2') format('woff2');
+  font-family: 'Montserrat';
+  src: url('/assets/Montserrat-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Stolzl';
-  src: url('/assets/Stolzl-Medium.woff2') format('woff2');
+  font-family: 'Montserrat';
+  src: url('/assets/Montserrat-SemiBold.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face{
-  font-family: 'Stolzl';
-  src: url('/assets/Stolzl-Thin.woff2') format('woff2');
+  font-family: 'Montserrat';
+  src: url('/assets/Montserrat-Thin.woff2') format('woff2');
   font-weight: 100;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face{
-  font-family: 'Stolzl';
-  src: url('/assets/Stolzl-Light.woff2') format('woff2');
+  font-family: 'Montserrat';
+  src: url('/assets/Montserrat-Light.woff2') format('woff2');
   font-weight: 200;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Stolzl-display';
-  src: url('/assets/stolzl-display-normal.woff2') format('woff2');
+  font-family: 'Montserrat-Alternates';
+  src: url('/assets/Montserrat-Alternates-Regular.woff2') format('woff2');
   font-weight: 400;
   font-style: normal;
   font-display: swap;
 }
 
 @font-face {
-  font-family: 'Stolzl-display';
-  src: url('/assets/stolzl-display-medium.woff2') format('woff2');
+  font-family: 'Montserrat-Alternates';
+  src: url('/assets/Montserrat-Alternates-SemiBold.woff2') format('woff2');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
@@ -65,15 +65,15 @@
 
 $my-primary: mat.define-palette((
   50: #d0d0d0,
-  100: #d0d0d0,
-  200: #9eede7,
-  300: #16BAAD,
-  400: #16BAAD,
-  500: #16BAAD, // couleur principale
-  600: #16BAAD,
-  700: #16BAAD,
-  800: #58595B,
-  900: #002d23,
+  100: #d5dfec,
+  200: #a3b6d0,
+  300: #6c90c0,
+  400: #2a6ec8,
+  500: #23589F, // couleur principale
+  600: #1a4680,
+  700: #14345e,
+  800: #0b2343,
+  900: #07172d,
   contrast: (
     50: #58595B,
     100: #58595B,
@@ -89,20 +89,20 @@ $my-primary: mat.define-palette((
 ));
 
 $frontend-typography: mat.define-typography-config(
-  $font-family: 'Stolzl, sans-serif',
-  $headline-1: mat.define-typography-level(96px, 96px, 300, 'Stolzl, sans-serif'),
-  $headline-2: mat.define-typography-level(60px, 60px, 300, 'Stolzl, sans-serif'),
-  $headline-3: mat.define-typography-level(48px, 50px, 400, 'Stolzl, sans-serif'),
-  $headline-4: mat.define-typography-level(34px, 40px, 400, 'Stolzl, sans-serif'),
-  $headline-5: mat.define-typography-level(24px, 32px, 400, 'Stolzl, sans-serif'),
-  $headline-6: mat.define-typography-level(20px, 32px, 500, 'Stolzl, sans-serif'),
+  $font-family: 'Montserrat, sans-serif',
+  $headline-1: mat.define-typography-level(96px, 96px, 300, 'Montserrat, sans-serif'),
+  $headline-2: mat.define-typography-level(60px, 60px, 300, 'Montserrat, sans-serif'),
+  $headline-3: mat.define-typography-level(48px, 50px, 400, 'Montserrat, sans-serif'),
+  $headline-4: mat.define-typography-level(34px, 40px, 400, 'Montserrat, sans-serif'),
+  $headline-5: mat.define-typography-level(24px, 32px, 400, 'Montserrat, sans-serif'),
+  $headline-6: mat.define-typography-level(20px, 32px, 500, 'Montserrat, sans-serif'),
 
-  $body-1: mat.define-typography-level(16px, 24px, 400, 'Stolzl, sans-serif'),
-  $body-2: mat.define-typography-level(14px, 20px, 400, 'Stolzl, sans-serif'),
+  $body-1: mat.define-typography-level(16px, 24px, 400, 'Montserrat, sans-serif'),
+  $body-2: mat.define-typography-level(14px, 20px, 400, 'Montserrat, sans-serif'),
 
-  $button: mat.define-typography-level(14px, 14px, 600, 'Stolzl, sans-serif'),
+  $button: mat.define-typography-level(14px, 14px, 600, 'Montserrat, sans-serif'),
 
-  $caption: mat.define-typography-level(12px, 20px, 400, 'Stolzl, sans-serif'),
+  $caption: mat.define-typography-level(12px, 20px, 400, 'Montserrat, sans-serif'),
 );
 @include mat.typography-hierarchy($frontend-typography);
 $frontend-primary: $my-primary;
@@ -130,7 +130,7 @@ $frontend-theme: mat.define-light-theme((
 /* You can add global styles to this file, and also import other style files */
 
 $color-text: #58595B;
-$green-idg: #16BAAD;
+$green-idg: #23589F;
 
 html, body 
 { 
@@ -138,7 +138,7 @@ html, body
 }
 body { 
   margin: 0; 
-  font-family: 'Stolzl', sans-serif; 
+  font-family: 'Montserrat', sans-serif; 
 }
 
 mat-sidenav-container, mat-drawer-container {
@@ -150,22 +150,23 @@ a{
 }
 
 h1, h2, h3{
-  font-family: 'Stolzl-display', sans-serif!important;
+  font-family: 'Montserrat', sans-serif!important;
   font-weight: 500!important;
   line-height: normal;
 }
 
 p, ul, li{
-  font-family: 'Stolzl', sans-serif;
+  font-family: 'Montserrat', sans-serif;
   color: $color-text;
 }
 
 h1{
   color: $color-text;
   text-align: center;
-  font-size: 50px!important;
+  font-size: 40px!important;
   padding-top: 30px;
   line-height: normal!important;
+  // font-family: 'Montserrat-Alternates', sans-serif!important;
 }
 
 .btn{
@@ -189,7 +190,7 @@ h1{
     background-color: $green-idg;
     color: #ffffff;
     &:hover{
-      background-color: #10ac9f;
+      background-color: #23589F;
       transition: 200ms ease-in-out;
     }
 }
