@@ -2,8 +2,22 @@
 
 Galactic is a Gallo language learning application. It is organized into chapters, each containing lessons and interactive exercises.
 
+## Context
+Galactic was developed in a professional context for the Institut du Galo, as part of a project dedicated to learning and promoting the Gallo language.
+
+The application was developed as a functional prototype but was not deployed to production.
+
+This repository has been adapted for public presentation:
+
+- The Institut du Galo's visual identity has been removed.
+- Logos, branding, and organization-specific content have been removed or replaced.
+- References to the original organization and its production environment have been anonymized.
+- The application remains representative of the technical work carried out during the project.
+
 ## Architecture
+The application follows a client-server architecture:
 Angular → REST API → Node.js / Express → Sequelize → MySQL
+The Angular frontend communicates with a REST API developed with Node.js and Express. Sequelize is used as the ORM between the backend and the MySQL database.
 
 ## Install 
 ### Prerequisites
@@ -23,6 +37,7 @@ Angular → REST API → Node.js / Express → Sequelize → MySQL
 ### Frontend
 - Angular 16.2.0
 - Angular Material
+- HTML/Sass
 
 ### Backend
 - Node.js 18
@@ -60,17 +75,33 @@ In frontend/src/app :
 - home
 - not-found
 - shared
+The main features are separated from shared and core functionality in order to keep the application structure modular and maintainable.
 
 ### Back
-In `backend/src`:
+The backend exposes a REST API consumed by the Angular frontend. The main responsibilities of the API include:
+
+- User authentication and account management
+- Chapter and lesson retrieval
+- Exercise management
+- User progress and exercise validation
+- Administrative content management
+
+The Node.js / Express application is organized under backend/src:
 - auth
 - controllers
 - db
 - models
 - routes
 - services
+The backend separates routing, controllers, business logic, authentication, and data models.
 
-## Test
+## Authentication 
+The application distinguishes between regular users and administrators.Authentication is handled by the backend, while authorization determines which features and resources can be accessed depending on the user's role.
+
+## Database
+The application uses MySQL as its relational database. Sequelize provides the ORM layer between the Node.js application and the database, allowing application models to be mapped to relational tables and simplifying database queries and relationships.
+
+## Testing
 ### Front
 Runs Angular unit tests \
 Run `npm test`
@@ -78,3 +109,13 @@ Run `npm test`
 ### Back
 Runs API and business logic tests \
 Run `npm run test`
+
+## Development Notes
+
+This repository is intended as a technical showcase of a professional development project.
+
+Because the original application was developed for an organization and was not intended to be published as open source, organization-specific assets and content have been removed from this version.
+
+The repository therefore focuses on the application's architecture, code organization, features, and technical implementation rather than reproducing the original project's branding or production content.
+
+## Screenshots
