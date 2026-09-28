@@ -75,6 +75,7 @@ In frontend/src/app :
 - home
 - not-found
 - shared
+
 The main features are separated from shared and core functionality in order to keep the application structure modular and maintainable.
 
 ### Back
@@ -93,10 +94,11 @@ The Node.js / Express application is organized under backend/src:
 - models
 - routes
 - services
+
 The backend separates routing, controllers, business logic, authentication, and data models.
 
 ## Authentication 
-The application distinguishes between regular users and administrators.Authentication is handled by the backend, while authorization determines which features and resources can be accessed depending on the user's role.
+The application distinguishes between regular users and administrators. Authentication is handled by the backend, while authorization determines which features and resources can be accessed depending on the user's role.
 
 ## Database
 The application uses MySQL as its relational database. Sequelize provides the ORM layer between the Node.js application and the database, allowing application models to be mapped to relational tables and simplifying database queries and relationships.
