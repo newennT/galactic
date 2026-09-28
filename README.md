@@ -119,3 +119,8 @@ Because the original application was developed for an organization and was not i
 The repository therefore focuses on the application's architecture, code organization, features, and technical implementation rather than reproducing the original project's branding or production content.
 
 ## Screenshots
+
+<img width="400" alt="login" src="https://github.com/user-attachments/assets/62fffe5e-480f-4205-9ff2-a696f05713ab" />
+<img width="400" alt="Screenshot 2026-09-28 at 22-49-47 Galactic" src="https://github.com/user-attachments/assets/5a855c6c-a9e7-46b8-8dc5-85075bcca25e" />
+<img width="400" alt="Screenshot 2026-09-28 at 22-50-13 Galactic" src="https://github.com/user-attachments/assets/5d879195-ddb8-4dc1-9d6b-2d3f7ca8d0b8" />
+<img width="400" alt="Screenshot 2026-09-28 at 22-48-58 Galactic" src="https://github.com/user-attachments/assets/55adb34e-e3e5-49df-adcf-161a629ed6c5" />
